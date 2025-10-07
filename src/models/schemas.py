@@ -8,19 +8,19 @@ from datetime import datetime
 
 
 class SAutorAdd(BaseModel):
-    id: Optional[uuid.UUID] = Field(None, description="ID автора")
+    id: uuid.UUID = Field(None, description="ID автора")
     name: str = Field(..., min_length=3, max_length=50, description="Имя автора")
     bio: Optional[str] = Field(None, max_length=1000, description="Биография автора")
 
 class SBookAdd(BaseModel):
-    id: Optional[uuid.UUID] = Field(None, description="ID книги")
+    id: uuid.UUID = Field(None, description="ID книги")
     title: Optional[str] = Field(None, min_length=5, max_length=100, description="Название книги")
     description: Optional[str] = Field(None, max_length=1000, description="Описание книги")
     publication_year: Optional[int] = Field(None, description="Год публикации")
     
 
 class SDepartmentAdd(BaseModel):
-    id: Optional[uuid.UUID] = Field(None, description="ID отдела")
+    id: uuid.UUID = Field(None, description="ID отдела")
     name: Optional[str] = Field(None, min_length=3, max_length=50, description="Название отдела")
     description: Optional[str] = Field(None, max_length=1000, description="Описание отдела")
 

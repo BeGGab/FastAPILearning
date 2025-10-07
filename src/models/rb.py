@@ -1,5 +1,9 @@
+import uuid
+
+
+
 class RBUser:
-    def __init__(self, user_id: int | None = None,
+    def __init__(self, user_id: uuid.UUID | None = None,
                  username: str | None = None,
                  email: str | None = None,
                  phone_number: str | None = None,

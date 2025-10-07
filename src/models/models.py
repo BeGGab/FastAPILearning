@@ -1,9 +1,9 @@
 import sqlalchemy as sa
 from typing import List
 import uuid
-from sqlalchemy import text, Text
 from sqlalchemy.orm import DeclarativeMeta, declarative_base, declared_attr
 from sqlalchemy.orm import relationship, Mapped, mapped_column
+from sqlalchemy.ext.asyncio import AsyncAttrs
 
 from src.db import uniq_str_an, created_at, updated_at
 
@@ -13,7 +13,7 @@ from src.db import uniq_str_an, created_at, updated_at
 metadata = sa.MetaData()
 
 
-class BaseServiceModel:
+class BaseServiceModel(AsyncAttrs):
     __abstract__ = True
 
     '''@declared_attr.directive
@@ -38,7 +38,7 @@ class Author(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4())
     name: Mapped[uniq_str_an] = mapped_column(nullable=False)
-    boi: Mapped[Text] = mapped_column(sa.Text())
+    boi: Mapped[str] = mapped_column(sa.Text())
 
     books: Mapped[List['Book']] = relationship(
         secondary='author_book', back_populates='authors'
@@ -50,7 +50,7 @@ class Book(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4())
     title: Mapped[str] = mapped_column(sa.String(), nullable=False)
-    description: Mapped[Text] = mapped_column(sa.Text())
+    description: Mapped[str] = mapped_column(sa.Text())
     publication_year: Mapped[int]
     
     authors: Mapped[List['Author']] = relationship(
@@ -77,7 +77,7 @@ class Profile(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4())
     full_name: Mapped[str] = mapped_column(sa.String(), nullable=True)
-    bio: Mapped[Text] = mapped_column(sa.Text())
+    bio: Mapped[str] = mapped_column(sa.Text())
     user_id: Mapped[uuid.UUID] = mapped_column(sa.ForeignKey('users.id', ondelete='CASCADE'), unique=True)
 
     user: Mapped['User'] = relationship(
@@ -89,7 +89,7 @@ class Department(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4())
     name: Mapped[str] = mapped_column(sa.String(), nullable=True)
-    description: Mapped[Text] = mapped_column(sa.Text())
+    description: Mapped[str] = mapped_column(sa.Text())
 
     employees: Mapped[List['Employee']] = relationship(
         back_populates="department",
