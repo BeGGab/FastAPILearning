@@ -36,7 +36,7 @@ Base: DeclarativeMeta = declarative_base(metadata=metadata, cls=BaseServiceModel
 class Author(Base):
     __tablename__ = 'authors'
 
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4())
+    id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[uniq_str_an] = mapped_column(nullable=False)
     boi: Mapped[str] = mapped_column(sa.Text())
 
@@ -48,7 +48,7 @@ class Author(Base):
 class Book(Base):
     __tablename__ = 'books'
 
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4())
+    id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(sa.String(), nullable=False)
     description: Mapped[str] = mapped_column(sa.Text())
     publication_year: Mapped[int]
@@ -87,7 +87,7 @@ class Profile(Base):
 class Department(Base):
     __tablename__ = 'departments'
 
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4())
+    id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(sa.String(), nullable=True)
     description: Mapped[str] = mapped_column(sa.Text())
 
@@ -99,7 +99,7 @@ class Department(Base):
 class Employee(Base):
     __tablename__ = 'employees'
 
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4())
+    id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[uniq_str_an] 
     position: Mapped[str] = mapped_column(sa.String())
     department_id: Mapped[uuid.UUID] = mapped_column(sa.ForeignKey('departments.id', ondelete='CASCADE'))
