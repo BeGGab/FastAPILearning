@@ -1,5 +1,6 @@
 from typing import List, Any, Dict
-
+import uuid
+from typing import Union
 from sqlalchemy import select, update, delete
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,7 +10,7 @@ class BaseDAO:
     model = None
 
     @classmethod
-    async def find_one_or_none_by_id(cls, session: AsyncSession, id: int):
+    async def find_one_or_none_by_id(cls, session: AsyncSession, id: Union[uuid.UUID]):
         query = select(cls.model).filter_by(id=id)
         result = await session.execute(query)
         return result.scalar_one_or_none()
