@@ -21,7 +21,7 @@ class SCourseRead(BaseModel):
 
 class SStudentCreate(BaseModel):
     name: str = Field(..., min_length=3, description="Имя студента")
-    courses: List[SCourseCreate] = Field([], description="Список курсов студента")
+    courses: List[SCourseCreate] = Field(default_factory=list, description="Список курсов студента")
 
     
 class SStudentRead(BaseModel):

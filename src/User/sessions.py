@@ -1,10 +1,11 @@
+import uuid
 from sqlalchemy import select, update, delete, event, insert
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import joinedload
 from src.dao.base import BaseDAO
-import uuid
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.User.models import User, Profile
+
+from src.user.models import User, Profile
 
 
 

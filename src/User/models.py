@@ -19,7 +19,7 @@ metadata = sa.MetaData()
 class User(Base):
     __tablename__ = "users"
 
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4())
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     username: Mapped[uniq_str_an]
     email: Mapped[uniq_str_an]
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, nullable=False)
@@ -40,9 +40,9 @@ class User(Base):
 class Profile(Base):
     __tablename__ = "profiles"
 
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4())
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     first_name: Mapped[uniq_str_an]
-    last_name: Mapped[uniq_str_an]
+    last_name: Mapped[str] = mapped_column(sa.String(50))
     phone_number: Mapped[uniq_str_an]
     bio: Mapped[str] = mapped_column(sa.Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, nullable=False)

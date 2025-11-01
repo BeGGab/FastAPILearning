@@ -2,9 +2,9 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from src.User.user_router import router as user_router
-from src.Author.author_router import arouter as author_router
-from src.Student.student_router import srouter as student_router
+from src.user.router import router as user_router
+from src.author.router import router as author_router
+from src.student.router import router as student_router
 
 
 
@@ -34,7 +34,7 @@ def get_app() -> FastAPI:
         allow_methods=['*'],
         allow_headers=['*'],
     )
-    app.include_router(user_router, prefix='/user', tags=['user'])
-    app.include_router(author_router, prefix='/author', tags=['author'])
-    app.include_router(student_router, prefix='/student', tags=['student'])
+    app.include_router(user_router)
+    app.include_router(author_router)
+    app.include_router(student_router)
     return app
