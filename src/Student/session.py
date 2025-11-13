@@ -2,7 +2,7 @@ import uuid
 from typing import List
 from sqlalchemy import select, update, delete, event, insert
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.student.models import Student, Course, student_course
@@ -52,22 +52,24 @@ class StudentDAO(BaseDAO):
 
     @classmethod
     async def update_student_with_course(cls, session: AsyncSession, student_id: uuid.UUID, **values) -> Student:
-        course_data = values.pop("courses", [])
-        student = await cls.find_one_with_id(session=session, id=student_id)
+        # Extract courses payload from values, defaulting to empty list when missing/None
+        course_data = values.pop("courses", None or [])
+
+        # Load student with existing courses
+        student = await session.get(Student, student_id, options=(selectinload(Student.courses),))
         if not student:
             raise ValueError(f"Студент с id {student_id} не найден")
-        update_student = (update(cls.model)
-                          .where(cls.model.id == student_id)
-                          .values(**values)
-                          .execution_options(synchronize_session="fetch"))
+
+        student.name = values.get("name", student.name)
+
+        student.courses.clear()
         if course_data:
-            update_courses = (update(Course)
-                          .where(Course.id == student_id)
-                          .values(**course_data)
-                          .execution_options(synchronize_session="fetch"))
-            await session.execute(update_courses)
-        await session.execute(update_student)
+            student.courses.extend([Course(**course) for course in course_data])
+
         await session.commit()
-        return student 
+        await session.refresh(student)
+        await session.refresh(student, attribute_names=["courses"])
+        return student
+    
         
-        
+   
