@@ -71,5 +71,13 @@ class StudentDAO(BaseDAO):
         await session.refresh(student, attribute_names=["courses"])
         return student
     
+
+    @classmethod
+    async def delete_with_course(cls, session: AsyncSession, id: uuid.UUID):
+        student = await session.get(Student, id)
+        if not student:
+            return None
         
-   
+        await session.delete(student)
+        await session.commit()
+        return id

@@ -65,6 +65,7 @@ async def update_student(student_id: Union[uuid.UUID], payload: SStudentCreate, 
 
 @router.delete("/dell/{id}")
 async def dell_student(id: Union[uuid.UUID], session: AsyncSession = Depends(get_async_session)):
-    await StudentDAO.delete(session=session, id=id)
+    deleted_student_id = await StudentDAO.delete_with_course(session=session, id=id)
+    if not deleted_student_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Студент с id {id} не найден")
     return {f"message": "Студент с id {id} успешно удален"}
-
