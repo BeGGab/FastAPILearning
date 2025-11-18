@@ -1,71 +1,44 @@
 import uuid
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, List, Any, Union
+from typing import Dict, List
 from sqlalchemy.orm import selectinload
 
-from src.student.models import Student, Course
-from src.student.schemas import SStudentCreate, SStudentRead, SCourseCreate, SCourseRead
-from src.student.session import StudentDAO
+from src.dao.schemas import SStudentCreate, SStudentRead
+from src.dao.service import StudentDAO
 
 from src.db import get_async_session
 
 
-router = APIRouter(prefix="/student", tags=["student"])
+router = APIRouter(tags=["student"])
 
 
 
-
-
-
-
-
-
-
-@router.post("/add_student", status_code=status.HTTP_201_CREATED)
+@router.post("/students")
 async def created_student(payload: SStudentCreate, session: AsyncSession = Depends(get_async_session)) -> SStudentRead:
     student = await StudentDAO.add_student(session=session, student_data=payload.model_dump())
     return student
 
-@router.get("/respons_all")
+@router.get("/students")
 async def get_all_students(session: AsyncSession = Depends(get_async_session)) -> List[SStudentRead]:
     students = await StudentDAO.find_all_students(session=session)
     return students
 
 
-@router.get("/{id}")
-async def get_student_by_id(id: Union[uuid.UUID], session: AsyncSession = Depends(get_async_session)) -> SStudentRead:
+@router.get("/students/{id}")
+async def get_student_by_id(id: uuid.UUID, session: AsyncSession = Depends(get_async_session)) -> SStudentRead:
     student = await StudentDAO.find_one_with_id(session=session, id=id)
     return student
 
 
-'''@router.put("/update/{id}")
-async def update_student(id: Union[uuid.UUID],payload: SStudentCreate, session: AsyncSession = Depends(get_async_session)) -> SStudentRead:
-    student = await StudentDAO.update_student_with_course(session=session, student_id=id, payload=payload.model_dump())
-    return student'''
-
-
-@router.put("/students/{student_id}", response_model=SStudentRead)
-async def update_student(student_id: Union[uuid.UUID], payload: SStudentCreate, session: AsyncSession = Depends(get_async_session)) -> Student:
-    student = await session.get(Student, student_id, options=(selectinload(Student.courses),))
-    if not student:
-        raise HTTPException(status_code=404, detail="Student not found")
-
-    student.name = payload.name
-   
-    student.courses.clear()
-    for c in payload.courses:
-        student.courses.append(Course(title=c.title))
-
-    await session.commit()
-    await session.refresh(student)
-    await session.refresh(student, attribute_names=["courses"])
+@router.put("/students/{student_id}")
+async def update_student(student_id: uuid.UUID, payload: SStudentCreate, session: AsyncSession = Depends(get_async_session)) -> SStudentRead:
+    student = await StudentDAO.update_student_with_course(session=session, student_id=student_id, **payload.model_dump())
     return student
+    
 
 
-@router.delete("/dell/{id}")
-async def dell_student(id: Union[uuid.UUID], session: AsyncSession = Depends(get_async_session)):
-    deleted_student_id = await StudentDAO.delete_with_course(session=session, id=id)
-    if not deleted_student_id:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Студент с id {id} не найден")
-    return {f"message": "Студент с id {id} успешно удален"}
+@router.delete("/students/{id}")
+async def dell_student(id: uuid.UUID, session: AsyncSession = Depends(get_async_session)):
+    student = await StudentDAO.delete(session=session, id=id)
+    return {"message": f"Студент удален с id: {id} "}

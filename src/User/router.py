@@ -1,49 +1,43 @@
 import uuid
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, List, Any, Union
-from src.user.schemas import SUserRead, SProfileRead, SUserCreate, SProfileCreate
-from src.user.sessions import UserDAO
-from src.user.models import User, Profile
+from typing import Dict, List
+
+from src.dao.schemas import SUserRead, SUserCreate
+from src.dao.service import UserDAO
+
 from src.db import get_async_session
 
 
 
 
-router = APIRouter(prefix="/user", tags=["user"])
-
-
-@router.get('/healthcheck')
-async def healthcheck() -> dict[str, str]:
-    return {"status": "ok"}
+router = APIRouter(tags=["user"])
 
 
 
-@router.get("/")
+@router.get("/users")
 async def  find_all_users(session: AsyncSession = Depends(get_async_session)) -> List[SUserRead]:
     return await UserDAO.find_all_with_profiles(session=session)
 
 
-@router.get("/{id}") #Загрузка с профилем 
-async def find_user_is_id(id: Union[uuid.UUID], session: AsyncSession = Depends(get_async_session)) -> SUserRead:
+@router.get("/users/{id}") 
+async def find_user_is_id(id: uuid.UUID, session: AsyncSession = Depends(get_async_session)) -> SUserRead:
     user = await UserDAO.find_one_or_none_with_profile(session=session, id=id)
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return user
 
 
-@router.post("/add", status_code=status.HTTP_201_CREATED) #создание юзера
+@router.post("/users",)
 async def create_user_with_profile(useradd: SUserCreate, session: AsyncSession = Depends(get_async_session)) -> SUserRead:
     user = await UserDAO.create_user_with_profile(session=session, user_data=useradd.model_dump())
     return user
 
 
-@router.put("/update/{id}")
-async def update_user_profile(id: Union[uuid.UUID], userupdate: SUserCreate, session: AsyncSession = Depends(get_async_session)) -> SUserRead:
+@router.put("/users/{id}")
+async def update_user_profile(id: uuid.UUID, userupdate: SUserCreate, session: AsyncSession = Depends(get_async_session)) -> SUserRead:
     user = await UserDAO.update_user(session=session, user_id=id, **userupdate.model_dump())
     return user
 
-@router.delete("/dell/{id}")
-async def delete_user(id: Union[uuid.UUID], session: AsyncSession = Depends(get_async_session)):
+@router.delete("/users/{id}")
+async def delete_user(id: uuid.UUID, session: AsyncSession = Depends(get_async_session)):
     user = await UserDAO.delete_user(session=session, user_id=id)
     return f"Пользователь {user.username} удален"

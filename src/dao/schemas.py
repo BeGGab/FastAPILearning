@@ -47,3 +47,57 @@ class SUserRead(BaseModel):
     
 
     model_config = ConfigDict(from_attributes=True)
+
+
+
+
+class SBookCreate(BaseModel):
+    title: str = Field(..., min_length=3, max_length=100, description="Название книги")
+    
+
+
+class SBookRead(BaseModel):
+    id: uuid.UUID = Field(..., description="ID книги")
+    title: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class SAuthorCreate(BaseModel):
+    name: str = Field(..., min_length=3, max_length=50, description="Имя автора")
+    books: List[SBookCreate] = Field(default_factory=list, description="Список книг автора")
+    
+
+class SAuthorRead(BaseModel):
+    id: uuid.UUID = Field(..., description="ID автора")
+    name: str
+    books: List[SBookRead]
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+
+
+class SCourseCreate(BaseModel):
+    title: str = Field(..., min_length=1)
+
+
+class SCourseRead(BaseModel):
+    id: uuid.UUID = Field(..., description="ID курса")
+    title: str
+    #students: List[SUserRead]
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class SStudentCreate(BaseModel):
+    name: str = Field(..., min_length=3, description="Имя студента")
+    courses: List[SCourseCreate] = Field(default_factory=list, description="Список курсов студента")
+
+    
+class SStudentRead(BaseModel):
+    id: uuid.UUID = Field(..., description="ID студента")
+    name: str
+    courses: List[SCourseRead]
+
+    model_config = ConfigDict(from_attributes=True)

@@ -24,11 +24,6 @@ metadata = sa.MetaData()
 class BaseServiceModel(AsyncAttrs):
     __abstract__ = True
 
-    '''@declared_attr.directive
-    def __tablename__(cls) -> str:
-        return cls.__name__.lower()'''
-    
-    
 
     """Базовый класс для таблиц сервиса."""
 
@@ -51,6 +46,7 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_maker() as session:
         try:
             yield session
+            await session.commit()
         except Exception as e:
             await session.rollback()
             raise e
