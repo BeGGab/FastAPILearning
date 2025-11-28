@@ -5,6 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.dao.schemas import (SStudentCreate, SCourseCreate, SAuthorCreate, SAuthorRead)
 from src.dao.models import (User, Profile, Author, Book, Student, Course, student_course)
 from src.dao.base import BaseDAO
 
@@ -23,7 +24,7 @@ class UserDAO(BaseDAO):
             profile=Profile(**profile_data)
         )
         session.add(user)
-        await session.commit()
+        await session.flush()
         await session.refresh(user, ["profile"])
         return user
 
@@ -67,7 +68,6 @@ class UserDAO(BaseDAO):
             await session.execute(profile_update_query)
 
         await session.execute(user_update_query)
-        await session.commit()
 
         updated_user = await cls.find_one_or_none_with_profile(session=session, id=user_id)
         return updated_user
@@ -79,7 +79,6 @@ class UserDAO(BaseDAO):
             return None
         
         await session.delete(user)
-        await session.commit()
         return user
 
 
@@ -92,13 +91,12 @@ class StudentDAO(BaseDAO):
 
 
     @classmethod
-    async def add_student(cls, session: AsyncSession, student_data: dict) -> Student:
-        course_data = student_data.pop("courses", [])
-        student = Student(**student_data)
-        if course_data:
-            student.courses = [Course(**course) for course in course_data]
+    async def add_student(cls, session: AsyncSession, student_data: SStudentCreate) -> Student:
+        db_data = student_data.prepare_db_data()
+        student = Student(**db_data)
+        
         session.add(student)
-        await session.commit()
+        await session.flush()
         await session.refresh(student, ["courses"])
         return student
     
@@ -123,22 +121,38 @@ class StudentDAO(BaseDAO):
         result = await session.execute(query)
         return result.unique().scalar()
     
+    
+    @classmethod
+    async def find_or_create_courses(cls, session: AsyncSession, course_data: List[SCourseCreate]) -> List[Course]:
+        course_titles = [c.title for c in course_data]
+        if not course_titles:
+            return []
+        
+        course_query = select(Course).filter(Course.title.in_(course_titles))
+        result = await session.execute(course_query)
+        existing_courses = result.scalars().all()
+        existing_titles = {c.title for c in existing_courses}
+
+        new_course_data = [c for c in course_data if c.title not in existing_titles]
+        new_courses = [Course(**c.model_dump()) for c in new_course_data]
+        
+        if new_courses:
+            session.add_all(new_courses)
+            await session.flush()
+        
+        return existing_courses + new_courses
+    
+
 
     @classmethod
-    async def update_student_with_course(cls, session: AsyncSession, student_id: uuid.UUID, **values) -> Student:
-        course_data = values.pop("courses", None or [])
-
-        student = await session.get(Student, student_id, options=(selectinload(Student.courses),))
+    async def update_student_with_course(cls, session: AsyncSession, student_id: uuid.UUID, student_data: SStudentCreate) -> Student:
+        student = await cls.find_one_with_id(session=session, id=student_id)
         if not student:
             raise ValueError(f"Студент с id {student_id} не найден")
-
-        student.name = values.get("name", student.name)
-
-        student.courses.clear()
-        if course_data:
-            student.courses.extend([Course(**course) for course in course_data])
-
-        await session.commit()
+        
+        student.name = student_data.name
+        student.courses = await cls.find_or_create_courses(session, student_data.courses)
+        await session.flush()
         await session.refresh(student, attribute_names=["courses"])
         return student
     
@@ -149,30 +163,46 @@ class AuthorDAO(BaseDAO):
     model = Author
     
     @classmethod
-    async def create_author_with_books(cls, session: AsyncSession, author_data: dict) -> Author:
-        books_data = author_data.pop("books")
-        author = Author(**author_data, books=[Book(**book) for book in books_data])
+    async def create_author_with_books(cls, session: AsyncSession, author_data: SAuthorCreate) -> Author:
+        books_data = author_data.prepare_author_db_data()
+        author = Author(**books_data)
+
         session.add(author)
-        await session.commit()
+        await session.flush()
         await session.refresh(author, ["books"])
         return author
     
     @classmethod
-    async def find_one_or_none_by_id(cls, session: AsyncSession, **filter_by) -> Author:
+    async def find_one_or_none_by_id(cls, session: AsyncSession, id: uuid.UUID) -> Author:
         query = (
             select(cls.model)
             .options(joinedload(cls.model.books))
-            .filter_by(**filter_by)
+            .filter_by(id=id)
         )
         result = await session.execute(query)
         return result.unique().scalar()
-    
+
     @classmethod
-    async def find_all_authors(cls, session: AsyncSession, **filter_by) -> list[Author]:
+    async def find_all_authors(cls, session: AsyncSession, **filter_by) -> list[SAuthorRead]:
         query = (
             select(cls.model)
-            .options(joinedload(cls.model.books))
+            .options(selectinload(cls.model.books))
             .filter_by(**filter_by)
         )
         result = await session.execute(query)
         return list(result.unique().scalars().all())
+    
+    @classmethod
+    async def update_author_with_books(cls, session: AsyncSession, author_id: uuid.UUID, author_data: SAuthorCreate) -> Author:
+        author = await cls.find_one_or_none_by_id(session=session, id=author_id)
+        if not author:
+            raise ValueError(f"Автор с id {author_id} не найден")
+        
+        books_data = author_data.prepare_author_db_data()
+        author.name = books_data["name"]
+        author.books = books_data["books"]
+
+        session.add(author)
+        await session.flush()
+        await session.refresh(author, attribute_names=["books"])
+        return author        

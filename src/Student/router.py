@@ -16,7 +16,7 @@ router = APIRouter(tags=["student"])
 
 @router.post("/students")
 async def created_student(payload: SStudentCreate, session: AsyncSession = Depends(get_async_session)) -> SStudentRead:
-    student = await StudentDAO.add_student(session=session, student_data=payload.model_dump())
+    student = await StudentDAO.add_student(session=session, student_data=payload)
     return student
 
 @router.get("/students")
@@ -33,7 +33,7 @@ async def get_student_by_id(id: uuid.UUID, session: AsyncSession = Depends(get_a
 
 @router.put("/students/{student_id}")
 async def update_student(student_id: uuid.UUID, payload: SStudentCreate, session: AsyncSession = Depends(get_async_session)) -> SStudentRead:
-    student = await StudentDAO.update_student_with_course(session=session, student_id=student_id, **payload.model_dump())
+    student = await StudentDAO.update_student_with_course(session=session, student_id=student_id, student_data=payload)
     return student
     
 

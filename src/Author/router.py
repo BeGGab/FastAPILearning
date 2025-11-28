@@ -11,9 +11,16 @@ router = APIRouter(tags=["author"])
 
 
 
+
+@router.post("/authors")
+async def create_author(payload: SAuthorCreate, session: AsyncSession = Depends(get_async_session)) -> SAuthorRead:
+    author = await AuthorDAO.create_author_with_books(session=session, author_data=payload)
+    return author
+
+
 @router.get("/authors")
 async def find_all_authors(session: AsyncSession = Depends(get_async_session)) -> List[SAuthorRead]:
-    authors = await AuthorDAO.find_all(session=session)
+    authors = await AuthorDAO.find_all_authors(session=session)
     return authors
 
 
@@ -23,11 +30,10 @@ async def find_author_is_id(id: uuid.UUID, session: AsyncSession = Depends(get_a
     return author
 
 
-@router.post("/authors")
-async def create_author(authoradd: SAuthorCreate, session: AsyncSession = Depends(get_async_session)) -> SAuthorRead:
-    author = await AuthorDAO.create_author_with_books(session=session, author_data=authoradd.model_dump())
+@router.put("/authors/{id}")
+async def update_author(id: uuid.UUID, payload: SAuthorCreate, session: AsyncSession = Depends(get_async_session)) -> SAuthorRead:
+    author = await AuthorDAO.update_author_with_books(session=session, author_id=id, author_data=payload)
     return author
-
 
 @router.delete("/authors/{id}")
 async def delete_author(id: uuid.UUID, session: AsyncSession = Depends(get_async_session)) -> Dict[str, str]:
