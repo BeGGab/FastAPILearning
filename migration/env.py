@@ -1,10 +1,12 @@
 import asyncio
 from logging.config import fileConfig
-from src.db import Base
+from src.core.db import Base
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
-from src.dao.models import User,Profile, Author, Book, Student, Course, student_course
+from src.models.author_models import Author, Book
+from src.models.user_models import User, Profile
+from src.models.student_models import Student, Course, student_course
 from alembic import context
 
 # это объект конфигурации Alembic, который обеспечивает

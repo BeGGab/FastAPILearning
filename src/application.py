@@ -2,9 +2,9 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from src.user.router import router as user_router
-from src.author.router import router as author_router
-from src.student.router import router as student_router
+from src.routers.v1.user_router import router as user_router
+from src.routers.v1.author_router import router as author_router
+from src.routers.v1.student_router import router as student_router
 
 
 
