@@ -4,8 +4,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Dict, List
 from sqlalchemy.orm import selectinload
 
+from src.core.enums import Status
 from src.schemas.student_schemas import SStudentCreate, SStudentRead
-from src.service.student_service import StudentDAO
+from src.service.student_service import (
+    add_student,
+    find_all_students,
+    find_one_with_id,
+    update_student_with_course,
+    delete_student,
+)
+
 
 from src.core.db import get_async_session
 
@@ -17,7 +25,7 @@ router = APIRouter(tags=["student"])
 async def created_student(
     payload: SStudentCreate, session: AsyncSession = Depends(get_async_session)
 ) -> SStudentRead:
-    student = await StudentDAO.add_student(session=session, student_data=payload.model_dump())
+    student = await add_student(session=session, student_data=payload)
     return student
 
 
@@ -25,7 +33,7 @@ async def created_student(
 async def get_all_students(
     session: AsyncSession = Depends(get_async_session),
 ) -> List[SStudentRead]:
-    students = await StudentDAO.find_all_students(session=session)
+    students = await find_all_students(session=session)
     return students
 
 
@@ -33,7 +41,7 @@ async def get_all_students(
 async def get_student_by_id(
     id: uuid.UUID, session: AsyncSession = Depends(get_async_session)
 ) -> SStudentRead:
-    student = await StudentDAO.find_one_with_id(session=session, id=id)
+    student = await find_one_with_id(session=session, id=id)
     return student
 
 
@@ -43,15 +51,18 @@ async def update_student(
     payload: SStudentCreate,
     session: AsyncSession = Depends(get_async_session),
 ) -> SStudentRead:
-    student = await StudentDAO.update_student_with_course(
+    student = await update_student_with_course(
         session=session, student_id=student_id, student_data=payload
     )
     return student
 
 
 @router.delete("/students/{id}")
-async def dell_student(
+async def delete_students(
     id: uuid.UUID, session: AsyncSession = Depends(get_async_session)
 ):
-    student = await StudentDAO.delete(session=session, id=id)
-    return {"message": f"Студент удален с id: {id} "}
+    student = await delete_student(session=session, student_id=id)
+    return Status.DELETED
+
+
+

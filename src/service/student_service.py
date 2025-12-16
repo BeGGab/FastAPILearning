@@ -1,4 +1,5 @@
 import uuid
+import logger
 from typing import List
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
@@ -7,87 +8,81 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.schemas.student_schemas import SStudentCreate, SCourseCreate
 from src.models.student_models import Student, Course, student_course
+from src.service.courses_service import (find_existing_courses, create_new_courses, find_or_create_courses)
 from src.dao.base import BaseDAO
 
 
-class StudentDAO(BaseDAO):
-    model = Student
-        
+async def add_student(session: AsyncSession, student_data: SStudentCreate) -> Student:
+    try:
+        student_dict = student_data.model_dump()
 
-
-    @classmethod
-    async def add_student(
-        cls, session: AsyncSession, student_data: SStudentCreate) -> Student:
-        db_data = student_data.prepare_db_data()
-        student = Student(**db_data)
-        student.courses = await cls.find_or_create_courses(session, student_data.courses)
+        student_dict.pop("courses", None)
+        student = Student(**student_dict)
+        student.courses = await find_or_create_courses(session, student_data.courses)
 
         session.add(student)
+        logger.logger.info(f"Запись {student.name} успешно добавлена в базу данных")
         await session.flush()
         await session.refresh(student, ["courses"])
         return student
+    except SQLAlchemyError as e:
+        logger.logger.error(f"Ошибка при добавлении записи в базу данных: {e}")
+        raise
 
-    @classmethod
-    async def find_all_students(
-        cls,session: AsyncSession, **filter_by) -> List[Student]:
+
+async def find_all_students(session: AsyncSession, **filter_by) -> List[Student]:
+    try:
         query = (
-            select(cls.model)
-            .options(joinedload(cls.model.courses))
-            .filter_by(**filter_by)
+            select(Student).options(joinedload(Student.courses)).filter_by(**filter_by)
         )
         result = await session.execute(query)
-        return list(result.unique().scalars().all())
+        record = list(result.unique().scalars().all())
+        logger.logger.info(f"Записи {len(record)} успешно найдены в базе данных")
+        return list(record)
+    except SQLAlchemyError as e:
+        logger.logger.error(f"Ошибка при поиске записей в базе данных: {e}")
+        raise
 
-    @classmethod
-    async def find_one_with_id(cls, session: AsyncSession, id: uuid.UUID) -> Student:
-        query = (
-            select(cls.model).options(joinedload(cls.model.courses)).filter_by(id=id)
-        )
+
+async def find_one_with_id(session: AsyncSession, id: uuid.UUID) -> Student:
+    try:
+        query = select(Student).options(joinedload(Student.courses)).filter_by(id=id)
         result = await session.execute(query)
-        return result.scalar()
+        record = result.scalar()
+        logger.logger.info(f"Запись {record.name} успешно найдена в базе данных")
+        return record
+    except SQLAlchemyError as e:
+        logger.logger.error(f"Ошибка при поиске записи в базе данных: {e}")
+        raise
 
-    @classmethod
-    async def _find_existing_courses(
-        cls, session: AsyncSession, course_titles: list[str]
-    ) -> list[Course]:
-        if not course_titles:
-            return []
-        query = select(Course).filter(Course.title.in_(course_titles))
-        result = await session.execute(query)
-        return list(result.scalars().all())
 
-    @classmethod
-    async def _create_new_courses(
-        cls, session: AsyncSession, new_course_data: list[SCourseCreate]
-    ) -> list[Course]:
-        if not new_course_data:
-            return []
-        new_courses = [Course(**c.model_dump()) for c in new_course_data]
-        session.add_all(new_courses)
-        await session.flush()
-        return new_courses
-
-    @classmethod
-    async def find_or_create_courses(
-        cls, session: AsyncSession, course_data: List[SCourseCreate]) -> List[Course]:
-        course_titles = [c.title for c in course_data]
-        existing_courses = await cls._find_existing_courses(session, course_titles)
-        existing_titles = {c.title for c in existing_courses}
-        new_course_data = [c for c in course_data if c.title not in existing_titles]
-        new_courses = await cls._create_new_courses(session, new_course_data)
-        return existing_courses + new_courses
-
-    @classmethod
-    async def update_student_with_course(
-        cls, session: AsyncSession, student_id: uuid.UUID, student_data: SStudentCreate
-    ) -> Student:
-        student = await cls.find_one_with_id(session=session, id=student_id)
-        if not student:
-            raise ValueError(f"Студент с id {student_id} не найден")
-
+async def update_student_with_course(
+    session: AsyncSession, student_id: uuid.UUID, student_data: SStudentCreate
+) -> Student:
+    student = await find_one_with_id(session=session, id=student_id)
+    logger.logger.info(f"Запись {student.name} успешно найдена в базе данных")
+    if not student:
+        raise ValueError(f"Студент с id {student_id} не найден")
+    try:
         student.name = student_data.name
-        student.courses = await cls.find_or_create_courses(
-            session, student_data.courses
-        )
+        student.courses = await find_or_create_courses(session, student_data.courses)
+        logger.logger.info(f"Запись {student.name} успешно обновлена в базе данных")
         await session.refresh(student, attribute_names=["courses"])
         return student
+    except SQLAlchemyError as e:
+        logger.logger.error(f"Ошибка при обновлении записи в базе данных: {e}")
+        raise
+
+
+async def delete_student(session: AsyncSession, student_id: uuid.UUID):
+    student = await find_one_with_id(session, id=student_id)
+    logger.logger.info(f"Запись {student.name} успешно найдена в базе данных")
+    if not student:
+        raise ValueError(f"Студент с id {student_id} не найден")
+    try:
+        await session.delete(student)
+        logger.logger.info(f"Запись {student.name} успешно удалена из базы данных")
+        return student
+    except SQLAlchemyError as e:
+        logger.logger.error(f"Ошибка при удалении записи из базы данных: {e}")
+        raise

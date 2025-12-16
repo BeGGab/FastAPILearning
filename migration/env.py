@@ -4,9 +4,13 @@ from src.core.db import Base
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
-from src.models.author_models import Author, Book
-from src.models.user_models import User, Profile
-from src.models.student_models import Student, Course, student_course
+from src.models.author_models import Author
+from src.models.user_models import User
+from src.models.student_models import Student, student_course\
+from src.models.courses_models import Course
+from src.models.books_models import Books
+from src.models.profile_models import Profile
+
 from alembic import context
 
 # это объект конфигурации Alembic, который обеспечивает
