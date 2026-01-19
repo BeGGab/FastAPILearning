@@ -1,0 +1,363 @@
+2025-12-22 16:33:55,879 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 16:33:55,893 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 16:47:20,788 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 16:47:20,800 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 16:48:17,085 - src.service.user_service - INFO - user_service:31 - Запись User_5d56c208 успешно добавлена в базу данных
+2025-12-22 16:49:07,769 - src.service.author_service - INFO - author_service:28 - Запись string успешно добавлена в базу данных
+2025-12-22 16:49:54,888 - src.service.author_service - INFO - author_service:56 - Записи 5 успешно найдены в базе данных
+2025-12-22 16:50:02,653 - src.service.author_service - INFO - author_service:42 - Запись string успешно найдена в базе данных
+2025-12-22 16:50:18,860 - src.service.author_service - INFO - author_service:42 - Запись string успешно найдена в базе данных
+2025-12-22 16:50:18,867 - src.service.author_service - INFO - author_service:67 - Запись string успешно найдена в базе данных
+2025-12-22 16:50:18,870 - src.service.author_service - INFO - author_service:77 - Запись Alex Grin успешно обновлена в базе данных
+2025-12-22 16:50:38,146 - src.service.author_service - INFO - author_service:42 - Запись Alex Grin успешно найдена в базе данных
+2025-12-22 16:50:38,147 - src.service.author_service - INFO - author_service:87 - Запись Alex Grin успешно найдена в базе данных
+2025-12-22 16:50:38,148 - src.service.author_service - INFO - author_service:92 - Запись Alex Grin успешно удалена из базы данных
+2025-12-22 17:03:35,690 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 17:03:35,703 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 17:04:12,785 - src.service.courses_service - INFO - courses_service:24 - Записи 1 успешно найдены в базе данных
+2025-12-22 17:04:12,786 - src.service.courses_service - INFO - courses_service:55 - Записи 0 успешно созданы в базе данных
+2025-12-22 17:04:12,788 - src.service.student_service - INFO - student_service:31 - Запись string успешно добавлена в базу данных
+2025-12-22 17:04:19,262 - src.service.student_service - INFO - student_service:47 - Записи 4 успешно найдены в базе данных
+2025-12-22 17:04:20,609 - src.service.student_service - INFO - student_service:47 - Записи 4 успешно найдены в базе данных
+2025-12-22 19:32:44,263 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:32:44,285 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:33:37,544 - src.service.user_service - INFO - user_service:31 - Запись User_7c02c69c успешно добавлена в базу данных
+2025-12-22 19:34:47,936 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:34:47,951 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:34:50,241 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:34:50,253 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:34:58,826 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:34:58,839 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:35:03,469 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:35:03,482 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:38:01,414 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:38:01,427 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:42:45,307 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:42:45,320 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:44:30,474 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:44:30,486 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:44:58,978 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:44:58,991 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:45:56,990 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:45:57,001 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:46:06,919 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:46:06,932 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:46:17,505 - src.service.user_service - INFO - user_service:59 - Записи 1 успешно найдены в базе данных
+2025-12-22 19:46:29,943 - src.service.user_service - INFO - user_service:45 - Запись {'id': UUID('40e6ac79-5838-4bff-a0fc-e9dc3d79a0eb')} успешно найдена в базе данных
+2025-12-22 19:46:29,944 - src.service.user_service - INFO - user_service:91 - Запись User_7c02c69c успешно найдена в базе данных
+2025-12-22 19:46:29,945 - src.service.user_service - INFO - user_service:96 - Запись User_7c02c69c успешно удалена из базы данных
+2025-12-22 19:46:52,412 - src.service.user_service - INFO - user_service:31 - Запись User_27b9fec5 успешно добавлена в базу данных
+2025-12-22 19:47:44,927 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:47:44,939 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:47:59,924 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:47:59,944 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:48:02,502 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:48:02,519 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:49:00,262 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:49:00,274 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:49:11,525 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:49:11,537 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:49:23,023 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:49:23,035 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:49:37,930 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:49:37,942 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:49:40,560 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:49:40,575 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:49:44,871 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:49:44,883 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:49:47,258 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:49:47,271 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:50:44,593 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:50:44,605 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:50:56,427 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:50:56,455 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:51:04,040 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:51:04,053 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:51:06,441 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:51:06,458 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:51:15,921 - src.service.user_service - INFO - user_service:45 - Запись {'id': UUID('6102885e-9070-4983-b9cf-6aa1ad5716da')} успешно найдена в базе данных
+2025-12-22 19:51:15,922 - src.service.user_service - INFO - user_service:91 - Запись User_27b9fec5 успешно найдена в базе данных
+2025-12-22 19:51:15,923 - src.service.user_service - INFO - user_service:96 - Запись User_27b9fec5 успешно удалена из базы данных
+2025-12-22 19:51:36,742 - src.service.user_service - INFO - user_service:31 - Запись User_74a85727 успешно добавлена в базу данных
+2025-12-22 19:53:38,322 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:53:38,341 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:54:04,291 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:54:04,303 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:54:23,090 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:54:23,102 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:54:25,656 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:54:25,668 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:54:36,990 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:54:37,002 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:55:05,326 - src.service.user_service - INFO - user_service:31 - Запись User_2730cfcc успешно добавлена в базу данных
+2025-12-22 19:55:22,030 - src.service.user_service - INFO - user_service:45 - Запись {'id': UUID('2e721d9c-a4cf-47aa-bb68-0b68b19b68e7')} успешно найдена в базе данных
+2025-12-22 19:55:22,031 - src.service.user_service - INFO - user_service:72 - Запись User_2730cfcc успешно найдена в базе данных
+2025-12-22 19:56:15,994 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:56:16,005 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:56:53,721 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:56:53,735 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:56:55,861 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:56:55,874 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:57:12,298 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:57:12,337 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:59:02,579 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:59:02,593 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:59:06,483 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:59:06,497 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:59:49,306 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:59:49,317 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 19:59:53,715 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 19:59:53,738 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:00:13,327 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:00:13,339 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:00:51,348 - src.service.user_service - INFO - user_service:45 - Запись {'id': UUID('2e721d9c-a4cf-47aa-bb68-0b68b19b68e7')} успешно найдена в базе данных
+2025-12-22 20:00:51,349 - src.service.user_service - INFO - user_service:72 - Запись User_2730cfcc успешно найдена в базе данных
+2025-12-22 20:00:51,350 - src.service.user_service - INFO - user_service:85 - Запись dict_items([('username', 'Alex'), ('email', 'user@example.com')]) успешно обновлена в базе данных
+2025-12-22 20:01:45,903 - src.service.user_service - INFO - user_service:45 - Запись {'id': UUID('2e721d9c-a4cf-47aa-bb68-0b68b19b68e7')} успешно найдена в базе данных
+2025-12-22 20:01:45,905 - src.service.user_service - INFO - user_service:72 - Запись Alex успешно найдена в базе данных
+2025-12-22 20:01:45,906 - src.service.user_service - INFO - user_service:85 - Запись dict_items([('username', 'Alex'), ('email', 'magw710i@mail.ru')]) успешно обновлена в базе данных
+2025-12-22 20:02:05,326 - src.service.user_service - INFO - user_service:45 - Запись {'id': UUID('2e721d9c-a4cf-47aa-bb68-0b68b19b68e7')} успешно найдена в базе данных
+2025-12-22 20:02:05,328 - src.service.user_service - INFO - user_service:72 - Запись Alex успешно найдена в базе данных
+2025-12-22 20:02:05,329 - src.service.user_service - INFO - user_service:85 - Запись dict_items([('username', 'BegaN'), ('email', 'magw710i@mail.ru')]) успешно обновлена в базе данных
+2025-12-22 20:03:09,319 - src.service.user_service - INFO - user_service:45 - Запись {'id': UUID('2e721d9c-a4cf-47aa-bb68-0b68b19b68e7')} успешно найдена в базе данных
+2025-12-22 20:03:09,320 - src.service.user_service - INFO - user_service:72 - Запись BegaN успешно найдена в базе данных
+2025-12-22 20:03:09,321 - src.service.user_service - INFO - user_service:85 - Запись dict_items([('username', 'BegaN'), ('email', 'magw710i@mail.ru')]) успешно обновлена в базе данных
+2025-12-22 20:10:08,521 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:10:08,537 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:10:28,040 - src.service.user_service - INFO - user_service:31 - Запись User_6af5c1ec успешно добавлена в базу данных
+2025-12-22 20:11:10,649 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:11:10,662 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:11:12,928 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:11:12,940 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:11:19,733 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:11:19,747 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:11:27,995 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:11:28,009 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:11:35,408 - src.service.user_service - INFO - user_service:31 - Запись User_005b96f4 успешно добавлена в базу данных
+2025-12-22 20:11:51,851 - src.service.user_service - INFO - user_service:31 - Запись User_c9dce584 успешно добавлена в базу данных
+2025-12-22 20:13:25,369 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:13:25,381 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:14:28,502 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:14:28,514 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:14:30,775 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:14:30,791 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:14:40,233 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:14:40,246 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:14:42,631 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:14:42,645 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:14:45,011 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:14:45,026 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:14:48,692 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:14:48,705 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:14:56,905 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:14:56,917 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:14:56,945 - src.service.user_service - INFO - user_service:31 - Запись User_2d29837c успешно добавлена в базу данных
+2025-12-22 20:15:46,221 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:15:46,234 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:16:23,661 - src.service.user_service - INFO - user_service:31 - Запись User_87af8400 успешно добавлена в базу данных
+2025-12-22 20:16:56,418 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:16:56,436 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:17:03,123 - src.application - INFO - application:39 - Запуск приложения
+2025-12-22 20:17:03,136 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-22 20:17:16,634 - src.service.user_service - INFO - user_service:31 - Запись User_2bd2990e успешно добавлена в базу данных
+2025-12-26 15:58:43,342 - src.application - INFO - application:39 - Запуск приложения
+2025-12-26 15:58:43,355 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-26 15:59:48,820 - src.service.user_service - INFO - user_service:31 - Запись User_1ef136aa успешно добавлена в базу данных
+2025-12-26 16:06:09,611 - src.application - INFO - application:39 - Запуск приложения
+2025-12-26 16:06:09,628 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-26 16:08:22,030 - src.application - INFO - application:39 - Запуск приложения
+2025-12-26 16:08:22,044 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-26 16:24:58,448 - src.application - INFO - application:39 - Запуск приложения
+2025-12-26 16:24:58,460 - src.application - INFO - application:43 - Приложение остановлено
+2025-12-26 16:25:48,001 - src.service.user_service - INFO - user_service:30 - Запись User_287e859d успешно добавлена в базу данных
+2025-12-26 16:26:23,961 - src.service.user_service - INFO - user_service:44 - Запись {'id': UUID('ecff6f94-cd9e-401d-ade4-16ec3cdc800e')} успешно найдена в базе данных
+2025-12-26 16:26:23,962 - src.service.user_service - INFO - user_service:71 - Запись User_287e859d успешно найдена в базе данных
+2025-12-26 16:26:23,963 - src.service.user_service - INFO - user_service:85 - Запись dict_items([('username', 'BegaN'), ('email', 'user@example.com')]) успешно обновлена в базе данных
+2026-01-06 15:33:05,685 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:33:05,703 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:35:41,455 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:35:41,467 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:35:44,036 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:35:44,049 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:38:25,715 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:38:25,728 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:39:14,135 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:39:14,147 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:43:58,931 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:43:58,945 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:44:08,880 - src.service.user_service - INFO - user_service:30 - Запись User_c3b13d7d успешно добавлена в базу данных
+2026-01-06 15:44:57,666 - src.service.user_service - INFO - user_service:44 - Запись {'id': UUID('ae73cd47-9789-4730-838d-d989c5da5b13')} успешно найдена в базе данных
+2026-01-06 15:44:57,667 - src.service.user_service - INFO - user_service:71 - Запись User_c3b13d7d успешно найдена в базе данных
+2026-01-06 15:44:57,668 - src.service.user_service - INFO - user_service:85 - Запись dict_items([('username', 'BegaN'), ('email', 'user@example.com')]) успешно обновлена в базе данных
+2026-01-06 15:45:44,361 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:45:44,373 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:45:53,277 - src.service.user_service - INFO - user_service:43 - Запись {'id': UUID('ae73cd47-9789-4730-838d-d989c5da5b13')} успешно найдена в базе данных
+2026-01-06 15:45:53,278 - src.service.user_service - INFO - user_service:94 - Запись BegaN успешно найдена в базе данных
+2026-01-06 15:45:53,279 - src.service.user_service - INFO - user_service:99 - Запись BegaN успешно удалена из базы данных
+2026-01-06 15:46:08,585 - src.service.user_service - INFO - user_service:29 - Запись User_ddc72f2b успешно добавлена в базу данных
+2026-01-06 15:51:35,555 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:51:35,571 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:51:51,880 - src.service.user_service - INFO - user_service:29 - Запись User_2a45f3a2 успешно добавлена в базу данных
+2026-01-06 15:52:15,066 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:52:15,078 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:52:38,219 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:52:38,230 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:55:22,142 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:55:22,154 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:55:49,826 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:55:49,838 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:55:55,425 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:55:55,441 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:55:57,676 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:55:57,689 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:56:08,633 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:56:08,645 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:56:40,916 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:56:40,929 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:56:43,304 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:56:43,316 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 15:57:36,191 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 15:57:36,207 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:33:09,520 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:33:09,533 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:33:22,333 - src.service.user_service - INFO - user_service:57 - Записи 0 успешно найдены в базе данных
+2026-01-06 16:33:54,677 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:33:54,691 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:34:01,767 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:34:01,780 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:34:08,840 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:34:08,854 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:34:15,982 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:34:15,997 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:34:21,959 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:34:21,971 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:34:46,182 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:34:46,195 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:34:48,888 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:34:48,907 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:34:51,548 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:34:51,561 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:34:53,746 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:34:53,760 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:36:21,122 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:36:21,135 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:36:39,143 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:36:39,155 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:36:50,190 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:36:50,203 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:36:55,465 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:36:55,479 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:37:48,837 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:37:48,849 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:37:55,813 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:37:55,827 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:37:58,315 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:37:58,332 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:41:53,629 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:41:53,643 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:43:09,584 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:43:09,599 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:43:25,134 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:43:25,147 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:43:30,526 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:43:30,542 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:43:35,721 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:43:35,733 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:44:40,142 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:44:40,155 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:45:05,547 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:45:05,569 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:45:07,847 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:45:07,864 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:46:35,020 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:46:35,032 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:50:30,518 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:50:30,532 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:50:49,531 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:50:49,543 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:53:02,973 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:53:02,986 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:54:29,151 - src.application - INFO - application:39 - Запуск приложения
+2026-01-06 16:54:29,206 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-06 16:55:03,292 - src.service.user_service - INFO - user_service:30 - Запись User_d94c0f4a успешно добавлена в базу данных
+2026-01-15 17:45:57,000 - src.application - INFO - application:39 - Запуск приложения
+2026-01-15 17:45:57,044 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-15 17:46:09,219 - src.service.user_service - INFO - user_service:57 - Записи 1 успешно найдены в базе данных
+2026-01-15 17:46:28,244 - src.service.user_service - INFO - user_service:45 - Запись {'id': UUID('4bb0e463-b1bd-4906-bf95-a82d4c5919b1')} успешно найдена в базе данных
+2026-01-15 17:46:28,258 - src.service.user_service - INFO - user_service:91 - Запись User_d94c0f4a успешно найдена в базе данных
+2026-01-15 17:46:28,259 - src.service.user_service - INFO - user_service:96 - Запись User_d94c0f4a успешно удалена из базы данных
+2026-01-15 17:46:39,801 - src.service.user_service - INFO - user_service:32 - Запись User_e254ffac успешно добавлена в базу данных
+2026-01-15 17:47:41,676 - src.service.user_service - INFO - user_service:57 - Записи 1 успешно найдены в базе данных
+2026-01-15 17:47:53,500 - src.service.user_service - INFO - user_service:45 - Запись {'id': UUID('548a6b9c-6721-4604-9e53-7de832e4100f')} успешно найдена в базе данных
+2026-01-15 17:47:53,501 - src.service.user_service - INFO - user_service:71 - Найден пользователь: User_e254ffac
+2026-01-15 17:47:53,502 - src.service.user_service - INFO - user_service:76 - Данные пользователя BegaN обновлены
+2026-01-15 20:22:22,627 - src.application - INFO - application:39 - Запуск приложения
+2026-01-15 20:22:22,641 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-15 20:22:34,653 - src.service.author_service - INFO - author_service:26 - Автор Author_d3e2e581 создан с 1 книгами
+2026-01-15 20:23:35,681 - src.service.author_service - INFO - author_service:43 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-15 20:23:35,682 - src.service.author_service - INFO - author_service:68 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-15 20:24:31,694 - src.application - INFO - application:39 - Запуск приложения
+2026-01-15 20:24:31,706 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-15 20:25:00,360 - src.application - INFO - application:39 - Запуск приложения
+2026-01-15 20:25:00,371 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-15 20:25:16,732 - src.service.author_service - INFO - author_service:57 - Записи 5 успешно найдены в базе данных
+2026-01-15 20:25:38,584 - src.service.author_service - INFO - author_service:43 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-15 20:25:38,585 - src.service.author_service - INFO - author_service:68 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-15 20:26:19,873 - src.application - INFO - application:39 - Запуск приложения
+2026-01-15 20:26:19,885 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-15 20:26:38,420 - src.service.author_service - INFO - author_service:43 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-15 20:26:38,421 - src.service.author_service - INFO - author_service:68 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-15 20:33:40,870 - src.application - INFO - application:39 - Запуск приложения
+2026-01-15 20:33:40,882 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-15 20:33:46,077 - src.service.author_service - INFO - author_service:43 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-15 20:33:46,078 - src.service.author_service - INFO - author_service:68 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 14:48:01,340 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 14:48:01,353 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 14:48:22,201 - src.service.author_service - INFO - author_service:57 - Записи 5 успешно найдены в базе данных
+2026-01-19 14:49:03,511 - src.service.author_service - INFO - author_service:43 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 14:49:03,512 - src.service.author_service - INFO - author_service:68 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 14:50:10,390 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 14:50:10,402 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 14:50:27,928 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 14:50:27,947 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 14:50:31,788 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 14:50:31,800 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 14:51:18,657 - src.service.author_service - INFO - author_service:43 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 14:51:18,657 - src.service.author_service - INFO - author_service:68 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 14:53:50,949 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 14:53:50,963 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 14:54:21,647 - src.service.author_service - INFO - author_service:43 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 14:54:21,648 - src.service.author_service - INFO - author_service:68 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 14:55:34,107 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 14:55:34,119 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 14:55:44,239 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 14:55:44,252 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 14:56:11,433 - src.service.author_service - INFO - author_service:43 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 14:56:11,434 - src.service.author_service - INFO - author_service:68 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 14:57:26,535 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 14:57:26,550 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 14:57:30,167 - src.service.author_service - INFO - author_service:43 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 14:57:30,168 - src.service.author_service - INFO - author_service:68 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 14:57:43,268 - src.service.author_service - INFO - author_service:43 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 14:57:43,269 - src.service.author_service - INFO - author_service:68 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 15:02:43,487 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 15:02:43,500 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 15:02:46,075 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 15:02:46,092 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 15:03:05,768 - src.service.author_service - INFO - author_service:43 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 15:03:05,769 - src.service.author_service - INFO - author_service:68 - Запись Author_d3e2e581 успешно найдена в базе данных
+2026-01-19 15:03:05,772 - src.service.author_service - INFO - author_service:75 - Запись Alex Grinch успешно обновлена в базе данных
+2026-01-19 15:04:25,491 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 15:04:25,504 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 15:05:53,304 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 15:05:53,318 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 15:05:57,407 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 15:05:57,421 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 15:26:28,347 - src.application - INFO - application:39 - Запуск приложения
+2026-01-19 15:26:28,362 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-19 15:26:42,396 - src.service.student_service - INFO - student_service:47 - Записи 4 успешно найдены в базе данных
+2026-01-19 15:27:12,224 - src.service.student_service - INFO - student_service:59 - Запись string успешно найдена в базе данных
+2026-01-19 15:27:12,226 - src.service.student_service - INFO - student_service:70 - Запись string успешно найдена в базе данных
+2026-01-19 15:27:12,237 - src.service.courses_service - INFO - courses_service:24 - Записи 1 успешно найдены в базе данных
+2026-01-19 15:27:12,238 - src.service.courses_service - INFO - courses_service:55 - Записи 0 успешно созданы в базе данных
+2026-01-19 15:27:12,239 - src.service.student_service - INFO - student_service:76 - Запись djfgklfjdklgjldfkj успешно обновлена в базе данных
