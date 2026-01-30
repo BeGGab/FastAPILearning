@@ -361,3 +361,1281 @@
 2026-01-19 15:27:12,237 - src.service.courses_service - INFO - courses_service:24 - Записи 1 успешно найдены в базе данных
 2026-01-19 15:27:12,238 - src.service.courses_service - INFO - courses_service:55 - Записи 0 успешно созданы в базе данных
 2026-01-19 15:27:12,239 - src.service.student_service - INFO - student_service:76 - Запись djfgklfjdklgjldfkj успешно обновлена в базе данных
+2026-01-21 19:15:46,493 - src.application - INFO - application:39 - Запуск приложения
+2026-01-21 19:15:46,505 - src.application - INFO - application:43 - Приложение остановлено
+2026-01-21 19:15:59,914 - src.service.student_service - INFO - student_service:48 - Записи 4 успешно найдены в базе данных
+2026-01-21 19:16:24,463 - src.service.author_service - INFO - author_service:60 - Записи 5 успешно найдены в базе данных
+2026-01-21 19:16:39,128 - src.service.author_service - INFO - author_service:46 - Запись Alex Grinch успешно найдена в базе данных
+2026-01-21 19:16:39,133 - src.service.author_service - INFO - author_service:76 - Запись Author_3bd70995 успешно обновлена в базе данных
+2026-01-21 19:17:43,658 - src.service.author_service - INFO - author_service:46 - Запись Author_3bd70995 успешно найдена в базе данных
+2026-01-21 19:17:43,660 - src.service.author_service - INFO - author_service:76 - Запись Alex Grinch успешно обновлена в базе данных
+2026-01-21 19:45:06,401 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 19:45:06,418 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 19:45:21,613 - src.service.user_service - INFO - user_service:60 - Записи 1 успешно найдены в базе данных
+2026-01-21 19:45:34,613 - src.service.user_service - INFO - user_service:48 - Запись {'id': UUID('548a6b9c-6721-4604-9e53-7de832e4100f')} успешно найдена в базе данных
+2026-01-21 19:45:34,614 - src.service.user_service - INFO - user_service:93 - Запись BegaN успешно удалена из базы данных
+2026-01-21 19:45:42,479 - src.service.user_service - INFO - user_service:32 - Запись User_43675f04 успешно добавлена в базу данных
+2026-01-21 19:46:12,871 - src.service.user_service - INFO - user_service:32 - Запись User_3abee2cf успешно добавлена в базу данных
+2026-01-21 19:46:12,882 - src.service.user_service - ERROR - user_service:37 - Ошибка при добавлении записи в базу данных: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "profiles_phone_number_key"
+DETAIL:  Key (phone_number)=(+79999999999) already exists.
+[SQL: INSERT INTO profiles (id, first_name, last_name, phone_number, bio, created_at, updated_at, user_id) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::TIMESTAMP WITHOUT TIME ZONE, $7::TIMESTAMP WITHOUT TIME ZONE, $8::UUID)]
+[parameters: (UUID('b2922a3e-cb6b-4ec8-8ead-819316bb513b'), 'ывавыа', 'ываыв', '+79999999999', 'string', datetime.datetime(2026, 1, 21, 16, 46, 12, 875800), None, UUID('89918563-0d55-4baa-b17c-a7008b2e8515'))]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-01-21 19:46:30,678 - src.service.user_service - INFO - user_service:60 - Записи 1 успешно найдены в базе данных
+2026-01-21 19:46:40,349 - src.service.user_service - INFO - user_service:48 - Запись {'id': UUID('ae4e07b2-83e0-4bf6-89e7-89d1c560a225')} успешно найдена в базе данных
+2026-01-21 19:46:40,350 - src.service.user_service - INFO - user_service:93 - Запись User_43675f04 успешно удалена из базы данных
+2026-01-21 19:47:08,470 - src.service.user_service - INFO - user_service:32 - Запись User_a475148c успешно добавлена в базу данных
+2026-01-21 19:47:42,285 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 19:47:42,299 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 19:47:47,926 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 19:47:47,941 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 19:48:06,761 - src.service.user_service - INFO - user_service:32 - Запись User_354871db успешно добавлена в базу данных
+2026-01-21 19:48:06,949 - src.service.user_service - ERROR - user_service:37 - Ошибка при добавлении записи в базу данных: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(user@example.com) already exists.
+[SQL: INSERT INTO users (id, username, email, created_at, updated_at) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::TIMESTAMP WITHOUT TIME ZONE, $5::TIMESTAMP WITHOUT TIME ZONE)]
+[parameters: (UUID('b7713bec-5467-45a2-94d5-20731d408df3'), 'User_354871db', 'user@example.com', datetime.datetime(2026, 1, 21, 16, 48, 6, 941213), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-01-21 19:49:12,132 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 19:49:12,146 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 19:49:22,315 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 19:49:22,329 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 19:49:52,594 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 19:49:52,608 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 19:49:58,502 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 19:49:58,519 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 19:50:01,305 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 19:50:01,319 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 19:50:04,405 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 19:50:04,455 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 19:50:06,963 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 19:50:06,976 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 19:50:11,783 - src.service.user_service - INFO - user_service:32 - Запись User_bd5a0e40 успешно добавлена в базу данных
+2026-01-21 19:50:11,954 - src.service.user_service - ERROR - user_service:37 - Ошибка при добавлении записи в базу данных: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(user@example.com) already exists.
+[SQL: INSERT INTO users (id, username, email, created_at, updated_at) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::TIMESTAMP WITHOUT TIME ZONE, $5::TIMESTAMP WITHOUT TIME ZONE)]
+[parameters: (UUID('c7b44d2f-48a3-441b-b408-4cf739daf187'), 'User_bd5a0e40', 'user@example.com', datetime.datetime(2026, 1, 21, 16, 50, 11, 947571), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-01-21 19:50:39,430 - src.service.user_service - INFO - user_service:60 - Записи 1 успешно найдены в базе данных
+2026-01-21 19:50:48,864 - src.service.user_service - INFO - user_service:32 - Запись User_581129a3 успешно добавлена в базу данных
+2026-01-21 19:50:48,872 - src.service.user_service - ERROR - user_service:37 - Ошибка при добавлении записи в базу данных: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(user@example.com) already exists.
+[SQL: INSERT INTO users (id, username, email, created_at, updated_at) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::TIMESTAMP WITHOUT TIME ZONE, $5::TIMESTAMP WITHOUT TIME ZONE)]
+[parameters: (UUID('1e738846-3269-4ae9-b056-272585100631'), 'User_581129a3', 'user@example.com', datetime.datetime(2026, 1, 21, 16, 50, 48, 866086), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-01-21 19:56:15,246 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 19:56:15,260 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 19:56:28,710 - src.service.user_service - INFO - user_service:32 - Запись User_b566c45f успешно добавлена в базу данных
+2026-01-21 19:56:28,847 - src.service.user_service - ERROR - user_service:37 - Ошибка при добавлении записи в базу данных: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(user@example.com) already exists.
+[SQL: INSERT INTO users (id, username, email, created_at, updated_at) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::TIMESTAMP WITHOUT TIME ZONE, $5::TIMESTAMP WITHOUT TIME ZONE)]
+[parameters: (UUID('998d6125-bb97-4732-b551-dd2d57e1f8ef'), 'User_b566c45f', 'user@example.com', datetime.datetime(2026, 1, 21, 16, 56, 28, 840960), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-01-21 19:56:37,808 - src.service.user_service - INFO - user_service:60 - Записи 1 успешно найдены в базе данных
+2026-01-21 19:56:51,269 - src.service.user_service - INFO - user_service:48 - Запись {'id': UUID('e7d6f440-9c96-4990-9997-eeeba2e5e397')} успешно найдена в базе данных
+2026-01-21 19:56:51,270 - src.service.user_service - INFO - user_service:93 - Запись User_a475148c успешно удалена из базы данных
+2026-01-21 19:56:52,197 - src.application - ERROR - application:26 - Ошибка проекта: Пользователь с параметрами {'id': UUID('e7d6f440-9c96-4990-9997-eeeba2e5e397')} не найден
+2026-01-21 19:57:05,274 - src.service.user_service - INFO - user_service:32 - Запись User_b27d5da9 успешно добавлена в базу данных
+2026-01-21 19:57:11,479 - src.service.user_service - INFO - user_service:32 - Запись User_9c268507 успешно добавлена в базу данных
+2026-01-21 19:57:11,486 - src.service.user_service - ERROR - user_service:37 - Ошибка при добавлении записи в базу данных: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(user@example.com) already exists.
+[SQL: INSERT INTO users (id, username, email, created_at, updated_at) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::TIMESTAMP WITHOUT TIME ZONE, $5::TIMESTAMP WITHOUT TIME ZONE)]
+[parameters: (UUID('faa6ceaf-1b9f-4bc1-a209-13c85a4c002d'), 'User_9c268507', 'user@example.com', datetime.datetime(2026, 1, 21, 16, 57, 11, 481103), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-01-21 19:57:38,464 - src.service.user_service - INFO - user_service:32 - Запись BegaN успешно добавлена в базу данных
+2026-01-21 19:57:38,473 - src.service.user_service - ERROR - user_service:37 - Ошибка при добавлении записи в базу данных: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(user@example.com) already exists.
+[SQL: INSERT INTO users (id, username, email, created_at, updated_at) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::TIMESTAMP WITHOUT TIME ZONE, $5::TIMESTAMP WITHOUT TIME ZONE)]
+[parameters: (UUID('9baa4540-ef4d-43d3-9e3e-8f17d1a1ea4a'), 'BegaN', 'user@example.com', datetime.datetime(2026, 1, 21, 16, 57, 38, 466599), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-01-21 19:58:35,023 - src.service.user_service - INFO - user_service:32 - Запись BegaN успешно добавлена в базу данных
+2026-01-21 19:58:35,031 - src.service.user_service - ERROR - user_service:37 - Ошибка при добавлении записи в базу данных: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(user@example.com) already exists.
+[SQL: INSERT INTO users (id, username, email, created_at, updated_at) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::TIMESTAMP WITHOUT TIME ZONE, $5::TIMESTAMP WITHOUT TIME ZONE)]
+[parameters: (UUID('024e5d08-01a9-4473-819d-bf5d32ca211d'), 'BegaN', 'user@example.com', datetime.datetime(2026, 1, 21, 16, 58, 35, 25332), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-01-21 19:58:41,032 - src.service.user_service - INFO - user_service:32 - Запись BegaN успешно добавлена в базу данных
+2026-01-21 19:58:41,042 - src.service.user_service - ERROR - user_service:37 - Ошибка при добавлении записи в базу данных: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "profiles_phone_number_key"
+DETAIL:  Key (phone_number)=(+70000000000) already exists.
+[SQL: INSERT INTO profiles (id, first_name, last_name, phone_number, bio, created_at, updated_at, user_id) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::TIMESTAMP WITHOUT TIME ZONE, $7::TIMESTAMP WITHOUT TIME ZONE, $8::UUID)]
+[parameters: (UUID('9fb8bd01-cd2c-4bff-939c-603f81b2ad50'), 'Alex', 'Grinch', '+70000000000', 'string', datetime.datetime(2026, 1, 21, 16, 58, 41, 37795), None, UUID('a1b96b05-6258-4784-b5f1-457e6e4932de'))]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-01-21 20:00:19,136 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:00:19,150 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:00:23,834 - src.service.user_service - INFO - user_service:60 - Записи 1 успешно найдены в базе данных
+2026-01-21 20:00:38,327 - src.application - ERROR - application:26 - Ошибка проекта: Пользователь с параметрами {'id': UUID('e7d6f440-9c96-4990-9997-eeeba2e5e397')} не найден
+2026-01-21 20:00:39,846 - src.application - ERROR - application:26 - Ошибка проекта: Пользователь с параметрами {'id': UUID('e7d6f440-9c96-4990-9997-eeeba2e5e397')} не найден
+2026-01-21 20:00:41,035 - src.application - ERROR - application:26 - Ошибка проекта: Пользователь с параметрами {'id': UUID('e7d6f440-9c96-4990-9997-eeeba2e5e397')} не найден
+2026-01-21 20:00:44,179 - src.service.user_service - INFO - user_service:48 - Запись {'id': UUID('62b943b0-7610-4760-b34c-cc4ede558493')} успешно найдена в базе данных
+2026-01-21 20:00:44,180 - src.service.user_service - INFO - user_service:93 - Запись User_b27d5da9 успешно удалена из базы данных
+2026-01-21 20:00:49,822 - src.service.user_service - INFO - user_service:60 - Записи 0 успешно найдены в базе данных
+2026-01-21 20:00:54,810 - src.service.user_service - INFO - user_service:32 - Запись User_e407817c успешно добавлена в базу данных
+2026-01-21 20:12:36,930 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:12:36,944 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:13:09,251 - src.service.author_service - INFO - author_service:27 - Автор ^&*hjds создан с 1 книгами
+2026-01-21 20:19:47,383 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:19:47,397 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:20:41,427 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:20:41,441 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:20:44,388 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:20:44,411 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:20:55,298 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:20:55,314 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:20:59,944 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:20:59,960 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:21:04,831 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:21:04,844 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:21:08,177 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:21:08,203 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:21:22,921 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:21:22,937 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:21:25,698 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:21:25,714 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:21:43,854 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:21:43,868 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:21:49,681 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:21:49,696 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:22:09,080 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:22:09,094 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:22:11,421 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:22:11,447 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:22:26,744 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:22:26,757 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:22:29,365 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:22:29,379 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:22:37,960 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:22:37,978 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:22:44,163 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:22:44,179 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:22:54,972 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:22:54,985 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:23:10,667 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:23:10,686 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:23:15,103 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:23:15,118 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:23:17,433 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:23:17,455 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:23:23,514 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:23:23,546 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:23:38,180 - src.service.user_service - INFO - user_service:63 - Записи 1 успешно найдены в базе данных
+2026-01-21 20:23:49,408 - src.service.user_service - INFO - user_service:96 - Запись User_e407817c успешно удалена из базы данных
+2026-01-21 20:23:56,818 - src.service.user_service - ERROR - user_service:41 - Ошибка при добавлении записи в базу данных: Class 'builtins.tuple' is not mapped
+2026-01-21 20:25:27,426 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:25:27,447 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:25:31,552 - src.service.user_service - ERROR - user_service:37 - Ошибка при добавлении записи в базу данных: Class 'builtins.tuple' is not mapped
+2026-01-21 20:26:09,285 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:26:09,297 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:26:15,469 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:26:15,485 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:26:50,898 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:26:50,910 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:27:01,094 - src.application - ERROR - application:26 - Ошибка проекта: Пользователь с email user@example.com уже существует
+2026-01-21 20:27:16,433 - src.application - ERROR - application:26 - Ошибка проекта: Пользователь с email user@example.com уже существует
+2026-01-21 20:28:04,020 - src.application - ERROR - application:26 - Ошибка проекта: Пользователь с email user@example.com уже существует
+2026-01-21 20:28:32,612 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:28:32,627 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:28:42,430 - src.service.user_service - INFO - user_service:63 - Записи 1 успешно найдены в базе данных
+2026-01-21 20:28:56,812 - src.application - ERROR - application:26 - Ошибка проекта: Пользователь с email user@example.com уже существует
+2026-01-21 20:29:40,527 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:29:40,543 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-21 20:29:43,053 - src.application - INFO - application:60 - Запуск приложения
+2026-01-21 20:29:43,065 - src.application - INFO - application:64 - Приложение остановлено
+2026-01-22 18:05:09,252 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:05:09,267 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:05:31,707 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:05:31,724 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:05:34,118 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:05:34,132 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:05:47,433 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:05:47,446 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:07:44,371 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:07:44,384 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:07:46,798 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:07:46,811 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:08:51,604 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:08:51,618 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:08:58,936 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:08:58,949 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:09:02,905 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:09:02,920 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:09:05,488 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:09:05,505 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:17:49,102 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:17:49,117 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:17:57,727 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:17:57,742 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:18:29,563 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:18:29,575 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:18:33,998 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:18:34,016 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:18:41,420 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:18:41,436 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:18:45,674 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:18:45,690 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:18:54,339 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:18:54,354 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:18:56,727 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:18:56,740 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:19:03,840 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:19:03,852 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:20:53,947 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:20:53,961 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:21:14,005 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:21:14,018 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:21:51,116 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:21:51,129 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:21:53,649 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:21:53,666 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:21:57,871 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:21:57,885 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 18:22:18,037 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 18:22:18,052 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 23:53:51,945 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 23:53:51,957 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 23:55:09,866 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 23:55:09,880 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-22 23:56:04,625 - src.application - INFO - application:42 - Запуск приложения
+2026-01-22 23:56:04,640 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:07:45,414 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:07:45,427 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:08:12,607 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:08:12,621 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:08:18,462 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:08:18,475 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:09:46,053 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:09:46,067 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:10:49,873 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:10:49,888 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:10:52,416 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:10:52,430 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:11:15,637 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:11:15,649 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:15:19,406 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:15:19,418 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:15:30,377 - src.service.courses_service - INFO - courses_service:49 - Записи 0 успешно созданы в базе данных
+2026-01-23 00:16:07,762 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:16:07,777 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:17:21,399 - src.service.courses_service - ERROR - courses_service:23 - Ошибка при поиске записей в базе данных
+2026-01-23 00:18:29,394 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:18:29,423 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:18:31,678 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:18:31,691 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:22:33,729 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:22:33,746 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:23:11,346 - src.service.courses_service - ERROR - courses_service:23 - Ошибка при поиске записей в базе данных
+2026-01-23 00:24:08,658 - src.service.courses_service - ERROR - courses_service:23 - Ошибка при поиске записей в базе данных
+2026-01-23 00:27:46,493 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:27:46,507 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:28:33,041 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:28:33,054 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:28:37,407 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:28:37,423 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:28:39,977 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:28:39,990 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:29:51,734 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:29:51,750 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:29:54,198 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:29:54,220 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:29:58,503 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:29:58,522 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:30:01,118 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:30:01,133 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:31:32,643 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:31:32,657 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-23 00:31:36,705 - src.application - INFO - application:42 - Запуск приложения
+2026-01-23 00:31:36,718 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:33:32,923 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:33:32,950 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:36:03,942 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:36:03,956 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:41:16,119 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:41:16,131 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:43:06,196 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:43:06,211 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:43:28,621 - src.service.author_service - INFO - author_service:27 - Автор Alexey создан с 1 книгами
+2026-01-24 00:43:51,021 - src.service.author_service - INFO - author_service:27 - Автор &#*@&$* создан с 1 книгами
+2026-01-24 00:44:29,785 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:44:29,798 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:44:33,956 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:44:33,973 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:45:37,604 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:45:37,616 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:46:15,647 - src.service.author_service - INFO - author_service:27 - Автор &*&*(& создан с 1 книгами
+2026-01-24 00:46:26,100 - src.service.author_service - INFO - author_service:27 - Автор 11111111 создан с 1 книгами
+2026-01-24 00:46:37,961 - src.service.author_service - INFO - author_service:27 - Автор Alexey создан с 1 книгами
+2026-01-24 00:47:16,623 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:47:16,636 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:47:24,712 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:47:24,725 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:47:27,056 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:47:27,069 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:47:46,486 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:47:46,498 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:47:48,760 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:47:48,773 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:47:54,234 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:47:54,249 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:48:08,283 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:48:08,298 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:48:16,111 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:48:16,123 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:48:28,653 - src.service.author_service - INFO - author_service:27 - Автор !!!!!!!!! создан с 1 книгами
+2026-01-24 00:49:16,958 - src.service.author_service - INFO - author_service:27 - Автор     создан с 1 книгами
+2026-01-24 00:49:43,248 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:49:43,262 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:49:49,165 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:49:49,185 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:49:53,655 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:49:53,669 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:49:58,091 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:49:58,107 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:50:32,763 - src.service.author_service - INFO - author_service:27 - Автор !!! создан с 1 книгами
+2026-01-24 00:51:48,100 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:51:48,111 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:53:19,826 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:53:19,839 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 00:53:22,202 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 00:53:22,213 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 01:07:15,813 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 01:07:15,828 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 01:11:02,350 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 01:11:02,367 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 01:11:04,854 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 01:11:04,893 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 01:11:07,201 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 01:11:07,217 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 01:11:17,874 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 01:11:17,887 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 01:11:37,088 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 01:11:37,100 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 01:11:39,544 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 01:11:39,561 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 01:14:34,412 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 01:14:34,426 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 01:16:08,399 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 01:16:08,413 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 01:16:12,674 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 01:16:12,688 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-24 01:21:07,458 - src.application - INFO - application:42 - Запуск приложения
+2026-01-24 01:21:07,471 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 18:54:17,941 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 18:54:17,955 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 18:58:33,457 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 18:58:33,470 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 18:59:27,796 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 18:59:27,808 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:05:14,120 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:05:14,132 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:07:47,126 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:07:47,141 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:10:49,544 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:10:49,558 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:10:55,394 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:10:55,410 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:11:04,114 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:11:04,127 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:11:43,918 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:11:43,934 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:11:49,792 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:11:49,807 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:11:52,416 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:11:52,432 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:11:58,693 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:11:58,708 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:12:01,244 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:12:01,266 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:12:04,971 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:12:04,983 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:12:55,947 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:12:55,960 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:13:39,143 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:13:39,155 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:14:26,119 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:14:26,131 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:17:14,417 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:17:14,430 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:18:25,217 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:18:25,229 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:24:40,589 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:24:40,603 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:26:11,913 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:26:11,927 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:27:43,699 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:27:43,714 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:27:47,477 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:27:47,489 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:33:34,099 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:33:34,113 - src.application - INFO - application:46 - Приложение остановлено
+2026-01-28 19:36:10,489 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:39:12,181 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:41:37,598 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:42:09,570 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:44:15,085 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:44:35,546 - src.application - INFO - application:42 - Запуск приложения
+2026-01-28 19:44:40,106 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:13:45,758 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:13:47,837 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:14:12,079 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:14:15,677 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:14:35,562 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:15:03,698 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:15:06,251 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:15:08,517 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:15:12,292 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:15:14,372 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:15:33,139 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:15:35,153 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:15:54,995 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:16:20,028 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:16:39,771 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:17:02,314 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:17:36,802 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: 'ValidationError' object has no attribute 'format_detail'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 298, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 674, in solve_dependencies
+    ) = await request_body_to_args(  # body_params checked above
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 938, in request_body_to_args
+    v_, errors_ = _validate_value_with_model_field(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 714, in _validate_value_with_model_field
+    v_, errors_ = field.validate(value, values, loc=loc)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\_compat.py", line 130, in validate
+    self._type_adapter.validate_python(value, from_attributes=True),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\pydantic\type_adapter.py", line 421, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\schemas\student_schemas.py", line 29, in name_not_empty
+    raise ValidationError("Имя не должно быть пустым")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\exception\client_exception.py", line 53, in __init__
+    super().__init__(detail=detail,
+  File "D:\Projects\Project\src\exception\client_exception.py", line 15, in __init__
+    super().__init__(status_code=status.HTTP_400_BAD_REQUEST,
+  File "D:\Projects\Project\src\exception\base.py", line 18, in __init__
+    self.format_detail()
+    ^^^^^^^^^^^^^^^^^^
+AttributeError: 'ValidationError' object has no attribute 'format_detail'
+2026-01-30 19:19:47,410 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:21:42,294 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:22:08,314 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:22:43,047 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:23:44,641 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:23:56,656 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:23:59,054 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:24:17,096 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:24:25,953 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:24:32,131 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:24:39,520 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:29:45,311 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:30:55,091 - src.service.student_service - ERROR - student_service:62 - Студент с id d6385e34-de1e-4385-a45f-8c0abf7cfd82 не найден
+2026-01-30 19:30:55,095 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: src.exception.client_exception.NotFoundError.__init__() got multiple values for keyword argument 'detail'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student_router.py", line 38, in get_student_by_id
+    return await find_one_with_id(session=session, id=id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\student_service.py", line 63, in find_one_with_id
+    raise StudentNotFoundError(detail=f"Студент с id {id} не найден")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\exception\business.py", line 25, in __init__
+    super().__init__(resourse="Студент",
+TypeError: src.exception.client_exception.NotFoundError.__init__() got multiple values for keyword argument 'detail'
+2026-01-30 19:31:45,261 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: ValidationError.__init__() missing 1 required positional argument: 'error'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 298, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 674, in solve_dependencies
+    ) = await request_body_to_args(  # body_params checked above
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 938, in request_body_to_args
+    v_, errors_ = _validate_value_with_model_field(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 714, in _validate_value_with_model_field
+    v_, errors_ = field.validate(value, values, loc=loc)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\_compat.py", line 130, in validate
+    self._type_adapter.validate_python(value, from_attributes=True),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\pydantic\type_adapter.py", line 421, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\schemas\student_schemas.py", line 31, in name_not_empty
+    raise ValidationError(detail=f"Имя не должно быть пустым")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ValidationError.__init__() missing 1 required positional argument: 'error'
+2026-01-30 19:33:24,223 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:33:34,274 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:33:51,463 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:33:59,785 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: ValidationError.__init__() missing 1 required positional argument: 'error'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 298, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 674, in solve_dependencies
+    ) = await request_body_to_args(  # body_params checked above
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 938, in request_body_to_args
+    v_, errors_ = _validate_value_with_model_field(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 714, in _validate_value_with_model_field
+    v_, errors_ = field.validate(value, values, loc=loc)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\_compat.py", line 130, in validate
+    self._type_adapter.validate_python(value, from_attributes=True),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\pydantic\type_adapter.py", line 421, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\schemas\student_schemas.py", line 31, in name_not_empty
+    raise ValidationError(context={"field": "name"}, detail="Имя не должно быть пустым")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ValidationError.__init__() missing 1 required positional argument: 'error'
+2026-01-30 19:34:38,272 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:34:40,685 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:34:57,449 - src.exception.exception_handlers - WARNING - exception_handlers:22 - Ошибка 400: {'message': 'Ошибка валидации', 'error_code': 'validation_error', 'context': {}}
+2026-01-30 19:36:02,343 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:36:09,085 - src.exception.exception_handlers - WARNING - exception_handlers:22 - Ошибка 400: {'message': 'Имя не должно быть пустым', 'error_code': 'validation_error', 'context': {}}
+2026-01-30 19:37:18,358 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:37:28,133 - src.exception.exception_handlers - WARNING - exception_handlers:22 - Ошибка 400: {'message': 'Имя не должно быть пустым', 'error_code': 'validation_error', 'context': {}}
+2026-01-30 19:39:03,430 - src.service.student_service - ERROR - student_service:62 - Студент с id 7e656cd8-2eeb-44c0-8307-432e6f4a49c8 не найден
+2026-01-30 19:39:03,433 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: src.exception.client_exception.NotFoundError.__init__() got multiple values for keyword argument 'detail'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student_router.py", line 38, in get_student_by_id
+    return await find_one_with_id(session=session, id=id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\student_service.py", line 63, in find_one_with_id
+    raise StudentNotFoundError(detail=f"Студент с id {id} не найден")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\exception\business.py", line 25, in __init__
+    super().__init__(resourse="Студент",
+TypeError: src.exception.client_exception.NotFoundError.__init__() got multiple values for keyword argument 'detail'
+2026-01-30 19:40:00,191 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:40:10,500 - src.service.student_service - ERROR - student_service:62 - Студент с id 7e656cd8-2eeb-44c0-8307-432e6f4a49c8 не найден
+2026-01-30 19:40:10,504 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: src.exception.client_exception.NotFoundError.__init__() got multiple values for keyword argument 'detail'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student_router.py", line 38, in get_student_by_id
+    return await find_one_with_id(session=session, id=id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\student_service.py", line 63, in find_one_with_id
+    raise StudentNotFoundError(student_id=id, detail=f"Студент с id {id} не найден")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\exception\business.py", line 25, in __init__
+    super().__init__(resourse="Студент",
+TypeError: src.exception.client_exception.NotFoundError.__init__() got multiple values for keyword argument 'detail'
+2026-01-30 19:40:57,885 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:41:00,745 - src.service.student_service - ERROR - student_service:62 - Студент с id 7e656cd8-2eeb-44c0-8307-432e6f4a49c8 не найден
+2026-01-30 19:41:00,748 - src.exception.exception_handlers - INFO - exception_handlers:64 - ошибка 404: /api/v1/students_courses/7e656cd8-2eeb-44c0-8307-432e6f4a49c8
+2026-01-30 19:41:27,167 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:41:33,440 - src.service.student_service - ERROR - student_service:62 - Студент с id 7e656cd8-2eeb-44c0-8307-432e6f4a49c8 не найден
+2026-01-30 19:41:33,443 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: src.exception.client_exception.NotFoundError.__init__() got multiple values for keyword argument 'detail'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student_router.py", line 38, in get_student_by_id
+    return await find_one_with_id(session=session, id=id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\student_service.py", line 63, in find_one_with_id
+    raise StudentNotFoundError(detail=f"Студент с id {id} не найден")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\exception\business.py", line 25, in __init__
+    super().__init__(resourse="Студент",
+TypeError: src.exception.client_exception.NotFoundError.__init__() got multiple values for keyword argument 'detail'
+2026-01-30 19:42:21,839 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:42:39,246 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:42:42,061 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:42:44,503 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:42:46,400 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: find_one_with_id() got an unexpected keyword argument 'id'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student_router.py", line 38, in get_student_by_id
+    return await find_one_with_id(session=session, id=id)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: find_one_with_id() got an unexpected keyword argument 'id'
+2026-01-30 19:42:58,154 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:43:00,471 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:43:08,438 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:43:12,615 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:43:15,064 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:43:18,232 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: find_one_with_id() got an unexpected keyword argument 'id'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student_router.py", line 38, in get_student_by_id
+    return await find_one_with_id(session=session, id=id)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: find_one_with_id() got an unexpected keyword argument 'id'
+2026-01-30 19:43:42,025 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:43:44,457 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:43:48,519 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: find_one_with_id() got an unexpected keyword argument 'id'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student_router.py", line 38, in get_student_by_id
+    return await find_one_with_id(session=session, id=id)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: find_one_with_id() got an unexpected keyword argument 'id'
+2026-01-30 19:44:09,479 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: find_one_with_id() got an unexpected keyword argument 'id'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student_router.py", line 38, in get_student_by_id
+    return await find_one_with_id(session=session, id=id)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: find_one_with_id() got an unexpected keyword argument 'id'
+2026-01-30 19:44:59,071 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:45:03,595 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:45:08,102 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:45:10,940 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:45:13,451 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:45:28,389 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: Entity namespace for "students" has no property "student_id"
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\base.py", line 2215, in _entity_namespace_key
+    return getattr(ns, key)  # type: ignore
+           ^^^^^^^^^^^^^^^^
+AttributeError: type object 'Student' has no attribute 'student_id'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student_router.py", line 38, in get_student_by_id
+    return await find_one_with_id(session=session, student_id=student_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\student_service.py", line 58, in find_one_with_id
+    query = select(Student).options(joinedload(Student.courses)).filter_by(student_id=student_id)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\selectable.py", line 5437, in filter_by
+    clauses = [
+              ^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\selectable.py", line 5438, in <listcomp>
+    _entity_namespace_key(from_entity, key) == value
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\base.py", line 2217, in _entity_namespace_key
+    raise exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: Entity namespace for "students" has no property "student_id"
+2026-01-30 19:47:38,859 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 19:48:56,237 - src.service.student_service - ERROR - student_service:27 - Студент с id 29df6a8b-9984-4d66-8ca1-3177352e7be7 не найден
+2026-01-30 19:48:56,242 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: src.exception.client_exception.NotFoundError.__init__() got multiple values for keyword argument 'detail'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student_router.py", line 56, in delete_students
+    await delete_student(session=session, student_id=id)
+  File "D:\Projects\Project\src\service\student_service.py", line 92, in delete_student
+    student = await get_student_by_id(session, student_id=student_id)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\student_service.py", line 28, in get_student_by_id
+    raise StudentNotFoundError(detail=f"Студент с id {student_id} не найден")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\exception\business.py", line 25, in __init__
+    super().__init__(resourse="Студент",
+TypeError: src.exception.client_exception.NotFoundError.__init__() got multiple values for keyword argument 'detail'
+2026-01-30 19:49:09,035 - src.service.student_service - ERROR - student_service:62 - Студент с id 29df6a8b-9984-4d66-8ca1-3177352e7be7 не найден
+2026-01-30 19:49:09,038 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: src.exception.client_exception.NotFoundError.__init__() got multiple values for keyword argument 'detail'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student_router.py", line 38, in get_student_by_id
+    return await find_one_with_id(session=session, student_id=id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\student_service.py", line 63, in find_one_with_id
+    raise StudentNotFoundError(student_id=student_id, detail=f"Студент с id {student_id} не найден")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\exception\business.py", line 25, in __init__
+    super().__init__(resourse="Студент",
+TypeError: src.exception.client_exception.NotFoundError.__init__() got multiple values for keyword argument 'detail'
+2026-01-30 20:01:24,320 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:01:41,556 - src.service.student_service - ERROR - student_service:62 - Студент с id 29df6a8b-9984-4d66-8ca1-3177352e7be7 не найден
+2026-01-30 20:01:41,559 - src.exception.exception_handlers - INFO - exception_handlers:64 - ошибка 404: /api/v1/students_courses/29df6a8b-9984-4d66-8ca1-3177352e7be7
+2026-01-30 20:02:12,727 - src.service.student_service - ERROR - student_service:27 - Студент с id 29df6a8b-9984-4d66-8ca1-3177352e7be7 не найден
+2026-01-30 20:02:12,734 - src.exception.exception_handlers - INFO - exception_handlers:64 - ошибка 404: /api/v1/students_courses/29df6a8b-9984-4d66-8ca1-3177352e7be7
+2026-01-30 20:02:48,510 - src.service.author_service - ERROR - author_service:22 - Ошибка при поиске записи в базе данных
+2026-01-30 20:02:48,514 - src.exception.exception_handlers - INFO - exception_handlers:64 - ошибка 404: /api/v1/authors_books/34e2c647-cf7e-41e7-8d03-1cc59b300935
+2026-01-30 20:02:57,655 - src.exception.exception_handlers - INFO - exception_handlers:64 - ошибка 404: /api/v1/authors_books/34e2c647-cf7e-41e7-8d03-1cc59b300935
+2026-01-30 20:03:08,594 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: ValidationError.__init__() missing 1 required positional argument: 'error'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 298, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 674, in solve_dependencies
+    ) = await request_body_to_args(  # body_params checked above
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 938, in request_body_to_args
+    v_, errors_ = _validate_value_with_model_field(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 714, in _validate_value_with_model_field
+    v_, errors_ = field.validate(value, values, loc=loc)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\_compat.py", line 130, in validate
+    self._type_adapter.validate_python(value, from_attributes=True),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\pydantic\type_adapter.py", line 421, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\schemas\author_schemas.py", line 32, in name_not_empty
+    raise ValidationError(detail=f"Имя не должно быть пустым")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ValidationError.__init__() missing 1 required positional argument: 'error'
+2026-01-30 20:03:38,182 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:03:40,443 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:03:52,971 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: ValidationError.__init__() missing 1 required positional argument: 'error'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 298, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 674, in solve_dependencies
+    ) = await request_body_to_args(  # body_params checked above
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 938, in request_body_to_args
+    v_, errors_ = _validate_value_with_model_field(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 714, in _validate_value_with_model_field
+    v_, errors_ = field.validate(value, values, loc=loc)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\_compat.py", line 130, in validate
+    self._type_adapter.validate_python(value, from_attributes=True),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\pydantic\type_adapter.py", line 421, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\schemas\author_schemas.py", line 32, in name_not_empty
+    raise ValidationError(detail=f"Имя не должно быть пустым")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ValidationError.__init__() missing 1 required positional argument: 'error'
+2026-01-30 20:04:10,597 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:04:18,257 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:04:20,688 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:04:26,102 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:04:32,291 - src.exception.exception_handlers - WARNING - exception_handlers:22 - Ошибка 400: {'message': 'Имя не должно быть пустым', 'error_code': 'validation_error', 'context': {}}
+2026-01-30 20:04:59,709 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:05:12,299 - src.exception.exception_handlers - ERROR - exception_handlers:79 - Необработанная ошибка: ValidationError.__init__() missing 1 required positional argument: 'error'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 298, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 674, in solve_dependencies
+    ) = await request_body_to_args(  # body_params checked above
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 938, in request_body_to_args
+    v_, errors_ = _validate_value_with_model_field(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 714, in _validate_value_with_model_field
+    v_, errors_ = field.validate(value, values, loc=loc)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\_compat.py", line 130, in validate
+    self._type_adapter.validate_python(value, from_attributes=True),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\pydantic\type_adapter.py", line 421, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\schemas\user_schemas.py", line 39, in validate_username
+    raise ValidationError(detail=f"Имя пользователя не должно быть пустым")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ValidationError.__init__() missing 1 required positional argument: 'error'
+2026-01-30 20:05:42,675 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:06:12,888 - src.exception.exception_handlers - WARNING - exception_handlers:22 - Ошибка 400: {'message': 'Имя пользователя не должно быть пустым', 'error_code': 'validation_error', 'context': {}}
+2026-01-30 20:06:44,109 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:06:47,941 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:07:04,934 - src.exception.exception_handlers - WARNING - exception_handlers:22 - Ошибка 400: {'message': 'Username пользователя не должно быть пустым', 'error_code': 'validation_error', 'context': {}}
+2026-01-30 20:07:42,452 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:08:13,029 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:08:20,301 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:08:22,641 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:08:31,880 - src.application - INFO - application:42 - Запуск приложения
+2026-01-30 20:09:11,565 - src.exception.exception_handlers - WARNING - exception_handlers:22 - Ошибка 400: {'message': 'Имя не должно быть пустым', 'error_code': 'validation_error', 'context': {}}
+2026-01-30 20:09:16,948 - src.exception.exception_handlers - WARNING - exception_handlers:22 - Ошибка 400: {'message': 'Username пользователя не должно быть пустым', 'error_code': 'validation_error', 'context': {}}

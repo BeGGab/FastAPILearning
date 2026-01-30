@@ -1,9 +1,10 @@
 import logging
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from src.core.config_logging import setup_logging
+from src.exception.exception_handlers import setup_exception_handlers
 from src.routers.v1.user_router import router as user_router
 from src.routers.v1.author_router import router as author_router
 from src.routers.v1.student_router import router as student_router
@@ -12,6 +13,7 @@ from src.routers.v1.student_router import router as student_router
 setup_logging()
 
 logger = logging.getLogger(__name__)
+
 
 
 def get_app() -> FastAPI:
@@ -28,6 +30,7 @@ def get_app() -> FastAPI:
         default_response_class=JSONResponse,
     )
 
+
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[],  # Указывайте здесь домены вашего фронтенда
@@ -40,5 +43,6 @@ def get_app() -> FastAPI:
     app.include_router(user_router)
     app.include_router(author_router)
     app.include_router(student_router)
-    logger.info("Приложение остановлено")
+    setup_exception_handlers(app)
+
     return app

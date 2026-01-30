@@ -1,29 +1,27 @@
+from fastapi import HTTPException, status
+from typing import List, Dict, Any, Optional
 
 
-class ProjectError(Exception):
-    default_message = "Что-то пошло не так"
+class BaseHTTPException(HTTPException):
+    #Базовое Исключение с доп деталями
 
-    def __init__(self, message: str | None = None, details: dict = None) -> None:
-        self.message = message or self.default_message
-        self.details = details or {}
-        super().__init__(self.message)
+    def __init__(self,
+                 status_code: int,
+                 detail: Any = None,
+                 headers: Optional[Dict[str, Any]] = None,
+                 error_code: Optional[str] = None,
+                 context: Optional[Dict[str, Any]] = None):
+        super().__init__(status_code=status_code, detail=detail, headers=headers)
+        self.error_code = error_code
+        self.context = context or {}
 
+        self.format_detail()
 
-class NotFoundError(ProjectError):
-    default_message = "Запись не найдена"
-
-
-class ValidationError(ProjectError):
-    default_message = "Ошибка валидации данных"
-
-    def __init__(self, message: str = None, field: str = None, value: any = None) -> None:
-        details = {}
-        if field:
-            details["field"] = field
-        if value:
-            details["value"] = value
-        super().__init__(message, details)
-
-
-
-        
+    def format_detail(self) -> None:
+        # Формируем детали в структурированный вид
+        if isinstance(self.detail, str):
+            self.detail = {
+                "message": self.detail,
+                "error_code": self.error_code,
+                **self.context
+            }

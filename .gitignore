@@ -1,0 +1,6 @@
+.env
+__pycache__
+docker-compose.yaml
+.qodo
+venv
+alembic.ini
