@@ -1,11 +1,12 @@
 import uuid
 from fastapi import APIRouter, Depends, status
+from fastapi.responses import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Dict, List
 
 from src.core.enums import Status
-from src.schemas.student_schemas import SStudentCreate, SStudentRead, SStudentUpdate
-from src.service.student_service import (
+from src.schemas.student import (SStudentCreate, SStudentRead, SStudentUpdate)
+from src.service.student import (
     add_student,
     find_all_students,
     find_one_with_id,
@@ -49,10 +50,10 @@ async def update_student(
     )
 
 
-@router.delete("/{id}", status_code=status.HTTP_200_OK)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_students(
     id: uuid.UUID, session: AsyncSession = Depends(get_async_session)
 ):
     await delete_student(session=session, student_id=id)
-    return Status.DELETED
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
     

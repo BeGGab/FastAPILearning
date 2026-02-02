@@ -1,11 +1,12 @@
 import uuid
 from fastapi import APIRouter, Depends, status
+from fastapi.responses import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Dict, List
 
 from src.core.enums import Status
-from src.schemas.user_schemas import SUserRead, SUserCreate, SUserUpdate
-from src.service.user_service import (
+from src.schemas.user import SUserRead, SUserCreate, SUserUpdate
+from src.service.user import (
     create_user_with_profile,
     find_one_or_none_with_profile,
     find_all_with_profiles,
@@ -52,9 +53,9 @@ async def update_user_profile(
     
 
 
-@router.delete("/{id}", status_code=status.HTTP_200_OK)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_users(
     id: uuid.UUID, session: AsyncSession = Depends(get_async_session)
 ):
     await delete_user(session=session, user_id=id)
-    return Status.DELETED
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

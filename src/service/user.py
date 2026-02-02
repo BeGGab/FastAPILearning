@@ -6,14 +6,13 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.schemas.user_schemas import (
+from src.schemas.user import (
     SUserCreate,
     SUserRead,
     SUserUpdate
 )
-from src.models.user_models import User
-from src.exception.client_exception import BadRequestError
-from src.exception.business import UserNotFoundError
+from src.models.user import User
+from src.exception.client_exception import BadRequestError, NotFoundError
 
 
 logger = logging.getLogger(__name__)
@@ -25,22 +24,19 @@ async def get_user_by_id(session: AsyncSession, user_id: uuid.UUID) -> User:
     user = result.scalar()
     if not user:
         logger.error(f"Пользователь с id {user_id} не найден")
-        raise UserNotFoundError(user_id=user_id)
+        raise NotFoundError(user_id=user_id)
     return user
 
 
 async def create_user_with_profile(
     session: AsyncSession, user_data: SUserCreate
 ) -> SUserRead:
-    try:
-        user, profile = user_data.to_orm_models()
+    user, profile = user_data.to_orm_models()
 
-        session.add(user)
-        await session.flush()
-        await session.refresh(user, ["profile"])
-        return SUserRead.model_validate(user, from_attributes=True)
-    except IntegrityError as e:
-        raise BadRequestError(detail=str(e))
+    session.add(user)
+    await session.flush()
+    await session.refresh(user, ["profile"])
+    return SUserRead.model_validate(user, from_attributes=True)
 
 
 async def find_one_or_none_with_profile(
@@ -51,7 +47,7 @@ async def find_one_or_none_with_profile(
     user = result.scalar()
     if not user:
         logger.error(f"Ошибка при поиске записи в базе данных")
-        raise UserNotFoundError(detail=f"Пользователь с параметрами {filter_by} не найден")
+        raise NotFoundError(detail=f"Пользователь с параметрами {filter_by} не найден")
     return SUserRead.model_validate(user, from_attributes=True)
 
 
@@ -63,7 +59,7 @@ async def find_all_with_profiles(session: AsyncSession, **filter_by) -> List[SUs
         logger.warning(
             f"Пользователи с параметрами {filter_by} не найдены, возвращен пустой список."
         )
-        raise UserNotFoundError(detail=f"Пользователи с параметрами {filter_by} не найдены")
+        raise NotFoundError(detail=f"Пользователи с параметрами {filter_by} не найдены")
     return [SUserRead.model_validate(rec, from_attributes=True) for rec in records]
 
 
@@ -73,20 +69,19 @@ async def update_user(
     user = await get_user_by_id(session=session, user_id=user_id)
     if not user:
         logger.error(f"Ошибка при поиске записи в базе данных")
-        raise UserNotFoundError(user_id=user_id)
-    try:
-        data.apply_to_user(user)
+        raise NotFoundError(user_id=user_id)
 
-        await session.flush()
-        await session.refresh(user, ["profile"])
-        return SUserRead.model_validate(user, from_attributes=True)
-    except IntegrityError as e:
-        raise BadRequestError(detail=str(e))
+    data.apply_to_user(user)
+
+    await session.flush()
+    await session.refresh(user, ["profile"])
+    return SUserRead.model_validate(user, from_attributes=True)
+
 
 
 async def delete_user(session: AsyncSession, user_id: uuid.UUID):
     user = await get_user_by_id(session=session, user_id=user_id)
     if not user:
         logger.error(f"Ошибка при удалении записи из базы данных")
-        raise UserNotFoundError(user_id=user_id)
+        raise NotFoundError(user_id=user_id)
     await session.delete(user)

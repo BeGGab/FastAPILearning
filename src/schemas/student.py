@@ -9,9 +9,8 @@ from pydantic import (
 )
 from typing import Optional, List
 
-from src.models.student_models import Student
-from src.models.courses_model import Course
-from src.schemas.courses_schemas import SCourseCreate, SCourseRead
+from src.models.student import Student
+from src.schemas.courses import (SCourseCreate, SCourseRead)
 from src.exception.client_exception import ValidationError, NotFoundError
 
 
@@ -28,7 +27,7 @@ class SStudentCreate(BaseModel):
     @classmethod
     def name_not_empty(cls, v: str) -> str:
         if v is None or v == "string":
-            raise ValidationError(error="", detail=f"Имя не должно быть пустым")
+            raise ValidationError(detail=f"Имя не должно быть пустым")
         return v
 
 

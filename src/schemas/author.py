@@ -9,12 +9,11 @@ from pydantic import (
     model_validator,
 )
 from typing import Optional, List, Dict
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.models.author_models import Author
-from src.models.books_models import Book
+from src.models.author import Author
+from src.models.books import Book
 from src.exception.client_exception import NotFoundError, ValidationError
-from src.schemas.book_schemas import SBookCreate, SBookRead
+from src.schemas.book import SBookCreate, SBookRead
 
 
 class SAuthorCreate(BaseModel):
@@ -29,7 +28,7 @@ class SAuthorCreate(BaseModel):
     @classmethod
     def name_not_empty(cls, v: str) -> str:
         if v is None or v == "string":
-            raise ValidationError(error="", detail=f"Имя не должно быть пустым")
+            raise ValidationError(detail=f"Имя не должно быть пустым")
         return v
     
     @field_validator("name", mode="after")
@@ -40,24 +39,35 @@ class SAuthorCreate(BaseModel):
         elif isinstance(v, str):
             return v
         else:
-            raise ValidationError
-    
+            raise ValidationError(detail="Имя автора должно быть числом или строкой")
 
-    
+    @field_validator("books", mode="before")
+    @classmethod
+    def normalize_books(cls, v):
+        if v is None:
+            return []
+        if isinstance(v, Dict):
+            return [SBookCreate(**v)]
+        if isinstance(v, List):
+            normalized: List[SBookCreate] = []
+            for item in v:
+                if isinstance(item, SBookCreate):
+                    normalized.append(item)
+                elif isinstance(item, dict):
+                    normalized.append(SBookCreate(**item))
+                else:
+                    raise ValidationError(detail="Элемент списка books должен быть объектом или SBookCreate")
+            return normalized
+        raise ValidationError(detail="Поле books должно быть списком")
+
+
     def to_orm_models(self) -> tuple[Author, List[Book]]:
-        author_data = self.model_dump(exclude="books")
+        author_data = self.model_dump(exclude={"books"})
         author = Author(**author_data)
 
-        books = []
-        if self.books:
-            for book_schema in self.books:
-                books_data = book_schema.model_dump()
-                book = Book(**books_data)
-                book.author = author
-                books.append(book)
-
+        books: List[Book] = [book_schema.to_orm_model() for book_schema in self.books]
+        author.books = books
         return author, books
-
 
 class SAuthorUpdate(BaseModel):
     name: Optional[str] = Field(
@@ -93,17 +103,22 @@ class SAuthorUpdate(BaseModel):
             exclude={"books"}
         ).items():
             setattr(author, field, value)
-        
-        books_to_update = self.books
-        if books_to_update is not None:
-            author.books.clear()
-            
-            for book_schema in books_to_update:
-                book_data = book_schema.model_dump(exclude_unset=True, exclude_none=True)
-                if book_data:  
-                    book = Book(**book_data)
-                    book.author = author
-                    author.books.append(book)
+
+        if self.books is not None:
+            current_books = {book.title: book for book in author.books}
+            incoming_books = {book_schema.title: book_schema for book_schema in self.books}
+
+            books_to_remove = [
+                book for title, book in current_books.items() if title not in incoming_books
+            ]
+
+            books_to_add = [
+                Book(**incoming_books[title].model_dump()) for title in incoming_books if title not in current_books
+            ]
+
+            for book in books_to_remove:
+                author.books.remove(book)
+            author.books.extend(books_to_add)
 
 
 class SAuthorRead(BaseModel):

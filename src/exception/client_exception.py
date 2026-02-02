@@ -46,10 +46,10 @@ class ConflictError(BaseHTTPException):
 class ValidationError(BadRequestError):
      # 422 Validation Error (для Pydantic)
      def __init__(self,
-                  error: List[Dict[str, Any]],
                   detail: str = "Ошибка валидации",
                   error_code: str = "validation_error",
                   **context):
-           super().__init__(detail=detail,
+           super().__init__(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                            tail=detail,
                             error_code=error_code,
                             context=context)

@@ -1,6 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Virtual Environments
+venv/
+.venv/
+env/
 .env
-__pycache__
-docker-compose.yaml
-.qodo
-venv
-alembic.ini
+
+# IDE configuration
+.vscode/
+.idea/
+
+
+.coverage
+
+.gitignore
+.git/

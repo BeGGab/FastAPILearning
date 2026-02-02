@@ -10,9 +10,9 @@ from pydantic import (
 )
 from typing import Optional
 
-from src.models.user_models import User
-from src.models.profile_models import Profile
-from src.schemas.profile_schemas import SProfileCreate, SProfileUpdate, SProfileRead
+from src.models.user import User
+from src.models.profile import Profile
+from src.schemas.profile import (SProfileCreate, SProfileUpdate, SProfileRead)
 from src.exception.client_exception import ValidationError, NotFoundError
 
 
@@ -29,14 +29,14 @@ class SUserCreate(BaseModel):
     @classmethod
     def validate_email(cls, v: str) -> str:
         if v is None or v == "string":
-            raise ValidationError(error="", detail=f"Электронная почта не должна быть пустой")
+            raise ValidationError(detail=f"Электронная почта не должна быть пустой")
         return v
 
     @field_validator("username", mode="before")
     @classmethod
     def validate_username(cls, v: str):
         if v is None or v == "string":
-            raise ValidationError(error="", detail=f"Username пользователя не должно быть пустым")
+            raise ValidationError(detail=f"Username пользователя не должно быть пустым")
         return v
 
     @model_validator(mode="after")

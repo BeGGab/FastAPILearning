@@ -1,11 +1,12 @@
 import uuid
 from fastapi import APIRouter, Depends, status
+from fastapi.responses import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Dict, List, Any, Union
 
 from src.core.enums import Status
-from src.schemas.author_schemas import SAuthorCreate, SAuthorRead, SAuthorUpdate
-from src.service.author_service import (create_author_with_books, 
+from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate
+from src.service.author import (create_author_with_books, 
                                         find_one_or_none_by_id, 
                                         find_all_authors, 
                                         update_author_with_books, 
@@ -41,7 +42,7 @@ async def update(id: uuid.UUID, payload: SAuthorUpdate, session: AsyncSession = 
     return await update_author_with_books(session=session, author_id=id, author_data=payload)
     
 
-@router.delete("/{id}", status_code=status.HTTP_200_OK)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete(id: uuid.UUID, session: AsyncSession = Depends(get_async_session)):
     await delete_author(session=session, author_id=id)
-    return Status.DELETED
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

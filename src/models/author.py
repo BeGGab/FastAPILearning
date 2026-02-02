@@ -7,7 +7,7 @@ from datetime import datetime
 from src.core.db import Base
 from src.core.db import uniq_str_an
 
-from src.models.books_models import Book
+from src.models.books import Book
 
 
 metadata = sa.MetaData()

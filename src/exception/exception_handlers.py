@@ -2,11 +2,10 @@ import logging
 from typing import Union
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import UJSONResponse
 from pydantic import ValidationError
 
 from src.exception.base import BaseHTTPException
-from src.exception.business import UserNotFoundError
 
 
 logger = logging.getLogger(__name__)
@@ -16,7 +15,7 @@ def setup_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(BaseHTTPException)
     async def http_exception_handler(
         request: Request, exc: BaseHTTPException
-    ) -> JSONResponse:
+    ) -> UJSONResponse:
         # оброботчик кастомных исключений
         if exc.status_code != status.HTTP_404_NOT_FOUND:
             logger.warning(
@@ -28,12 +27,12 @@ def setup_exception_handlers(app: FastAPI) -> None:
                     **exc.context,
                 },
             )
-            return JSONResponse(status_code=exc.status_code, content=exc.detail)
+            return UJSONResponse(status_code=exc.status_code, content=exc.detail)
 
     @app.exception_handler(RequestValidationError)
     async def validation_exception_handler(
         request: Request, exc: RequestValidationError
-    ) -> JSONResponse:
+    ) -> UJSONResponse:
         # обработчик ошибок валидации запросов
 
         errors = []
@@ -49,7 +48,7 @@ def setup_exception_handlers(app: FastAPI) -> None:
             f"Ошибка валидации запроса: {errors}", extra={"path": request.url.path}
         )
 
-        return JSONResponse(
+        return UJSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             content={
                 "message": "Ошибка валидации запроса",
@@ -59,11 +58,11 @@ def setup_exception_handlers(app: FastAPI) -> None:
         )
 
     @app.exception_handler(404)
-    async def not_found_handler(request: Request, exc: Exception) -> JSONResponse:
+    async def not_found_handler(request: Request, exc: Exception) -> UJSONResponse:
         # обработка ошибки 404
         logger.info(f"ошибка 404: {request.url.path}", extra={"method": request.method})
 
-        return JSONResponse(
+        return UJSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,
             content={
                 "message": f"Страница {request.url.path} не найдена",
@@ -73,7 +72,7 @@ def setup_exception_handlers(app: FastAPI) -> None:
 
 
     @app.exception_handler(Exception)
-    async def generic_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    async def generic_exception_handler(request: Request, exc: Exception) -> UJSONResponse:
         # обработчик остальных исключений
 
         logger.error(
@@ -85,7 +84,7 @@ def setup_exception_handlers(app: FastAPI) -> None:
         is_production = False
         error_detail = str(exc) if not is_production else "Внутренняя ошибка сервера"
 
-        return JSONResponse(
+        return UJSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content={
                 "message": "Внутренняя ошибка сервера",

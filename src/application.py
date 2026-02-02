@@ -5,9 +5,9 @@ from fastapi.responses import JSONResponse
 
 from src.core.config_logging import setup_logging
 from src.exception.exception_handlers import setup_exception_handlers
-from src.routers.v1.user_router import router as user_router
-from src.routers.v1.author_router import router as author_router
-from src.routers.v1.student_router import router as student_router
+from src.routers.v1.user import router as user_router
+from src.routers.v1.author import router as author_router
+from src.routers.v1.student import router as student_router
 
 
 setup_logging()
