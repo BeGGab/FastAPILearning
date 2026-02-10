@@ -1,93 +1,68 @@
 import uuid
 import logging
 from typing import List
-from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.schemas.student import (SStudentCreate, SStudentRead, SStudentUpdate)
-from src.models.student import Student
-from src.service.courses import update_courses
-from src.exception.client_exception import BadRequestError, NotFoundError
+from src.schemas.student import SStudentCreate, SStudentRead, SStudentUpdate
+from src.repositories.course import update as update_courses
 
+from src.exception.client_exception import ValidationError, NotFoundError
+
+from src.repositories.students import create, get_all, get_id, update, delete
 
 
 logger = logging.getLogger(__name__)
 
 
-async def get_student_by_id(session: AsyncSession, student_id: uuid.UUID) -> Student:
-    query = (
-        select(Student).options(joinedload(Student.courses)).filter_by(id=student_id)
-    )
-    result = await session.execute(query)
-    student = result.scalar()
-    if not student:
-        logger.error(f"Студент с id {student_id} не найден")
-        raise NotFoundError(student_id=student_id)
-    return student
-
-
 async def add_student(
     session: AsyncSession, student_data: SStudentCreate
 ) -> SStudentRead:
-    student, courses = student_data.to_orm_models()
-    student.courses = await update_courses(session, student_data.courses)
+    student = await create(session, student_data)
     if not student:
-        raise BadRequestError(detail="Ошибка при создании студента")
-
-    session.add(student)
-    await session.flush()
-    await session.refresh(student, ["courses"])
+        logger.error(f"Ошибка при создании студента")
+        raise ValidationError(detail="Ошибка при создании студента")
+    await session.refresh(student, attribute_names=["courses"])
     return SStudentRead.model_validate(student, from_attributes=True)
 
 
-
 async def find_all_students(session: AsyncSession, **filter_by) -> List[SStudentRead]:
-    query = select(Student).options(joinedload(Student.courses)).filter_by(**filter_by)
-    result = await session.execute(query)
-    record = list(result.unique().scalars().all())
-    if not record:
-        logger.warning(f"Студенты с параметрами {filter_by} не найдены, возвращен пустой список.")
-        raise NotFoundError(detail=f"Студенты с параметрами {filter_by} не найдены")
-    return [SStudentRead.model_validate(rec, from_attributes=True) for rec in record]
+    student_orm = await get_all(session, **filter_by)
+    if not student_orm:
+        logger.error(f"Не нашло ни одного студента")
+        raise NotFoundError(detail="Студенты не найдены")
+
+    return [
+        SStudentRead.model_validate(student_orm, from_attributes=True)
+        for student_orm in student_orm
+    ]
 
 
-async def find_one_with_id(session: AsyncSession, student_id: uuid.UUID) -> SStudentRead:
-    query = select(Student).options(joinedload(Student.courses)).filter_by(id=student_id)
-    result = await session.execute(query)
-    record = result.scalar()
-    if not record:
+async def find_one_with_id(
+    session: AsyncSession, student_id: uuid.UUID
+) -> SStudentRead:
+    student_orm = await get_id(session, student_id)
+    if not student_orm:
         logger.error(f"Студент с id {student_id} не найден")
         raise NotFoundError(student_id=student_id)
-    return SStudentRead.model_validate(record, from_attributes=True)
+    return SStudentRead.model_validate(student_orm, from_attributes=True)
 
 
 async def update_student_with_course(
     session: AsyncSession, student_id: uuid.UUID, student_data: SStudentUpdate
 ) -> SStudentRead:
-    student = await get_student_by_id(session=session, student_id=student_id)
-    if not student:
-        logger.error(f"Ошибка при поиске записи в базе данных")
-        raise NotFoundError(student_id=student_id)
-    update_data = student_data.model_dump(exclude_unset=True)
-
-    if "name" in update_data:
-        student.name = update_data["name"]
-    if "courses" in update_data:
-        student.courses = await update_courses(session, student_data.courses)
-
+    student_orm = await update(session, student_id, student_data)
+    if not student_orm:
+        logger.error(f"Ошибка при обновлении студента")
+        raise ValidationError(detail="Ошибка при обновлении студента")
     await session.flush()
-    await session.refresh(student, attribute_names=["courses"])
-    return SStudentRead.model_validate(student, from_attributes=True)
-
-
+    await session.refresh(student_orm, attribute_names=["courses"])
+    return SStudentRead.model_validate(student_orm, from_attributes=True)
 
 
 async def delete_student(session: AsyncSession, student_id: uuid.UUID):
-    student = await get_student_by_id(session, student_id=student_id)
+    student = await get_id(session, student_id)
     if not student:
         logger.error(f"Ошибка при удалении записи из базы данных")
         raise NotFoundError(student_id=student_id)
-    await session.delete(student)
+    await delete(session, student_id)
     return f"Студент с id {student_id} успешно удалён"

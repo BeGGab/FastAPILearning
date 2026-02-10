@@ -83,7 +83,8 @@ class SAuthorUpdate(BaseModel):
         elif isinstance(value, str):
             return value
         else:
-            raise ValidationError
+            raise ValidationError(detail="Имя автора должно быть числом или строкой")
+        
 
 
 
@@ -96,29 +97,19 @@ class SAuthorUpdate(BaseModel):
 
     
 
-    async def apply_updates(self, author: Author) -> None:
-        for field, value in self.model_dump(
+    def apply_updates(self, author: Author) -> None:
+        update_data = self.model_dump(
             exclude_unset=True, 
             exclude_none=True,
             exclude={"books"}
-        ).items():
+        )
+
+        for field, value in update_data.items():
             setattr(author, field, value)
 
         if self.books is not None:
-            current_books = {book.title: book for book in author.books}
-            incoming_books = {book_schema.title: book_schema for book_schema in self.books}
-
-            books_to_remove = [
-                book for title, book in current_books.items() if title not in incoming_books
-            ]
-
-            books_to_add = [
-                Book(**incoming_books[title].model_dump()) for title in incoming_books if title not in current_books
-            ]
-
-            for book in books_to_remove:
-                author.books.remove(book)
-            author.books.extend(books_to_add)
+            new_books_map = {b.title: b for b in self.books}
+            author.books = [b.to_orm_model() for b in new_books_map.values()]
 
 
 class SAuthorRead(BaseModel):

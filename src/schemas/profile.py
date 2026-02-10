@@ -28,7 +28,7 @@ class SProfileCreate(BaseModel):
 class SProfileUpdate(BaseModel):
     first_name: Optional[str] = Field(None, min_length=3, max_length=50, description="Имя")
     last_name: Optional[str] = Field(None, description="Фамилия")
-    phone_number: Optional[str] = Field(..., description="Номер телефона")
+    phone_number: Optional[str] = Field(None, description="Номер телефона")
     bio: Optional[str] = Field(None, description="Биография")
 
     @field_validator("phone_number")

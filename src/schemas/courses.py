@@ -34,3 +34,5 @@ class SCourseRead(BaseModel):
     title: str
 
     model_config = ConfigDict(from_attributes=True)
+
+    

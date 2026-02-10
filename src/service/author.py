@@ -1,31 +1,28 @@
 import uuid
 import logging
 from typing import List
-from sqlalchemy import select, update, delete, event, insert
-from sqlalchemy.orm import joinedload, selectinload
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate
-from src.models.author import Author
-from src.exception.client_exception import BadRequestError, NotFoundError
+
+from src.repositories.author import get_id, get_all
+
+from src.exception.client_exception import ValidationError, NotFoundError
 
 logger = logging.getLogger(__name__)
 
 
-async def get_author_by_id(session: AsyncSession, author_id: uuid.UUID) -> Author:
-    query = select(Author).options(joinedload(Author.books)).filter_by(id=author_id)
-    result = await session.execute(query)
-    author = result.scalar()
-    if not author:
-        logger.error(f"Ошибка при поиске записи в базе данных")
-        raise NotFoundError(author_id=author_id)
-    return author
+
 
 
 async def create_author_with_books(
     session: AsyncSession, data: SAuthorCreate
 ) -> SAuthorRead:
         author, books = data.to_orm_models()
+        if not author:
+            logger.error(f"Ошибка при создании автора")
+            raise ValidationError(detail="Ошибка при создании автора")
 
         session.add(author)
         await session.flush()
@@ -34,32 +31,34 @@ async def create_author_with_books(
 
 
 async def find_one_or_none_by_id(session: AsyncSession, id: uuid.UUID) -> SAuthorRead:
-    query = select(Author).options(joinedload(Author.books)).filter_by(id=id)
-    result = await session.execute(query)
-    record = result.scalar()
-    if not record:
-        raise NotFoundError(author_id=id)
-    return SAuthorRead.model_validate(record, from_attributes=True)
+    author = await get_id(session, id=id)
+    if not author:
+        logger.error(f"Ошибка при поиске записи в базе данных")
+        raise NotFoundError(detail=f"Автор с id {id} не найден")
+    return SAuthorRead.model_validate(author, from_attributes=True)
 
 
-async def find_all_authors(session: AsyncSession, **filter_by) -> List[SAuthorRead]:
-    query = select(Author).options(selectinload(Author.books)).filter_by(**filter_by)
-    result = await session.execute(query)
-    record = result.scalars().all()
-    if not record:
+async def find_all_authors(
+    session: AsyncSession, skip: int = 0, limit: int = 100, **filter_by
+) -> List[SAuthorRead]:
+    authors = await get_all(session, skip, limit, **filter_by)
+    if not authors:
+        logger.warning(
+            f"Авторы с параметрами {filter_by} не найдены, возвращен пустой список."
+        )
         raise NotFoundError(detail=f"Авторы с параметрами {filter_by} не найдены")
-    return [SAuthorRead.model_validate(rec, from_attributes=True) for rec in record]
+    return [SAuthorRead.model_validate(rec, from_attributes=True) for rec in authors]
 
 
 async def update_author_with_books(
     session: AsyncSession, author_id: uuid.UUID, author_data: SAuthorUpdate
 ) -> SAuthorRead:
-    author = await get_author_by_id(session=session, author_id=author_id)
+    author = await get_id(session=session, id=author_id)
     if not author:
         logger.error(f"Ошибка при поиске автора")
         raise NotFoundError(author_id=author_id)
     
-    await author_data.apply_updates(author)
+    author_data.apply_updates(author)
 
     await session.flush()
     await session.refresh(author, ["books"])
@@ -68,7 +67,7 @@ async def update_author_with_books(
 
 
 async def delete_author(session: AsyncSession, author_id: uuid.UUID):
-    author = await get_author_by_id(session, author_id=author_id)
+    author = await get_id(session, id=author_id)
     if not author:
         logger.error(f"Ошибка при удалении записи из базы данных")
         raise NotFoundError(author_id=author_id)

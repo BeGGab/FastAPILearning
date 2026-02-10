@@ -1,13 +1,14 @@
-import uuid
+
 import logging
 from typing import List
-from sqlalchemy import select
-from sqlalchemy.orm import joinedload
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.schemas.courses import SCourseCreate, SCourseRead
-from src.models.courses import Course
-from src.exception.client_exception import NotFoundError
+
+from src.repositories.course import (find, create, update)
+
+from src.exception.client_exception import BadRequestError, NotFoundError
 
 logger = logging.getLogger(__name__)
 
@@ -16,32 +17,41 @@ logger = logging.getLogger(__name__)
 async def find_existing_courses(
     session: AsyncSession, course_titles: List[str]
 ) -> List[SCourseRead]:
-    query = select(Course).filter(Course.title.in_(course_titles))
-    result = await session.execute(query)
-    records = result.scalars().all()
-    return [SCourseRead.model_validate(rec, from_attributes=True) for rec in records]
+    course_orm = await find(session, course_titles)
+    if not course_orm:
+        logger.error(f"Ошибка при поиске записи в базе данных")
+        raise NotFoundError(detail=f"Курсы с параметрами {course_titles} не найдены")
+    return [SCourseRead.model_validate(course, from_attributes=True) for course in course_orm]
+
+
+
 
 
 
 
 async def create_new_courses(
     session: AsyncSession, new_course_data: List[SCourseCreate]
-) -> List[Course]:
-    new_courses= [c.to_orm_model() for c in new_course_data]
+) -> List[SCourseRead]:
+    new_courses = await create(session, new_course_data)
+    if not new_courses:
+        logger.error(f"Ошибка при создании курса")
+        raise BadRequestError(detail="Ошибка при создании курса")
 
-    session.add_all(new_courses)
     await session.flush()
-    return new_courses
+    return [SCourseRead.model_validate(course, from_attributes=True) for course in new_courses]
+
+
+
+
 
 
 
 
 async def update_courses(
     session: AsyncSession, course_data: List[SCourseCreate]
-) -> List[Course]:
-    course_titles = [c.title for c in course_data]
-    existing_courses = await find_existing_courses(session, course_titles)
-    existing_titles = {c.title for c in existing_courses}
-    new_course_data = [c for c in course_data if c.title not in existing_titles]
-    new_courses = await create_new_courses(session, new_course_data)
-    return existing_courses + new_courses
+) -> List[SCourseRead]:
+    update_courses = await update(session, course_data)
+    if not update_courses:
+        logger.error(f"Ошибка при обновлении курса")
+        raise BadRequestError(detail="Ошибка при обновлении курса")
+    return [SCourseRead.model_validate(course, from_attributes=True) for course in update_courses]

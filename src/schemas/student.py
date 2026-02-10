@@ -11,6 +11,7 @@ from typing import Optional, List
 
 from src.models.student import Student
 from src.schemas.courses import (SCourseCreate, SCourseRead)
+
 from src.exception.client_exception import ValidationError, NotFoundError
 
 
@@ -62,14 +63,11 @@ class SStudentUpdate(BaseModel):
             raise NotFoundError("Нет данных для обновления")
         return self
 
-    async def apply_updates(self, student: Student) -> None:
+    def apply_updates(self, student: Student):
         for field, value in self.model_dump(
             exclude_unset=True, exclude_none=True, exclude={"courses"}
         ).items():
             setattr(student, field, value)
-            
-
-        
 
 
 class SStudentRead(BaseModel):

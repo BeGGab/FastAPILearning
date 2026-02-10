@@ -28,23 +28,19 @@ class SUserCreate(BaseModel):
     @field_validator("email", mode="before")
     @classmethod
     def validate_email(cls, v: str) -> str:
-        if v is None or v == "string":
+        if not v or v == "string":
             raise ValidationError(detail=f"Электронная почта не должна быть пустой")
         return v
 
     @field_validator("username", mode="before")
     @classmethod
     def validate_username(cls, v: str):
-        if v is None or v == "string":
+        if not v or v == "string":
             raise ValidationError(detail=f"Username пользователя не должно быть пустым")
         return v
 
-    @model_validator(mode="after")
     def to_orm_models(self) -> tuple[User, Optional[Profile]]:
-        user = User(
-            username=self.username,
-            email=self.email,
-        )
+        user = User(**self.model_dump(exclude={"profile"}))
         profile = None
         if self.profile:
             profile = Profile(**self.profile.model_dump())
@@ -83,18 +79,13 @@ class SUserUpdate(BaseModel):
             exclude_unset=True, exclude_none=True, exclude={"profile"}
         ).items():
             setattr(user, field, value)
-
-        if self.profile is not None and self.profile.model_dump(
-            exclude_unset=True, exclude_none=True
-        ):
+            
+        if self.profile:
+            update_data = self.profile.model_dump(exclude_unset=True)
             if user.profile is None:
-                user.profile = Profile(
-                    **self.profile.model_dump(exclude_unset=True, exclude_none=True)
-                )
+                user.profile = Profile(**update_data)
             else:
-                for field, value in self.profile.model_dump(
-                    exclude_unset=True, exclude_none=True
-                ).items():
+                for field, value in update_data.items():
                     setattr(user.profile, field, value)
 
 
