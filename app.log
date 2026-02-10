@@ -7933,3 +7933,146 @@ OSError: Multiple exceptions: [Errno 10061] Connect call failed ('::1', 5432, 0,
 2026-02-09 21:38:52,882 - src.exception.exception_handlers - INFO - exception_handlers:63 - ошибка 404: /api/v1/users_profiles/a1c16145-2fc7-41e5-a744-6df4af17f95e
 2026-02-09 21:39:01,029 - src.exception.exception_handlers - WARNING - exception_handlers:21 - Ошибка 400: {'message': 'Неверный запрос', 'error_code': 'validation_error', 'status_code': 422, 'tail': 'Имя не должно быть пустым', 'context': {}}
 2026-02-09 21:40:21,653 - src.exception.exception_handlers - WARNING - exception_handlers:21 - Ошибка 400: {'message': 'Неверный запрос', 'error_code': 'validation_error', 'status_code': 422, 'tail': 'Имя не должно быть пустым', 'context': {}}
+2026-02-10 17:19:35,529 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:19:52,516 - src.exception.exception_handlers - WARNING - exception_handlers:21 - Ошибка 400: message='Неверный запрос' error_code='validation_error' timestamp=datetime.datetime(2026, 2, 10, 17, 19, 52, 513869) status_code=400 detail=[] context={'status_code': 422, 'tail': 'Username пользователя не должно быть пустым', 'context': {}}
+2026-02-10 17:19:52,520 - src.exception.exception_handlers - ERROR - exception_handlers:78 - Необработанная ошибка: ErrorResponse(message='Неверный запрос', error_code='validation_error', timestamp=datetime.datetime(2026, 2, 10, 17, 19, 52, 513869), status_code=400, detail=[], context={'status_code': 422, 'tail': 'Username пользователя не должно быть пустым', 'context': {}}) is not JSON serializable
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 298, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 674, in solve_dependencies
+    ) = await request_body_to_args(  # body_params checked above
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 938, in request_body_to_args
+    v_, errors_ = _validate_value_with_model_field(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\dependencies\utils.py", line 714, in _validate_value_with_model_field
+    v_, errors_ = field.validate(value, values, loc=loc)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\_compat.py", line 130, in validate
+    self._type_adapter.validate_python(value, from_attributes=True),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\pydantic\type_adapter.py", line 421, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\schemas\user.py", line 39, in validate_username
+    raise ValidationError(detail=f"Username пользователя не должно быть пустым")
+src.exception.client_exception.ValidationError: 400: message='Неверный запрос' error_code='validation_error' timestamp=datetime.datetime(2026, 2, 10, 17, 19, 52, 513869) status_code=400 detail=[] context={'status_code': 422, 'tail': 'Username пользователя не должно быть пустым', 'context': {}}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 59, in wrapped_app
+    response = await handler(conn, exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\exception\exception_handlers.py", line 30, in http_exception_handler
+    return UJSONResponse(status_code=exc.status_code, content=exc.detail)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\responses.py", line 190, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\responses.py", line 47, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\responses.py", line 33, in render
+    return ujson.dumps(content, ensure_ascii=False).encode("utf-8")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ErrorResponse(message='Неверный запрос', error_code='validation_error', timestamp=datetime.datetime(2026, 2, 10, 17, 19, 52, 513869), status_code=400, detail=[], context={'status_code': 422, 'tail': 'Username пользователя не должно быть пустым', 'context': {}}) is not JSON serializable
+2026-02-10 17:21:01,220 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:21:32,736 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:21:37,890 - src.exception.exception_handlers - WARNING - exception_handlers:22 - Ошибка 400: message='Неверный запрос' error_code='validation_error' timestamp=datetime.datetime(2026, 2, 10, 17, 21, 37, 889891) status_code=400 detail=[] context={'status_code': 422, 'tail': 'Username пользователя не должно быть пустым', 'context': {}}
+2026-02-10 17:21:58,975 - src.exception.exception_handlers - WARNING - exception_handlers:22 - Ошибка 400: message='Неверный запрос' error_code='validation_error' timestamp=datetime.datetime(2026, 2, 10, 17, 21, 58, 975443) status_code=400 detail=[] context={'status_code': 422, 'tail': 'Имя не должно быть пустым', 'context': {}}
+2026-02-10 17:23:12,980 - src.service.author - ERROR - author:72 - Ошибка при удалении записи из базы данных
+2026-02-10 17:23:12,986 - src.exception.exception_handlers - INFO - exception_handlers:66 - ошибка 404: /api/v1/authors_books/5eab261c-b554-4b34-91fb-fc12a8f6eed5
+2026-02-10 17:24:04,812 - src.service.author - ERROR - author:36 - Ошибка при поиске записи в базе данных
+2026-02-10 17:24:04,816 - src.exception.exception_handlers - INFO - exception_handlers:66 - ошибка 404: /api/v1/authors_books/5eab261c-b554-4b34-91fb-fc12a8f6eed5
+2026-02-10 17:25:43,137 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:25:55,203 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:26:09,214 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:26:22,474 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:26:26,549 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:26:29,572 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:26:32,265 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:26:34,711 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:26:44,593 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:26:55,052 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:27:01,300 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:27:32,907 - src.service.author - ERROR - author:36 - Ошибка при поиске записи в базе данных
+2026-02-10 17:27:32,911 - src.exception.exception_handlers - ERROR - exception_handlers:82 - Необработанная ошибка: setup_exception_handlers.<locals>.not_found_handler() missing 1 required positional argument: 'datetime'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\author.py", line 36, in find_author_is_id
+    return await find_one_or_none_by_id(session=session, id=id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\author.py", line 37, in find_one_or_none_by_id
+    raise NotFoundError(detail=f"Автор с id {id} не найден")
+src.exception.client_exception.NotFoundError: 404: message='Автор с id 5eab261c-b554-4b34-91fb-fc12a8f6eed5 не найден' error_code='not_found' timestamp=datetime.datetime(2026, 2, 10, 17, 27, 32, 909246) status_code=404 detail=[] context={}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 59, in wrapped_app
+    response = await handler(conn, exc)
+                     ^^^^^^^^^^^^^^^^^^
+TypeError: setup_exception_handlers.<locals>.not_found_handler() missing 1 required positional argument: 'datetime'
+2026-02-10 17:28:07,241 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:28:13,545 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:28:33,670 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:28:57,284 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 17:29:08,693 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 19:45:09,415 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 20:04:03,716 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 20:07:07,522 - src.application - INFO - application:42 - Запуск приложения
+2026-02-10 20:07:09,964 - src.application - INFO - application:42 - Запуск приложения

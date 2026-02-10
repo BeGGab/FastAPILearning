@@ -5,7 +5,8 @@ from sqlalchemy.orm import relationship, Mapped, mapped_column
 from datetime import datetime
 
 from src.core.db import Base
-from src.core.db import uniq_str_an
+from src.models.author import Author
+
 
 metadata = sa.MetaData()
 
@@ -16,10 +17,10 @@ class Book(Base):
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     title: Mapped[List[str]] = mapped_column(sa.String())
     created_at: Mapped[datetime] = mapped_column(
-        default=datetime.utcnow, nullable=False
+        default=datetime.now, nullable=False
     )
     updated_at: Mapped[datetime | None] = mapped_column(
-        onupdate=datetime.utcnow, nullable=True
+        onupdate=datetime.now, nullable=True
     )
 
     author_id: Mapped[uuid.UUID] = mapped_column(

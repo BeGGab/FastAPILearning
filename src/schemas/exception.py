@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime 
 
 
@@ -17,4 +17,4 @@ class ErrorResponse(BaseModel):
     timestamp: datetime = Field(default_factory=datetime.now, description="Время возникновения ошибки")
     status_code: int = Field(..., description="HTTP статус код ошибки")
     detail: List[ErrorDetail] = Field(..., description="Детали ошибки")
-    context: 
+    context: Dict[str, Any] = Field(..., description="Дополнительный контекст ошибки")

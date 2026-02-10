@@ -14,7 +14,7 @@ async def get_id(session: AsyncSession, **filter_by) -> Optional[User]:
     result = await session.execute(query)
     return result.unique().scalar()
 
-async def get_all(session: AsyncSession, **filter_by) -> List[User]:
-    query = select(User).options(joinedload(User.profile)).filter_by(**filter_by)
+async def get_all(session: AsyncSession, skip: int = 0, limit: int = 100, **filter_by) -> List[User]:
+    query = select(User).options(joinedload(User.profile)).filter_by(**filter_by).offset(skip).limit(limit)
     result = await session.execute(query)
     return result.scalars().all()

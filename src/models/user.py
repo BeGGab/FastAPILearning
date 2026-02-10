@@ -20,10 +20,10 @@ class User(Base):
     username: Mapped[uniq_str_an]
     email: Mapped[uniq_str_an]
     created_at: Mapped[datetime] = mapped_column(
-        default=datetime.utcnow, nullable=False
+        default=datetime.now, nullable=False
     )
     updated_at: Mapped[datetime | None] = mapped_column(
-        onupdate=datetime.utcnow, nullable=True
+        onupdate=datetime.now, nullable=True
     )
 
     profile: Mapped["Profile"] = relationship(

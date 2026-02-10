@@ -43,8 +43,8 @@ async def find_one_or_none_with_profile(
     return SUserRead.model_validate(user, from_attributes=True)
 
 
-async def find_all_with_profiles(session: AsyncSession, **filter_by) -> List[SUserRead]:
-    users = await get_all(session, **filter_by)
+async def find_all_with_profiles(session: AsyncSession, skip: int = 0, limit: int = 100, **filter_by) -> List[SUserRead]:
+    users = await get_all(session, skip, limit,  **filter_by)
     if not users:
         logger.warning(
             f"Пользователи с параметрами {filter_by} не найдены, возвращен пустой список."

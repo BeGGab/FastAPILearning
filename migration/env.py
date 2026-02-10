@@ -4,12 +4,6 @@ from src.core.db import Base
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
-from models.author import Author
-from models.user import User
-from models.student import Student, student_course\
-from src.models.courses_models import Course
-from models.books import Books
-from models.profile import Profile
 
 from alembic import context
 

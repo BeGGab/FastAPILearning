@@ -1,9 +1,9 @@
 import logging
 from typing import Union
 from fastapi import FastAPI, Request, status
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import UJSONResponse
-from pydantic import ValidationError
 
 from src.exception.base import BaseHTTPException
 
@@ -27,7 +27,9 @@ def setup_exception_handlers(app: FastAPI) -> None:
                     **exc.context,
                 },
             )
-            return UJSONResponse(status_code=exc.status_code, content=exc.detail)
+        # Преобразуем Pydantic модель в словарь, чтобы datetime и другие типы корректно сериализовались
+        content = jsonable_encoder(exc.detail)
+        return UJSONResponse(status_code=exc.status_code, content=content)
 
     @app.exception_handler(RequestValidationError)
     async def validation_exception_handler(

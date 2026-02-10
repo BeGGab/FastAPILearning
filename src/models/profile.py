@@ -1,5 +1,4 @@
 import sqlalchemy as sa
-from typing import List
 import uuid
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from datetime import datetime
@@ -21,10 +20,10 @@ class Profile(Base):
     phone_number: Mapped[uniq_str_an]
     bio: Mapped[str] = mapped_column(sa.Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
-        default=datetime.utcnow, nullable=False
+        default=datetime.now, nullable=False
     )
     updated_at: Mapped[datetime | None] = mapped_column(
-        onupdate=datetime.utcnow, nullable=True
+        onupdate=datetime.now, nullable=True
     )
 
     user_id: Mapped[uuid.UUID] = mapped_column(

@@ -1,5 +1,9 @@
-from fastapi import HTTPException, status
-from typing import List, Dict, Any, Optional
+from fastapi import HTTPException
+from typing import List, Dict, Any, Optional, Union
+from src.schemas.exception import ErrorDetail, ErrorResponse
+
+
+
 
 
 class BaseHTTPException(HTTPException):
@@ -7,7 +11,7 @@ class BaseHTTPException(HTTPException):
 
     def __init__(self,
                  status_code: int,
-                 detail: Any = None,
+                 detail: Union[str, ErrorResponse],
                  headers: Optional[Dict[str, Any]] = None,
                  error_code: Optional[str] = None,
                  context: Optional[Dict[str, Any]] = None):
@@ -20,8 +24,10 @@ class BaseHTTPException(HTTPException):
     def format_detail(self) -> None:
         # Формируем детали в структурированный вид
         if isinstance(self.detail, str):
-            self.detail = {
-                "message": self.detail,
-                "error_code": self.error_code,
-                **self.context
-            }
+            self.detail = ErrorResponse(
+                message=self.detail,
+                error_code=self.error_code,
+                status_code=self.status_code,
+                detail=[],
+                context=self.context,
+            )
