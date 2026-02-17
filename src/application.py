@@ -8,12 +8,12 @@ from src.exception.exception_handlers import setup_exception_handlers
 from src.routers.v1.user import router as user_router
 from src.routers.v1.author import router as author_router
 from src.routers.v1.student import router as student_router
+from src.routers.v1.courses import router as courses_router
 
 
 setup_logging()
 
 logger = logging.getLogger(__name__)
-
 
 
 def get_app() -> FastAPI:
@@ -30,7 +30,6 @@ def get_app() -> FastAPI:
         default_response_class=JSONResponse,
     )
 
-
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[],  # Указывайте здесь домены вашего фронтенда
@@ -43,6 +42,7 @@ def get_app() -> FastAPI:
     app.include_router(user_router)
     app.include_router(author_router)
     app.include_router(student_router)
+    app.include_router(courses_router)
     setup_exception_handlers(app)
 
     return app

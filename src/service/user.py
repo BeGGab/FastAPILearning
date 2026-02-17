@@ -5,18 +5,13 @@ from typing import List
 from sqlalchemy import select, update, delete, event, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.schemas.user import (
-    SUserCreate,
-    SUserRead,
-    SUserUpdate
-)
+from src.schemas.user import SUserCreate, SUserRead, SUserUpdate
 
-from src.repositories.user import get_id, get_all
-from src.exception.client_exception import  NotFoundError, ValidationError
+from src.repositories.user import UserRepository as rep_user
+from src.exception.client_exception import NotFoundError, ValidationError
 
 
 logger = logging.getLogger(__name__)
-
 
 
 async def create_user_with_profile(
@@ -36,15 +31,17 @@ async def create_user_with_profile(
 async def find_one_or_none_with_profile(
     session: AsyncSession, **filter_by
 ) -> SUserRead:
-    user = await get_id(session, **filter_by)
+    user = await rep_user(session).get_id(**filter_by)
     if not user:
         logger.error(f"Ошибка при поиске записи в базе данных")
         raise NotFoundError(detail=f"Пользователь с id {filter_by} не найден")
     return SUserRead.model_validate(user, from_attributes=True)
 
 
-async def find_all_with_profiles(session: AsyncSession, skip: int = 0, limit: int = 100, **filter_by) -> List[SUserRead]:
-    users = await get_all(session, skip, limit,  **filter_by)
+async def find_all_with_profiles(
+    session: AsyncSession, skip: int = 0, limit: int = 100, **filter_by
+) -> List[SUserRead]:
+    users = await rep_user(session).get_all(skip, limit, **filter_by)
     if not users:
         logger.warning(
             f"Пользователи с параметрами {filter_by} не найдены, возвращен пустой список."
@@ -56,7 +53,7 @@ async def find_all_with_profiles(session: AsyncSession, skip: int = 0, limit: in
 async def update_user(
     session: AsyncSession, user_id: uuid.UUID, data: SUserUpdate
 ) -> SUserRead:
-    user = await get_id(session, id=user_id)
+    user = await rep_user(session).get_id(id=user_id)
     if not user:
         logger.error(f"Ошибка при поиске записи в базе данных")
         raise NotFoundError(detail=f"Пользователь с id {user_id} не найден")
@@ -69,7 +66,7 @@ async def update_user(
 
 
 async def delete_user(session: AsyncSession, user_id: uuid.UUID):
-    user = await get_id(session, id=user_id)
+    user = await rep_user(session).get_id(id=user_id)
     if not user:
         logger.error(f"Ошибка при удалении записи из базы данных")
         raise NotFoundError(detail=f"Пользователь с id {user_id} не найден")

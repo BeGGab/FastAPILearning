@@ -8076,3 +8076,437 @@ TypeError: setup_exception_handlers.<locals>.not_found_handler() missing 1 requi
 2026-02-10 20:04:03,716 - src.application - INFO - application:42 - Запуск приложения
 2026-02-10 20:07:07,522 - src.application - INFO - application:42 - Запуск приложения
 2026-02-10 20:07:09,964 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 17:51:56,138 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 17:52:24,648 - src.exception.exception_handlers - ERROR - exception_handlers:80 - Необработанная ошибка: 'AsyncSession' object has no attribute 'session'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\author.py", line 30, in find_all
+    return await find_all_authors(session=session)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\author.py", line 44, in find_all_authors
+    authors = await rep_author.get_all(session, skip, limit, **filter_by)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\repositories\author.py", line 24, in get_all
+    result = await self.session.execute(query)
+                   ^^^^^^^^^^^^
+AttributeError: 'AsyncSession' object has no attribute 'session'
+2026-02-17 17:53:09,713 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 17:54:11,601 - src.exception.exception_handlers - ERROR - exception_handlers:80 - Необработанная ошибка: 'AsyncSession' object has no attribute 'session'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\author.py", line 30, in find_all
+    return await find_all_authors(session=session)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\author.py", line 44, in find_all_authors
+    authors = await rep_author.get_all(session, skip, limit, **filter_by)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\repositories\author.py", line 24, in get_all
+    result = await self.session.execute(query)
+                   ^^^^^^^^^^^^
+AttributeError: 'AsyncSession' object has no attribute 'session'
+2026-02-17 17:55:10,217 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 17:55:44,960 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:00:07,568 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:01:09,122 - src.exception.exception_handlers - ERROR - exception_handlers:80 - Необработанная ошибка: 'AsyncSession' object has no attribute 'session'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student.py", line 32, in get_all_students
+    return await find_all_students(session=session)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\student.py", line 39, in find_all_students
+    student_orm = await rep_student.get_all(session, skip, limit, **filter_by)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\repositories\students.py", line 33, in get_all
+    result = await self.session.execute(query)
+                   ^^^^^^^^^^^^
+AttributeError: 'AsyncSession' object has no attribute 'session'
+2026-02-17 18:02:08,078 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:02:11,347 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:02:15,660 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:02:30,703 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:02:33,429 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:02:39,738 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:02:42,336 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:02:44,970 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:02:55,793 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:02:58,337 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:03:07,688 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:03:11,957 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:03:26,583 - src.exception.exception_handlers - WARNING - exception_handlers:21 - Ошибка 400: message='Неверный запрос' error_code='validation_error' timestamp=datetime.datetime(2026, 2, 17, 18, 3, 26, 583806) status_code=400 detail=[] context={'status_code': 422, 'tail': 'Имя не должно быть пустым', 'context': {}}
+2026-02-17 18:04:50,971 - src.exception.exception_handlers - ERROR - exception_handlers:80 - Необработанная ошибка: CourseRepository.find() got an unexpected keyword argument 'student_id'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student.py", line 57, in delete_students
+    await delete_student(session=session, student_id=id)
+  File "D:\Projects\Project\src\service\student.py", line 84, in delete_student
+    await delete_courses(session, student_id=student_id)
+  File "D:\Projects\Project\src\service\courses.py", line 57, in delete_courses
+    courses = await rep(session).find(**filter_by)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: CourseRepository.find() got an unexpected keyword argument 'student_id'
+2026-02-17 18:05:22,125 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:05:24,968 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:05:30,851 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:06:05,321 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:06:48,061 - src.exception.exception_handlers - ERROR - exception_handlers:80 - Необработанная ошибка: CourseRepository.find() got an unexpected keyword argument 'student_id'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\student.py", line 57, in delete_students
+    await delete_student(session=session, student_id=id)
+  File "D:\Projects\Project\src\service\student.py", line 84, in delete_student
+    await delete_courses(session, student_id=filter_by)
+  File "D:\Projects\Project\src\service\courses.py", line 57, in delete_courses
+    courses = await rep(session).find(**filter_by)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: CourseRepository.find() got an unexpected keyword argument 'student_id'
+2026-02-17 18:07:03,932 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:08:08,303 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:20:01,957 - src.application - INFO - application:42 - Запуск приложения
+2026-02-17 18:20:36,734 - src.application - INFO - application:45 - Запуск приложения
+2026-02-17 18:20:39,435 - src.application - INFO - application:44 - Запуск приложения
+2026-02-17 18:20:43,938 - src.application - INFO - application:44 - Запуск приложения
+2026-02-17 18:20:48,962 - src.application - INFO - application:44 - Запуск приложения
+2026-02-17 18:20:51,683 - src.application - INFO - application:44 - Запуск приложения
+2026-02-17 18:20:57,485 - src.application - INFO - application:44 - Запуск приложения
+2026-02-17 18:21:03,220 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:21:20,113 - src.service.courses - ERROR - courses:20 - Ошибка при поиске записи в базе данных
+2026-02-17 18:21:20,117 - src.exception.exception_handlers - INFO - exception_handlers:65 - ошибка 404: /api/v1/courses/
+2026-02-17 18:25:45,496 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:26:23,876 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:27:03,003 - src.exception.exception_handlers - ERROR - exception_handlers:80 - Необработанная ошибка: CourseRepository.find() got an unexpected keyword argument 'name'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\courses.py", line 49, in delete_course
+    await delete_courses(session=session, name=name)
+  File "D:\Projects\Project\src\service\courses.py", line 70, in delete_courses
+    courses = await rep(session).find(**filter_by)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: CourseRepository.find() got an unexpected keyword argument 'name'
+2026-02-17 18:28:54,167 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:29:00,607 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:29:03,141 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:29:08,035 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:29:12,363 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:29:26,968 - src.exception.exception_handlers - ERROR - exception_handlers:80 - Необработанная ошибка: CourseRepository.find() missing 1 required positional argument: 'course_titles'
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\courses.py", line 49, in delete_course
+    await delete_courses(session=session, name=name)
+  File "D:\Projects\Project\src\service\courses.py", line 70, in delete_courses
+    courses = await rep(session).find(**filter_by)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: CourseRepository.find() missing 1 required positional argument: 'course_titles'
+2026-02-17 18:29:39,831 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:29:44,350 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:29:46,989 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:29:57,065 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:30:08,032 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:30:10,558 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:30:15,117 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:30:19,253 - src.exception.exception_handlers - ERROR - exception_handlers:80 - Необработанная ошибка: IN expression list, SELECT construct, or bound parameter object expected, got 'Дизайн'.
+Traceback (most recent call last):
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\courses.py", line 49, in delete_course
+    await delete_courses(session=session, name=name)
+  File "D:\Projects\Project\src\service\courses.py", line 70, in delete_courses
+    courses = await rep(session).find(course_titles=name)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\repositories\course.py", line 17, in find
+    query = select(Course).filter(Course.title.in_(course_titles))
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\operators.py", line 943, in in_
+    return self.operate(in_op, other)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\orm\attributes.py", line 453, in operate
+    return op(self.comparator, *other, **kwargs)  # type: ignore[no-any-return]  # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\operators.py", line 2146, in in_op
+    return a.in_(b)
+           ^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\operators.py", line 943, in in_
+    return self.operate(in_op, other)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\orm\properties.py", line 479, in operate
+    return op(self.__clause_element__(), *other, **kwargs)  # type: ignore[no-any-return]  # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\operators.py", line 2146, in in_op
+    return a.in_(b)
+           ^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\operators.py", line 943, in in_
+    return self.operate(in_op, other)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 1534, in operate
+    return op(self.comparator, *other, **kwargs)  # type: ignore[no-any-return]  # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\operators.py", line 2146, in in_op
+    return a.in_(b)
+           ^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\operators.py", line 943, in in_
+    return self.operate(in_op, other)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\type_api.py", line 210, in operate
+    return op_fn(self.expr, op, *other, **addtl_kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\default_comparator.py", line 218, in _in_impl
+    seq_or_selectable = coercions.expect(
+                        ^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\coercions.py", line 395, in expect
+    resolved = impl._literal_coercion(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\coercions.py", line 878, in _literal_coercion
+    self._raise_for_expected(element, **kw)
+  File "D:\Projects\Project\venv\Lib\site-packages\sqlalchemy\sql\coercions.py", line 518, in _raise_for_expected
+    raise exc.ArgumentError(msg, code=code) from err
+sqlalchemy.exc.ArgumentError: IN expression list, SELECT construct, or bound parameter object expected, got 'Дизайн'.
+2026-02-17 18:31:13,914 - src.application - INFO - application:41 - Запуск приложения
+2026-02-17 18:32:10,241 - src.application - INFO - application:41 - Запуск приложения
