@@ -18,14 +18,13 @@ logger = logging.getLogger(__name__)
 async def add_student(
     session: AsyncSession, student_data: SStudentCreate
 ) -> SStudentRead:
-    student, courses = student_data.to_orm_models()
+    student, courses = await rep_student(session).created(student_data)
     if not student:
         logger.error(f"Ошибка при создании студента")
         raise ValidationError(detail="Ошибка при создании студента")
 
-    if courses:
-        courses_data = await rep_courses(session).update(courses)
-        student.courses = courses_data
+    courses_data = await rep_courses(session).update(courses)
+    student.courses = courses_data
 
     session.add(student)
     await session.flush()
@@ -60,15 +59,14 @@ async def find_one_with_id(
 async def update_student_with_course(
     session: AsyncSession, student_id: uuid.UUID, student_data: SStudentUpdate
 ) -> SStudentRead:
-    student = await rep_student(session).get_id(student_id)
+    student = await rep_student(session).update(student_id, student_data)
     if not student:
         logger.error(f"Ошибка при обновлении студента")
         raise ValidationError(detail="Ошибка при обновлении студента")
 
-    student_data.apply_updates(student)
-    if student_data.courses is not None:
-        await rep_courses(session).update(student_data.courses)
-        student.courses = [course.to_orm_model() for course in student_data.courses]
+    await rep_courses(session).update(student_data.courses)
+    student.courses = [course.to_orm_model() for course in student_data.courses]
+
     await session.flush()
     await session.refresh(student, attribute_names=["courses"])
     return SStudentRead.model_validate(student, from_attributes=True)

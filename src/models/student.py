@@ -7,7 +7,6 @@ from datetime import datetime
 from src.core.db import Base
 
 
-
 metadata = sa.MetaData()
 
 
@@ -29,9 +28,7 @@ class Student(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     name: Mapped[str] = mapped_column(sa.String(100), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(
-        default=datetime.now, nullable=False
-    )
+    created_at: Mapped[datetime] = mapped_column(default=datetime.now, nullable=False)
     updated_at: Mapped[datetime | None] = mapped_column(
         onupdate=datetime.now, nullable=True
     )
@@ -39,5 +36,3 @@ class Student(Base):
     courses: Mapped[List["Course"]] = relationship(
         secondary=student_course, back_populates="students", passive_deletes=True
     )
-
-

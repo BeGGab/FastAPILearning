@@ -2,7 +2,6 @@ import uuid
 import logging
 from typing import List
 
-from sqlalchemy import select, update, delete, event, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.schemas.user import SUserCreate, SUserRead, SUserUpdate
@@ -17,7 +16,7 @@ logger = logging.getLogger(__name__)
 async def create_user_with_profile(
     session: AsyncSession, user_data: SUserCreate
 ) -> SUserRead:
-    user, profile = user_data.to_orm_models()
+    user, profile = await rep_user(session).created(user_data)
     if not user:
         logger.error(f"Ошибка при создании пользователя")
         raise ValidationError(detail="Ошибка при создании пользователя")
@@ -53,12 +52,10 @@ async def find_all_with_profiles(
 async def update_user(
     session: AsyncSession, user_id: uuid.UUID, data: SUserUpdate
 ) -> SUserRead:
-    user = await rep_user(session).get_id(id=user_id)
+    user = await rep_user(session).update(user_id, data)
     if not user:
         logger.error(f"Ошибка при поиске записи в базе данных")
         raise NotFoundError(detail=f"Пользователь с id {user_id} не найден")
-
-    data.apply_to_user(user)
 
     await session.flush()
     await session.refresh(user, ["profile"])

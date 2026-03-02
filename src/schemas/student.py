@@ -10,11 +10,9 @@ from pydantic import (
 from typing import Optional, List
 
 from src.models.student import Student
-from src.schemas.courses import (SCourseCreate, SCourseRead)
+from src.schemas.courses import SCourseCreate, SCourseRead
 
 from src.exception.client_exception import ValidationError, NotFoundError
-
-
 
 
 class SStudentCreate(BaseModel):
@@ -31,6 +29,12 @@ class SStudentCreate(BaseModel):
             raise ValidationError(detail=f"Имя не должно быть пустым")
         return v
 
+    @field_validator("courses", mode="after")
+    @classmethod
+    def valide_courses(cls, v: List[SCourseCreate]) -> List[SCourseCreate]:
+        if v is None:
+            return []
+        return v
 
     def to_orm_models(self) -> tuple[Student, List[SCourseCreate]]:
         student_data = self.model_dump(exclude="courses")
@@ -55,6 +59,12 @@ class SStudentUpdate(BaseModel):
         else:
             raise ValidationError
 
+    @field_validator("courses", mode="after")
+    @classmethod
+    def valide_courses(cls, v: List[SCourseCreate]) -> List[SCourseCreate]:
+        if v is None:
+            return []
+        return v
 
     @model_validator(mode="after")
     def validate_update_data(self) -> "SStudentUpdate":

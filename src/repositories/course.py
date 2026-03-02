@@ -8,7 +8,6 @@ from src.models.courses import Course
 from src.schemas.courses import SCourseCreate
 
 
-
 class CourseRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
@@ -23,18 +22,14 @@ class CourseRepository:
         result = await self.session.execute(query)
         return result.scalars().all()
 
-    async def create(
-        self, courses_data: List[SCourseCreate]
-    ) -> List[Course]:
+    async def create(self, courses_data: List[SCourseCreate]) -> List[Course]:
         new_courses = [course.to_orm_model() for course in courses_data]
 
         self.session.add_all(new_courses)
         await self.session.flush()
         return new_courses
 
-    async def update(
-        self, course_data: List[SCourseCreate]
-    ) -> List[Course]:
+    async def update(self, course_data: List[SCourseCreate]) -> List[Course]:
         course_titles = [c.title for c in course_data]
         existing_courses = await self.find(course_titles)
         existing_titles = {c.title for c in existing_courses}

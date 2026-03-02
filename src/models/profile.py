@@ -7,7 +7,6 @@ from src.core.db import Base
 from src.core.db import uniq_str_an
 
 
-
 metadata = sa.MetaData()
 
 
@@ -19,9 +18,7 @@ class Profile(Base):
     last_name: Mapped[str] = mapped_column(sa.String(50))
     phone_number: Mapped[uniq_str_an]
     bio: Mapped[str] = mapped_column(sa.Text, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(
-        default=datetime.now, nullable=False
-    )
+    created_at: Mapped[datetime] = mapped_column(default=datetime.now, nullable=False)
     updated_at: Mapped[datetime | None] = mapped_column(
         onupdate=datetime.now, nullable=True
     )

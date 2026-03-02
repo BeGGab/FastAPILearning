@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Dict, List
 
 from src.core.enums import Status
-from src.schemas.student import (SStudentCreate, SStudentRead, SStudentUpdate)
+from src.schemas.student import SStudentCreate, SStudentRead, SStudentUpdate
 from src.service.student import (
     add_student,
     find_all_students,
@@ -28,7 +28,9 @@ async def created_student(
 
 
 @router.get("/", status_code=status.HTTP_200_OK)
-async def get_all_students(session: AsyncSession = Depends(get_async_session),) -> List[SStudentRead]:
+async def get_all_students(
+    session: AsyncSession = Depends(get_async_session),
+) -> List[SStudentRead]:
     return await find_all_students(session=session)
 
 
@@ -56,4 +58,3 @@ async def delete_students(
 ):
     await delete_student(session=session, student_id=id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
-    

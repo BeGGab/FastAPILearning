@@ -13,21 +13,18 @@ from src.exception.client_exception import ValidationError, NotFoundError
 logger = logging.getLogger(__name__)
 
 
-
-
-
 async def create_author_with_books(
     session: AsyncSession, data: SAuthorCreate
 ) -> SAuthorRead:
-        author, books = data.to_orm_models()
-        if not author:
-            logger.error(f"Ошибка при создании автора")
-            raise ValidationError(detail="Ошибка при создании автора")
+    author, books = await rep_author(session).created(data)
+    if not author:
+        logger.error(f"Ошибка при создании автора")
+        raise ValidationError(detail="Ошибка при создании автора")
 
-        session.add(author)
-        await session.flush()
-        await session.refresh(author, ["books"])
-        return SAuthorRead.model_validate(author, from_attributes=True)
+    session.add(author)
+    await session.flush()
+    await session.refresh(author, ["books"])
+    return SAuthorRead.model_validate(author, from_attributes=True)
 
 
 async def find_one_or_none_by_id(session: AsyncSession, id: uuid.UUID) -> SAuthorRead:
@@ -53,17 +50,14 @@ async def find_all_authors(
 async def update_author_with_books(
     session: AsyncSession, author_id: uuid.UUID, author_data: SAuthorUpdate
 ) -> SAuthorRead:
-    author = await rep_author(session).get_id(id=author_id)
+    author = await rep_author(session).update(author_id, author_data)
     if not author:
         logger.error(f"Ошибка при поиске автора")
         raise NotFoundError(author_id=author_id)
-    
-    author_data.apply_updates(author)
 
     await session.flush()
     await session.refresh(author, ["books"])
     return SAuthorRead.model_validate(author, from_attributes=True)
-
 
 
 async def delete_author(session: AsyncSession, author_id: uuid.UUID):

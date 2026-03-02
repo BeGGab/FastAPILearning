@@ -6,10 +6,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models.student import Student
 
+from src.schemas.student import SStudentCreate, SStudentUpdate
+
 
 class StudentRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
+
+    async def created(self, student_data: SStudentCreate) -> Student:
+        student, courses = student_data.to_orm_models()
+        return student, courses
 
     async def get_id(self, student_id: uuid.UUID) -> Optional[Student]:
         query = (
@@ -32,3 +38,12 @@ class StudentRepository:
         )
         result = await self.session.execute(query)
         return result.unique().scalars().all()
+
+    async def update(
+        self, student_id: uuid.UUID, student_data: SStudentUpdate
+    ) -> Student:
+        student = await self.get_id(student_id)
+
+        student_data.apply_updates(student)
+
+        return student

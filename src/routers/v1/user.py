@@ -32,7 +32,6 @@ async def find_user_is_id(
     id: uuid.UUID, session: AsyncSession = Depends(get_async_session)
 ) -> SUserRead:
     return await find_one_or_none_with_profile(session=session, id=id)
-    
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
@@ -40,7 +39,6 @@ async def add_user_with_profile(
     payload: SUserCreate, session: AsyncSession = Depends(get_async_session)
 ) -> SUserRead:
     return await create_user_with_profile(session=session, user_data=payload)
-    
 
 
 @router.put("/{id}", status_code=status.HTTP_200_OK)
@@ -50,7 +48,6 @@ async def update_user_profile(
     session: AsyncSession = Depends(get_async_session),
 ) -> SUserRead:
     return await update_user(session=session, user_id=id, data=payload)
-    
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)

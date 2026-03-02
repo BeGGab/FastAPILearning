@@ -8510,3 +8510,10 @@ Traceback (most recent call last):
 sqlalchemy.exc.ArgumentError: IN expression list, SELECT construct, or bound parameter object expected, got 'Дизайн'.
 2026-02-17 18:31:13,914 - src.application - INFO - application:41 - Запуск приложения
 2026-02-17 18:32:10,241 - src.application - INFO - application:41 - Запуск приложения
+2026-03-02 21:48:25,815 - src.application - INFO - application:41 - Запуск приложения
+2026-03-02 21:50:10,008 - src.application - INFO - application:41 - Запуск приложения
+2026-03-02 21:50:12,714 - src.application - INFO - application:41 - Запуск приложения
+2026-03-02 21:53:30,883 - src.application - INFO - application:41 - Запуск приложения
+2026-03-02 21:53:33,573 - src.application - INFO - application:41 - Запуск приложения
+2026-03-02 22:08:30,738 - src.application - INFO - application:41 - Запуск приложения
+2026-03-02 22:20:01,950 - src.application - INFO - application:41 - Запуск приложения

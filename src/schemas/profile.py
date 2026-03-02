@@ -1,10 +1,14 @@
 import re
 import uuid
-from pydantic import BaseModel, Field, ConfigDict, EmailStr, field_validator, model_validator
+from pydantic import (
+    BaseModel,
+    Field,
+    ConfigDict,
+    EmailStr,
+    field_validator,
+    model_validator,
+)
 from typing import Optional
-
-
-
 
 
 class SProfileCreate(BaseModel):
@@ -22,11 +26,11 @@ class SProfileCreate(BaseModel):
             )
         return values
 
-    
-    
 
 class SProfileUpdate(BaseModel):
-    first_name: Optional[str] = Field(None, min_length=3, max_length=50, description="Имя")
+    first_name: Optional[str] = Field(
+        None, min_length=3, max_length=50, description="Имя"
+    )
     last_name: Optional[str] = Field(None, description="Фамилия")
     phone_number: Optional[str] = Field(None, description="Номер телефона")
     bio: Optional[str] = Field(None, description="Биография")
@@ -35,13 +39,12 @@ class SProfileUpdate(BaseModel):
     @classmethod
     def validate_phone_number(cls, value: Optional[str]) -> Optional[str]:
         if value is None or value == "string":
-            return value  
+            return value
         if not re.match(r"^\+7\d{10}$", value):
             raise ValueError(
-                'Номер телефона должен начинаться с "+7" и содержать 10 цифр.')
+                'Номер телефона должен начинаться с "+7" и содержать 10 цифр.'
+            )
         return value
-    
-
 
 
 class SProfileRead(BaseModel):

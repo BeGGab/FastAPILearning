@@ -30,7 +30,7 @@ class SAuthorCreate(BaseModel):
         if v is None or v == "string":
             raise ValidationError(detail=f"Имя не должно быть пустым")
         return v
-    
+
     @field_validator("name", mode="after")
     @classmethod
     def valid_name(cls, v: str):
@@ -56,10 +56,11 @@ class SAuthorCreate(BaseModel):
                 elif isinstance(item, dict):
                     normalized.append(SBookCreate(**item))
                 else:
-                    raise ValidationError(detail="Элемент списка books должен быть объектом или SBookCreate")
+                    raise ValidationError(
+                        detail="Элемент списка books должен быть объектом или SBookCreate"
+                    )
             return normalized
         raise ValidationError(detail="Поле books должно быть списком")
-
 
     def to_orm_models(self) -> tuple[Author, List[Book]]:
         author_data = self.model_dump(exclude={"books"})
@@ -68,6 +69,7 @@ class SAuthorCreate(BaseModel):
         books: List[Book] = [book_schema.to_orm_model() for book_schema in self.books]
         author.books = books
         return author, books
+
 
 class SAuthorUpdate(BaseModel):
     name: Optional[str] = Field(
@@ -84,9 +86,6 @@ class SAuthorUpdate(BaseModel):
             return value
         else:
             raise ValidationError(detail="Имя автора должно быть числом или строкой")
-        
-
-
 
     @model_validator(mode="after")
     def validate_update_data(self) -> "SAuthorUpdate":
@@ -95,13 +94,9 @@ class SAuthorUpdate(BaseModel):
             raise NotFoundError(detail=f"Нет данных для обновления")
         return self
 
-    
-
     def apply_updates(self, author: Author) -> None:
         update_data = self.model_dump(
-            exclude_unset=True, 
-            exclude_none=True,
-            exclude={"books"}
+            exclude_unset=True, exclude_none=True, exclude={"books"}
         )
 
         for field, value in update_data.items():

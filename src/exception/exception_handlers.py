@@ -72,9 +72,10 @@ def setup_exception_handlers(app: FastAPI) -> None:
             },
         )
 
-
     @app.exception_handler(Exception)
-    async def generic_exception_handler(request: Request, exc: Exception) -> UJSONResponse:
+    async def generic_exception_handler(
+        request: Request, exc: Exception
+    ) -> UJSONResponse:
         # обработчик остальных исключений
 
         logger.error(

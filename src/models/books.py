@@ -16,9 +16,7 @@ class Book(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     title: Mapped[List[str]] = mapped_column(sa.String())
-    created_at: Mapped[datetime] = mapped_column(
-        default=datetime.now, nullable=False
-    )
+    created_at: Mapped[datetime] = mapped_column(default=datetime.now, nullable=False)
     updated_at: Mapped[datetime | None] = mapped_column(
         onupdate=datetime.now, nullable=True
     )

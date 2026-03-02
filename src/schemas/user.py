@@ -12,7 +12,7 @@ from typing import Optional
 
 from src.models.user import User
 from src.models.profile import Profile
-from src.schemas.profile import (SProfileCreate, SProfileUpdate, SProfileRead)
+from src.schemas.profile import SProfileCreate, SProfileUpdate, SProfileRead
 from src.exception.client_exception import ValidationError, NotFoundError
 
 
@@ -79,7 +79,7 @@ class SUserUpdate(BaseModel):
             exclude_unset=True, exclude_none=True, exclude={"profile"}
         ).items():
             setattr(user, field, value)
-            
+
         if self.profile:
             update_data = self.profile.model_dump(exclude_unset=True)
             if user.profile is None:
