@@ -1,6 +1,6 @@
 import uvicorn
 import asyncio
-import logger
+import logging
 
 logger = logging.getLogger(__name__)
 

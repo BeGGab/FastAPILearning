@@ -52,7 +52,7 @@ async def find_one_with_id(
     student_orm = await rep_student(session).get_id(student_id)
     if not student_orm:
         logger.error(f"Студент с id {student_id} не найден")
-        raise NotFoundError(student_id=student_id)
+        raise NotFoundError(detail=f"Студент с id {student_id} не найден")
     return SStudentRead.model_validate(student_orm, from_attributes=True)
 
 

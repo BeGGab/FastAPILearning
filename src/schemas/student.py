@@ -57,7 +57,7 @@ class SStudentUpdate(BaseModel):
         elif isinstance(value, str):
             return value
         else:
-            raise ValidationError
+            raise ValidationError(detail="Имя студента должно быть числом или строкой")
 
     @field_validator("courses", mode="after")
     @classmethod
@@ -70,7 +70,7 @@ class SStudentUpdate(BaseModel):
     def validate_update_data(self) -> "SStudentUpdate":
         update_fields = self.model_dump(exclude_unset=True, exclude_none=True)
         if not update_fields:
-            raise NotFoundError("Нет данных для обновления")
+            raise NotFoundError(detail=f"Нет данных для обновления")
         return self
 
     def apply_updates(self, student: Student):

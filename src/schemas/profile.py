@@ -10,6 +10,8 @@ from pydantic import (
 )
 from typing import Optional
 
+from src.exception.client_exception import ValidationError, NotFoundError
+
 
 class SProfileCreate(BaseModel):
     first_name: str = Field(None, min_length=3, max_length=50, description="Имя")
@@ -21,8 +23,8 @@ class SProfileCreate(BaseModel):
     @classmethod
     def validate_phone_number(cls, values: str) -> str:
         if not re.match(r"^\+7\d{10}$", values):
-            raise ValueError(
-                'Номер телефона должен начинаться с "+7" и содержать 10 цифр.'
+            raise ValidationError(
+                detail=f'Номер телефона должен начинаться с "+7" и содержать 10 цифр.'
             )
         return values
 
@@ -41,8 +43,8 @@ class SProfileUpdate(BaseModel):
         if value is None or value == "string":
             return value
         if not re.match(r"^\+7\d{10}$", value):
-            raise ValueError(
-                'Номер телефона должен начинаться с "+7" и содержать 10 цифр.'
+            raise ValidationError(
+                detail=f'Номер телефона должен начинаться с "+7" и содержать 10 цифр.'
             )
         return value
 

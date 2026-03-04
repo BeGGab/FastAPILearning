@@ -53,7 +53,7 @@ async def update_author_with_books(
     author = await rep_author(session).update(author_id, author_data)
     if not author:
         logger.error(f"Ошибка при поиске автора")
-        raise NotFoundError(author_id=author_id)
+        raise NotFoundError(detail=f"Автор с id {author_id} не найден")
 
     await session.flush()
     await session.refresh(author, ["books"])
@@ -64,5 +64,5 @@ async def delete_author(session: AsyncSession, author_id: uuid.UUID):
     author = await rep_author(session).get_id(id=author_id)
     if not author:
         logger.error(f"Ошибка при удалении записи из базы данных")
-        raise NotFoundError(author_id=author_id)
+        raise NotFoundError(detail=f"Автор с id {author_id} не найден")
     await session.delete(author)

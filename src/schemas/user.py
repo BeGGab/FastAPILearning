@@ -65,7 +65,9 @@ class SUserUpdate(BaseModel):
         elif isinstance(value, str):
             return value
         else:
-            raise ValidationError
+            raise ValidationError(
+                detail="Имя пользователя должно быть числом или строкой"
+            )
 
     @model_validator(mode="after")
     def validate_update_data(self) -> "SUserUpdate":
