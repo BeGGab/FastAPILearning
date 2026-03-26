@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: project-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    # Если нужен пароль в продакшене, используйте конфигурацию/секреты и включите
+    # команду с requirepass, либо подключите свой redis.conf:
+    # command: ["redis-server", "--appendonly", "yes", "--requirepass", "$REDIS_PASSWORD"]
+    # environment:
+    #   - REDIS_PASSWORD=strong_password_here
+
+volumes:
+  redis-data:

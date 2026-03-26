@@ -1,10 +1,11 @@
 import logging
-from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi import FastAPI
 
 from src.core.config_logging import setup_logging
 from src.exception.exception_handlers import setup_exception_handlers
+from src.core.dependencies import lifespan
 from src.routers.v1.user import router as user_router
 from src.routers.v1.author import router as author_router
 from src.routers.v1.student import router as student_router
@@ -28,6 +29,7 @@ def get_app() -> FastAPI:
         docs_url="/docs",
         openapi_url="/openapi.json",
         default_response_class=JSONResponse,
+        lifespan=lifespan,
     )
 
     app.add_middleware(

@@ -6,6 +6,8 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     postgres_url: PostgresDsn = Field(env="postgres_url")
+    redis_url: str = Field(env="redis_url")
+    biography_service_url: str = Field(env="biography_service_url")
 
     class Config:
         env_file = os.path.join(

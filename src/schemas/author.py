@@ -111,5 +111,8 @@ class SAuthorRead(BaseModel):
     id: uuid.UUID = Field(..., description="ID автора")
     name: str
     books: List[SBookRead]
+    biography_text: Optional[str] = Field(None, description="Биография автора")
+    year_of_birth: Optional[int] = Field(None, description="Год рождения автора")
+    year_of_death: Optional[int] = Field(None, description="Год смерти автора")
 
     model_config = ConfigDict(from_attributes=True)
