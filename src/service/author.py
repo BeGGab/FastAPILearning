@@ -6,9 +6,9 @@ from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 from redress import CircuitOpenError
 
-from src.core.dependencies import RedisDep
+from src.core.redis import RedisDep
 
-from src.client.bio_author_client import AuthorServiceClient
+from src.client.bio_author_client import AuthorClientDep
 from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate
 
 from src.repositories.author import AuthorRepository as rep_author
@@ -22,7 +22,7 @@ async def create_author_with_books(
     session: AsyncSession,
     author_data: SAuthorCreate,
     redis: RedisDep,
-    author_client: AuthorServiceClient,
+    author_client: AuthorClientDep,
 ) -> SAuthorRead:
     author, books = await rep_author(session).created(author_data=author_data)
     if not author:
@@ -35,10 +35,21 @@ async def create_author_with_books(
 
     author_read_data = SAuthorRead.model_validate(author, from_attributes=True)
     try:
-        bio_data = await author_client.get_author(author_id=author.id)
-        author_read_data = rep_author(session).apply_biography_to_author_data(
-            author_read_data, bio_data
-        )
+        if (
+            author_data.biography_text is not None
+            and author_data.year_of_birth is not None
+            and author_data.year_of_death is not None
+        ):
+            # HTTP к src_external открывает новую транзакцию; микросервис проверяет автора
+            # запросом к главному API — строка должна быть уже закоммичена.
+            await session.commit()
+            bio_data = await author_client.create_to_author(
+                author_id=author.id,
+                author_data=author_data,
+            )
+            author_read_data = rep_author(session).apply_biography_to_author_data(
+                author_read_data, bio_data
+            )
     except CircuitOpenError:
         logger.warning(
             f"Circuit Breaker для сервиса биографий открыт. Запрос для автора {author.id} не выполнен."
@@ -64,7 +75,7 @@ async def find_one_or_none_by_id(
     session: AsyncSession,
     author_id: uuid.UUID,
     redis: RedisDep,
-    author_client: AuthorServiceClient,
+    author_client: AuthorClientDep,
 ) -> SAuthorRead:
     author_repo = rep_author(session)
     cache_key = f"author:{author_id}"

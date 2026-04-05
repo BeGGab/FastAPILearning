@@ -12,9 +12,9 @@ from src.service.author import (
     update_author_with_books,
     delete_author,
 )
-from src.core.dependencies import RedisDep
+from src.core.redis import RedisDep
 from src.core.db import get_async_session
-from src.client.bio_author_client import AuthorServiceClient, get_author_client
+from src.client.bio_author_client import AuthorClientDep
 
 
 router = APIRouter(prefix="/api/v1/authors_books", tags=["author"])
@@ -24,8 +24,8 @@ router = APIRouter(prefix="/api/v1/authors_books", tags=["author"])
 async def create_author(
     payload: SAuthorCreate,
     redis: RedisDep,
+    author_client: AuthorClientDep,
     session: AsyncSession = Depends(get_async_session),
-    author_client: AuthorServiceClient = Depends(get_author_client),
 ) -> SAuthorRead:
     return await create_author_with_books(
         session,
@@ -47,8 +47,8 @@ async def find_all(
 async def find_author_is_id(
     author_id: uuid.UUID,
     redis: RedisDep,
+    author_client: AuthorClientDep,
     session: AsyncSession = Depends(get_async_session),
-    author_client: AuthorServiceClient = Depends(get_author_client),
 ) -> SAuthorRead:
     return await find_one_or_none_by_id(session, author_id, redis, author_client)
 

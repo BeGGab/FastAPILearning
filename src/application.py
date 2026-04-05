@@ -5,7 +5,7 @@ from fastapi import FastAPI
 
 from src.core.config_logging import setup_logging
 from src.exception.exception_handlers import setup_exception_handlers
-from src.core.dependencies import lifespan
+from src.core.redis import lifespan
 from src.routers.v1.user import router as user_router
 from src.routers.v1.author import router as author_router
 from src.routers.v1.student import router as student_router

@@ -6,9 +6,7 @@ from typing import List
 from redress import CircuitOpenError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.dependencies import RedisDep
-
-from src.client.bio_user_client import UserServiceClient, get_user_client
+from src.core.redis import RedisDep
 
 from src.schemas.user import SUserCreate, SUserRead, SUserUpdate
 
@@ -22,8 +20,7 @@ logger = logging.getLogger(__name__)
 async def create_user_with_profile(
     session: AsyncSession,
     user_data: SUserCreate,
-    redis: RedisDep,
-    user_client: UserServiceClient,
+    redis: RedisDep
 ) -> SUserRead:
     user, profile = await rep_user(session).created(user_data)
     if not user:
@@ -35,16 +32,6 @@ async def create_user_with_profile(
     await session.refresh(user, ["profile"])
 
     user_read_data = SUserRead.model_validate(user, from_attributes=True)
-    try:
-        bio_data = await user_client.get_user(user_id=user.id)
-        user_read_data = rep_user(session).apply_bio_data_to_user(
-            user_read_data, bio_data
-        )
-    except CircuitOpenError:
-        logger.warning(
-            f"Circuit Breaker для сервиса биографий открыт. Запрос для пользователя {user.id} не выполнен."
-        )
-
     cache_key = f"user:{user.id}"
     try:
         await redis.delete(cache_key)
@@ -62,33 +49,12 @@ async def create_user_with_profile(
 
 
 async def find_one_or_none_with_profile(
-    session: AsyncSession, redis: RedisDep, user_client: UserServiceClient, **filter_by
+    session: AsyncSession, redis: RedisDep, **filter_by
 ) -> SUserRead:
     cache_key = f"user:{filter_by}"
     cached = await redis.get(cache_key)
     if cached:
         user_data = SUserRead.model_validate_json(cached)
-        try:
-            bio_data = await user_client.get_user(user_id=filter_by["id"])
-            enriched_user = rep_user(session).apply_bio_data_to_user(
-                user_data, bio_data
-            )
-
-            if enriched_user.model_dump() != user_data.model_dump():
-                await redis.setex(cache_key, 3600, enriched_user.model_dump_json())
-
-            return enriched_user
-
-        except CircuitOpenError:
-            logger.warning(
-                f"Circuit Breaker для сервиса биографий открыт. Запрос для пользователя {filter_by['id']} не выполнен."
-            )
-            return user_data
-        except Exception as e:
-            logger.warning(
-                f"Не удалось дообогатить пользователя {filter_by['id']} из сервиса биографий: {e}"
-            )
-            return user_data
 
     user = await rep_user(session).get_id(**filter_by)
     if not user:
@@ -96,15 +62,6 @@ async def find_one_or_none_with_profile(
         raise NotFoundError(detail=f"Пользователь с id {filter_by} не найден")
 
     user_data = SUserRead.model_validate(user, from_attributes=True)
-    try:
-        bio_data = await user_client.get_user(user_id=filter_by["id"])
-        user_data = rep_user(session).apply_bio_data_to_user(
-            user_data, bio_data
-        )
-    except CircuitOpenError:
-        logger.warning(
-            f"Circuit Breaker для сервиса биографий открыт. Запрос для пользователя {filter_by['id']} не выполнен."
-        )
     try:
         await redis.setex(
             cache_key,

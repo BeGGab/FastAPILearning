@@ -4,9 +4,8 @@ import logging
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.dependencies import RedisDep
+from src.core.redis import RedisDep
 
-from src.client.bio_student_client import StudentServiceClient, get_student_client
 
 from redress import CircuitOpenError
 
@@ -23,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 async def add_student(
-    session: AsyncSession, redis: RedisDep, student_data: SStudentCreate, student_client: StudentServiceClient
+    session: AsyncSession, redis: RedisDep, student_data: SStudentCreate
 ) -> SStudentRead:
     student, courses = await rep_student(session).created(student_data)
     if not student:
@@ -38,15 +37,6 @@ async def add_student(
     await session.refresh(student, attribute_names=["courses"])
 
     student_read_data = SStudentRead.model_validate(student, from_attributes=True)
-    try:
-        bio_data = await student_client.get_student(student_id=student.id)
-        student_read_data = rep_student(session).apply_bio_data_to_student(
-            student_read_data, bio_data
-        )
-    except CircuitOpenError:
-        logger.warning(
-            f"Circuit Breaker для сервиса биографий открыт. Запрос для студента {student.id} не выполнен."
-        )
 
     cache_key = f"student:{student.id}"
     try:
@@ -98,50 +88,18 @@ async def find_all_students(
 
 
 async def find_one_with_id(
-    session: AsyncSession, redis: RedisDep, student_id: uuid.UUID, student_client: StudentServiceClient
+    session: AsyncSession, redis: RedisDep, student_id: uuid.UUID
 ) -> SStudentRead:
     cache_key = f"student:{student_id}"
     cached = await redis.get(cache_key)
     if cached:
         student_data = SStudentRead.model_validate_json(cached)
-        try:
-            bio_data = await student_client.get_student(student_id=student_id)
-            enriched_student = rep_student(session).apply_bio_data_to_student(
-                student_data, bio_data
-            )
-            if enriched_student.model_dump() != student_data.model_dump():
-                await redis.setex(cache_key, 3600, enriched_student.model_dump_json())
-
-            return enriched_student
-        except CircuitOpenError:
-            logger.warning(
-                f"Circuit Breaker для сервиса биографий открыт. Запрос для студента {student_id} не выполнен."
-            )
-            return student_data
-        except Exception as e:
-            logger.warning(
-                f"Не удалось дообогатить студента {student_id} из сервиса биографий: {e}"
-            )
-            return student_data
 
     student_orm = await rep_student(session).get_id(student_id)
     if not student_orm:
         logger.error(f"Студент с id {student_id} не найден")
         raise NotFoundError(detail=f"Студент с id {student_id} не найден")
     student_data = SStudentRead.model_validate(student_orm, from_attributes=True)
-    try:
-        bio_data = await student_client.get_student(student_id=student_id)
-        student_data = rep_student(session).apply_bio_data_to_student(
-            student_data, bio_data
-        )
-    except CircuitOpenError:
-        logger.warning(
-            f"Circuit Breaker для сервиса биографий открыт. Запрос для студента {student_id} не выполнен."
-        )
-    except Exception as e:
-        logger.warning(
-            f"Не удалось дообогатить студента {student_id} из сервиса биографий: {e}"
-        )
 
     try:
         await redis.setex(

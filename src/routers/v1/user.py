@@ -14,10 +14,9 @@ from src.service.user import (
     update_user,
     delete_user,
 )
-from src.client.bio_user_client import UserServiceClient, get_user_client
 
 from src.core.db import get_async_session
-from src.core.dependencies import RedisDep
+from src.core.redis import RedisDep
 
 
 router = APIRouter(prefix="/api/v1/users_profiles", tags=["user"])
@@ -37,13 +36,11 @@ async def find_all_users(
 async def find_user_is_id(
     user_id: uuid.UUID, 
     redis: RedisDep,
-    session: AsyncSession = Depends(get_async_session),
-    user_client: UserServiceClient = Depends(get_user_client)
+    session: AsyncSession = Depends(get_async_session)
 ) -> SUserRead:
     return await find_one_or_none_with_profile(
         session=session,
         redis=redis,
-        user_client=user_client,
         id=user_id,
     )
 
@@ -53,9 +50,8 @@ async def add_user_with_profile(
     payload: SUserCreate, 
     redis: RedisDep,
     session: AsyncSession = Depends(get_async_session),
-    user_client: UserServiceClient = Depends(get_user_client)
 ) -> SUserRead:
-    return await create_user_with_profile(session, payload, redis, user_client)
+    return await create_user_with_profile(session, payload, redis)
 
 
 @router.put("/{user_id}", status_code=status.HTTP_200_OK)

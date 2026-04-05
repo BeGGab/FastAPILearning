@@ -9388,3 +9388,420 @@ WHERE users.id = $1::UUID]
 2026-03-24 16:04:16,152 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/bio_users/b1c6dd67-f7c5-4690-a3f3-e3ed5e24d2d0 "HTTP/1.1 206 Partial Content"
 2026-03-24 16:04:41,221 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/bio_users/b1c6dd67-f7c5-4690-a3f3-e3ed5e24d2d0 "HTTP/1.1 404 Not Found"
 2026-03-24 16:04:41,223 - src.client.bio_user_client - INFO - bio_user_client:55 - Пользователь b1c6dd67-f7c5-4690-a3f3-e3ed5e24d2d0 не найден (404).
+2026-04-03 14:35:02,884 - src.application - INFO - application:43 - Запуск приложения
+2026-04-03 14:40:45,382 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 22:48:34,460 - src.application - INFO - application:45 - Запуск приложения
+2026-04-05 23:03:38,326 - src.exception.exception_handlers - ERROR - exception_handlers:81 - Необработанная ошибка: 'State' object has no attribute 'author_service_client'
+Traceback (most recent call last):
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\datastructures.py", line 686, in __getattr__
+    return self._state[key]
+           ~~~~~~~~~~~^^^^^
+KeyError: 'author_service_client'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 298, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\dependencies\utils.py", line 642, in solve_dependencies
+    solved = await solve_generator(
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\dependencies\utils.py", line 568, in solve_generator
+    return await stack.enter_async_context(cm)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\soons\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 650, in enter_async_context
+    result = await _enter(cm)
+             ^^^^^^^^^^^^^^^^
+  File "C:\Users\soons\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\client\bio_author_client.py", line 102, in get_author_service_client
+    yield request.app.state.author_service_client
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\datastructures.py", line 689, in __getattr__
+    raise AttributeError(message.format(self.__class__.__name__, key))
+AttributeError: 'State' object has no attribute 'author_service_client'
+2026-04-05 23:04:41,836 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:04:50,774 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:05:14,742 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:05:30,628 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:06:33,514 - src.exception.exception_handlers - ERROR - exception_handlers:81 - Необработанная ошибка: 'AuthorServiceClient' object has no attribute 'create_author'
+Traceback (most recent call last):
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\author.py", line 30, in create_author
+    return await create_author_with_books(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\author.py", line 38, in create_author_with_books
+    bio_data = await author_client.create_author(author_data=author_data)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'AuthorServiceClient' object has no attribute 'create_author'
+2026-04-05 23:08:18,766 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:08:32,818 - httpx - INFO - _client:1740 - HTTP Request: POST http://localhost:8001/api/v1/biographies "HTTP/1.1 307 Temporary Redirect"
+2026-04-05 23:08:32,821 - src.client.bio_author_client - ERROR - bio_author_client:69 - Ошибка при создании биографии для автора: 307 
+2026-04-05 23:08:32,825 - src.exception.exception_handlers - ERROR - exception_handlers:81 - Необработанная ошибка: Ошибка при создании биографии для автора: 307 
+Traceback (most recent call last):
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\author.py", line 30, in create_author
+    return await create_author_with_books(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\author.py", line 38, in create_author_with_books
+    bio_data = await author_client.create_to_author(author_data=author_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\client\bio_author_client.py", line 70, in create_to_author
+    raise Exception(f"Ошибка при создании биографии для автора: {response.status_code} {response.text}")
+Exception: Ошибка при создании биографии для автора: 307 
+2026-04-05 23:11:46,968 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:13:09,969 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:13:20,422 - httpx - INFO - _client:1740 - HTTP Request: POST http://localhost:8001/api/v1/biographies/ "HTTP/1.1 422 Unprocessable Entity"
+2026-04-05 23:13:20,425 - src.client.bio_author_client - ERROR - bio_author_client:72 - Ошибка при создании биографии для автора: 422 {"message":"Ошибка валидации запроса","error_code":"validation_error","validation_errors":[{"field":"body -> author_id","message":"Field required","type":"missing"},{"field":"body -> text","message":"Field required","type":"missing"},{"field":"body -> year_of_birth","message":"Field required","type":"missing"},{"field":"body -> year_of_death","message":"Field required","type":"missing"}]}
+2026-04-05 23:13:20,428 - src.exception.exception_handlers - ERROR - exception_handlers:81 - Необработанная ошибка: Ошибка при создании биографии для автора: 422 {"message":"Ошибка валидации запроса","error_code":"validation_error","validation_errors":[{"field":"body -> author_id","message":"Field required","type":"missing"},{"field":"body -> text","message":"Field required","type":"missing"},{"field":"body -> year_of_birth","message":"Field required","type":"missing"},{"field":"body -> year_of_death","message":"Field required","type":"missing"}]}
+Traceback (most recent call last):
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\author.py", line 30, in create_author
+    return await create_author_with_books(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\author.py", line 38, in create_author_with_books
+    bio_data = await author_client.create_to_author(author_data=author_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\client\bio_author_client.py", line 73, in create_to_author
+    raise Exception(f"Ошибка при создании биографии для автора: {response.status_code} {response.text}")
+Exception: Ошибка при создании биографии для автора: 422 {"message":"Ошибка валидации запроса","error_code":"validation_error","validation_errors":[{"field":"body -> author_id","message":"Field required","type":"missing"},{"field":"body -> text","message":"Field required","type":"missing"},{"field":"body -> year_of_birth","message":"Field required","type":"missing"},{"field":"body -> year_of_death","message":"Field required","type":"missing"}]}
+2026-04-05 23:16:13,374 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:16:22,622 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:19:04,479 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:19:47,618 - src.service.author - ERROR - author:105 - Ошибка при поиске записи в базе данных
+2026-04-05 23:19:47,621 - src.exception.exception_handlers - INFO - exception_handlers:65 - ошибка 404: /api/v1/authors_books/7a24c351-8728-4a2a-956f-9d381f1d009e
+2026-04-05 23:19:47,629 - httpx - INFO - _client:1740 - HTTP Request: POST http://localhost:8001/api/v1/biographies/ "HTTP/1.1 404 Not Found"
+2026-04-05 23:19:47,632 - src.client.bio_author_client - ERROR - bio_author_client:77 - Ошибка при создании биографии для автора: 404 {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+2026-04-05 23:19:47,635 - src.exception.exception_handlers - ERROR - exception_handlers:81 - Необработанная ошибка: Ошибка при создании биографии для автора: 404 {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+Traceback (most recent call last):
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\author.py", line 30, in create_author
+    return await create_author_with_books(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\author.py", line 43, in create_author_with_books
+    bio_data = await author_client.create_to_author(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\client\bio_author_client.py", line 78, in create_to_author
+    raise Exception(f"Ошибка при создании биографии для автора: {response.status_code} {response.text}")
+Exception: Ошибка при создании биографии для автора: 404 {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+2026-04-05 23:20:10,311 - src.service.author - ERROR - author:105 - Ошибка при поиске записи в базе данных
+2026-04-05 23:20:10,313 - src.exception.exception_handlers - INFO - exception_handlers:65 - ошибка 404: /api/v1/authors_books/cd7801e4-49e4-4a30-9c8a-f710f909c995
+2026-04-05 23:20:10,320 - httpx - INFO - _client:1740 - HTTP Request: POST http://localhost:8001/api/v1/biographies/ "HTTP/1.1 404 Not Found"
+2026-04-05 23:20:10,323 - src.client.bio_author_client - ERROR - bio_author_client:77 - Ошибка при создании биографии для автора: 404 {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+2026-04-05 23:20:10,326 - src.exception.exception_handlers - ERROR - exception_handlers:81 - Необработанная ошибка: Ошибка при создании биографии для автора: 404 {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+Traceback (most recent call last):
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\author.py", line 30, in create_author
+    return await create_author_with_books(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\author.py", line 43, in create_author_with_books
+    bio_data = await author_client.create_to_author(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\client\bio_author_client.py", line 78, in create_to_author
+    raise Exception(f"Ошибка при создании биографии для автора: {response.status_code} {response.text}")
+Exception: Ошибка при создании биографии для автора: 404 {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+2026-04-05 23:24:19,872 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:24:31,749 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:24:43,827 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:24:48,929 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:28:11,648 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:28:25,233 - src.service.author - ERROR - author:105 - Ошибка при поиске записи в базе данных
+2026-04-05 23:28:25,236 - src.exception.exception_handlers - INFO - exception_handlers:65 - ошибка 404: /api/v1/authors_books/55e162f9-67d7-4d23-91ae-acf599dc51c4
+2026-04-05 23:28:25,244 - httpx - INFO - _client:1740 - HTTP Request: POST http://localhost:8001/api/v1/biographies/ "HTTP/1.1 404 Not Found"
+2026-04-05 23:28:25,246 - src.client.bio_author_client - ERROR - bio_author_client:77 - Ошибка при создании биографии для автора: 404 {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+2026-04-05 23:28:25,250 - src.exception.exception_handlers - ERROR - exception_handlers:81 - Необработанная ошибка: Ошибка при создании биографии для автора: 404 {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+Traceback (most recent call last):
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\author.py", line 30, in create_author
+    return await create_author_with_books(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\author.py", line 43, in create_author_with_books
+    bio_data = await author_client.create_to_author(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\client\bio_author_client.py", line 78, in create_to_author
+    raise Exception(f"Ошибка при создании биографии для автора: {response.status_code} {response.text}")
+Exception: Ошибка при создании биографии для автора: 404 {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+2026-04-05 23:31:35,034 - src.application - INFO - application:45 - Запуск приложения
+2026-04-05 23:31:47,765 - src.application - INFO - application:45 - Запуск приложения
+2026-04-05 23:32:39,160 - src.application - INFO - application:45 - Запуск приложения
+2026-04-05 23:33:27,155 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:34:43,712 - src.service.author - ERROR - author:105 - Ошибка при поиске записи в базе данных
+2026-04-05 23:34:43,714 - src.exception.exception_handlers - INFO - exception_handlers:65 - ошибка 404: /api/v1/authors_books/c01dd8aa-a0af-4410-a63c-72d4970f5d14
+2026-04-05 23:34:43,722 - httpx - INFO - _client:1740 - HTTP Request: POST http://localhost:8001/api/v1/biographies/ "HTTP/1.1 404 Not Found"
+2026-04-05 23:34:43,727 - src.client.bio_author_client - ERROR - bio_author_client:77 - Ошибка при создании биографии для автора: 404 {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+2026-04-05 23:34:43,731 - src.exception.exception_handlers - ERROR - exception_handlers:81 - Необработанная ошибка: Ошибка при создании биографии для автора: 404 {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+Traceback (most recent call last):
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\author.py", line 30, in create_author
+    return await create_author_with_books(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\author.py", line 43, in create_author_with_books
+    bio_data = await author_client.create_to_author(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\client\bio_author_client.py", line 78, in create_to_author
+    raise Exception(f"Ошибка при создании биографии для автора: {response.status_code} {response.text}")
+Exception: Ошибка при создании биографии для автора: 404 {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+2026-04-05 23:36:04,093 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:38:34,244 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:41:23,344 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:42:22,282 - src.application - INFO - application:43 - Запуск приложения
+2026-04-05 23:42:56,879 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/biographies/15d8b934-7698-4e8b-9287-a527d2d9f7e4 "HTTP/1.1 404 Not Found"
+2026-04-05 23:42:56,882 - src.client.bio_author_client - ERROR - bio_author_client:91 - Ошибка при получении биографии для автора 15d8b934-7698-4e8b-9287-a527d2d9f7e4: 404 {"message":"Страница \/api\/v1\/biographies\/15d8b934-7698-4e8b-9287-a527d2d9f7e4 не найдена","error_code":"Router_not_found"}
+2026-04-05 23:42:56,883 - src.service.author - WARNING - author:120 - Не удалось обогатить автора 15d8b934-7698-4e8b-9287-a527d2d9f7e4 биографией: Ошибка при получении биографии для автора 15d8b934-7698-4e8b-9287-a527d2d9f7e4: 404 {"message":"Страница \/api\/v1\/biographies\/15d8b934-7698-4e8b-9287-a527d2d9f7e4 не найдена","error_code":"Router_not_found"}
+2026-04-05 23:42:56,943 - httpx - INFO - _client:1740 - HTTP Request: POST http://localhost:8001/api/v1/biographies/ "HTTP/1.1 201 Created"
+2026-04-05 23:43:23,564 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/biographies/15d8b934-7698-4e8b-9287-a527d2d9f7e4 "HTTP/1.1 206 Partial Content"
+2026-04-05 23:43:23,567 - src.client.bio_author_client - ERROR - bio_author_client:91 - Ошибка при получении биографии для автора 15d8b934-7698-4e8b-9287-a527d2d9f7e4: 206 {"id":"7cef2ce1-7d49-4e2b-aeb6-0ab852c34ec7","author_id":"15d8b934-7698-4e8b-9287-a527d2d9f7e4","text":"Абра-Кадабра","year_of_birth":1996,"year_of_death":0}
+2026-04-05 23:43:23,568 - src.service.author - WARNING - author:101 - Не удалось дообогатить автора 15d8b934-7698-4e8b-9287-a527d2d9f7e4 из сервиса биографий: Ошибка при получении биографии для автора 15d8b934-7698-4e8b-9287-a527d2d9f7e4: 206 {"id":"7cef2ce1-7d49-4e2b-aeb6-0ab852c34ec7","author_id":"15d8b934-7698-4e8b-9287-a527d2d9f7e4","text":"Абра-Кадабра","year_of_birth":1996,"year_of_death":0}
