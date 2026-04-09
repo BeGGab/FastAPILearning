@@ -1,6 +1,7 @@
 import uuid
 import httpx
 import logging
+import ujson
 
 from typing import Any, Dict, Optional
 from typing import Annotated, AsyncGenerator
@@ -22,7 +23,14 @@ from src.schemas.author import SAuthorCreate
 logger = logging.getLogger(__name__)
 
 
-def my_classifier(exc: BaseException) -> ErrorClass | Classification | None:
+def _response_ujson(response: httpx.Response) -> Any:
+    """Разбор JSON тела ответа через ujson (быстрее стандартного json)."""
+    if not response.content:
+        return None
+    return ujson.loads(response.content)
+
+
+def skip_log_errors(exc: BaseException) -> ErrorClass | Classification | None:
     if isinstance(exc, (ValueError, TypeError, ValidationError)):
         return ErrorClass.PERMANENT
     if isinstance(exc, (ValidationError, BadRequestError, NotFoundError, ConflictError)):
@@ -35,7 +43,7 @@ def my_classifier(exc: BaseException) -> ErrorClass | Classification | None:
 
 policy = AsyncPolicy(
     retry=AsyncRetry(  
-        classifier=my_classifier,
+        classifier=skip_log_errors,
         strategy=decorrelated_jitter(max_s=5.0),
         max_attempts=5,
         deadline_s=30,
@@ -67,35 +75,38 @@ class AuthorServiceClient:
             "year_of_birth": author_data.year_of_birth,
             "year_of_death": author_data.year_of_death,
         }
-        try:
-            response = await policy.call(
-                lambda: self.client.post("/api/v1/biographies/", json=payload)
-            )
-            if response.status_code == 201:
-                return response.json()
-            else:
-                logger.error(f"Ошибка при создании биографии для автора: {response.status_code} {response.text}")
-                raise Exception(f"Ошибка при создании биографии для автора: {response.status_code} {response.text}")
-        except httpx.HTTPStatusError as e:
-            logger.error(f"Ошибка при создании биографии для автора: {e.response.status_code} {e.response.text}")
-            raise Exception(f"Ошибка при создании биографии для автора: {e.response.status_code} {e.response.text}")
+
+        response = await policy.call(
+            lambda: self.client.post("/api/v1/biographies/", json=payload)
+        )
+        if response.status_code == 201:
+            return _response_ujson(response)
+        logger.error(
+            "Создание биографии: неожиданный статус %s: %s",
+            response.status_code,
+            response.text[:500],
+        )
+        return None
 
     async def get_author(self, author_id: uuid.UUID) -> Optional[Dict[str, Any]]:
-        try:
-            response = await policy.call(
-                lambda: self.client.get(f"/api/v1/biographies/{author_id}")
-            )
-            if response.status_code == 200:
-                return response.json()
-            else:
-                logger.error(f"Ошибка при получении биографии для автора {author_id}: {response.status_code} {response.text}")
-                raise Exception(f"Ошибка при получении биографии для автора {author_id}: {response.status_code} {response.text}")
-        except httpx.HTTPStatusError as e:
-            if e.response.status_code == 404:
-                logger.info(f"Биография для автора {author_id} не найдена.")
-                return None
-            logger.error(f"Ошибка при получении биографии для автора {author_id}: {e.response.status_code} {e.response.text}")
-            raise Exception(f"Ошибка при получении биографии для автора {author_id}: {e.response.status_code} {e.response.text}")
+        response = await policy.call(
+            lambda: self.client.get(f"/api/v1/biographies/{author_id}")
+        )
+        if response.status_code in (200, 206):
+            return _response_ujson(response)
+
+        if response.status_code == 404:
+            logger.info(f"Биография для автора {author_id} не найдена.")
+            return None
+
+        logger.warning(
+            "Получение биографии: статус %s для автора %s: %s",
+            response.status_code,
+            author_id,
+            response.text[:500],
+        )
+        return None
+
 
 
 async def get_author_service_client(request: Request) -> AsyncGenerator[AuthorServiceClient, None]:

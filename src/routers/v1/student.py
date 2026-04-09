@@ -6,13 +6,8 @@ from typing import Dict, List
 
 from src.core.enums import Status
 from src.schemas.student import SStudentCreate, SStudentRead, SStudentUpdate
-from src.service.student import (
-    add_student,
-    find_all_students,
-    find_one_with_id,
-    update_student_with_course,
-    delete_student,
-)
+
+from src.service.student import StudentService
 
 from src.core.db import get_async_session
 from src.core.redis import RedisDep
@@ -26,9 +21,7 @@ async def created_student(
     redis: RedisDep, 
     session: AsyncSession = Depends(get_async_session), 
 ) -> SStudentRead:
-    return await add_student(
-        session=session,
-        redis=redis,
+    return await StudentService(session, redis).add_student(
         student_data=payload,
     )
 
@@ -40,16 +33,16 @@ async def get_all_students(
     skip: int = 0,
     limit: int = 100,
 ) -> List[SStudentRead]:
-    return await find_all_students(session, redis, skip=0, limit=100)
+    return await StudentService(session, redis).find_all_students(skip=0, limit=100)
 
 
 @router.get("/{student_id}", status_code=status.HTTP_206_PARTIAL_CONTENT)
 async def get_student_by_id(
-    student_id: uuid.UUID, redis: RedisDep, session: AsyncSession = Depends(get_async_session)
+    student_id: uuid.UUID, 
+    redis: RedisDep, 
+    session: AsyncSession = Depends(get_async_session),
 ) -> SStudentRead:
-    return await find_one_with_id(
-        session=session,
-        redis=redis,
+    return await StudentService(session, redis).find_one_with_id(
         student_id=student_id,
     )
 
@@ -61,11 +54,9 @@ async def update_student(
     redis: RedisDep,
     session: AsyncSession = Depends(get_async_session),
 ) -> SStudentRead:
-    return await update_student_with_course(
-        session,
-        redis,
-        student_id,
-        payload,
+    return await StudentService(session, redis).update_student_with_course(
+        student_id=student_id,
+        student_data=payload,
     )
 
 
@@ -75,5 +66,5 @@ async def delete_students(
     redis: RedisDep, 
     session: AsyncSession = Depends(get_async_session)
 ):
-    await delete_student(session=session, redis=redis, student_id=student_id)
+    await StudentService(session, redis).delete_student(student_id=student_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

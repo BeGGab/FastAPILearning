@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     postgres_url: PostgresDsn = Field(env="postgres_url")
     redis_url: str = Field(env="redis_url")
+    ttl: int = 3600
     biography_service_url: str = Field(
         ...,
         env="biography_service_url",

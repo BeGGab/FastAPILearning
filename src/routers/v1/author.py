@@ -5,13 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 
 from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate
-from src.service.author import (
-    create_author_with_books,
-    find_one_or_none_by_id,
-    find_all_authors,
-    update_author_with_books,
-    delete_author,
-)
+from src.service.author import AuthorService
+
 from src.core.redis import RedisDep
 from src.core.db import get_async_session
 from src.client.bio_author_client import AuthorClientDep
@@ -27,11 +22,9 @@ async def create_author(
     author_client: AuthorClientDep,
     session: AsyncSession = Depends(get_async_session),
 ) -> SAuthorRead:
-    return await create_author_with_books(
-        session,
-        payload,
-        redis,
-        author_client,
+    return await AuthorService(session, redis).create_author_with_books(
+        author_client=author_client,
+        author_data=payload,
     )
 
 
@@ -40,7 +33,7 @@ async def find_all(
     redis: RedisDep,
     session: AsyncSession = Depends(get_async_session),
 ) -> List[SAuthorRead]:
-    return await find_all_authors(session=session, redis=redis)
+    return await AuthorService(session, redis).find_all_authors()
 
 
 @router.get("/{author_id}", status_code=status.HTTP_206_PARTIAL_CONTENT)
@@ -50,7 +43,10 @@ async def find_author_is_id(
     author_client: AuthorClientDep,
     session: AsyncSession = Depends(get_async_session),
 ) -> SAuthorRead:
-    return await find_one_or_none_by_id(session, author_id, redis, author_client)
+    return await AuthorService(session, redis).find_one_or_none_by_id(
+        author_id=author_id,
+        author_client=author_client,
+    )
 
 
 @router.put("/{author_id}", status_code=status.HTTP_201_CREATED)
@@ -60,8 +56,8 @@ async def update(
     redis: RedisDep,
     session: AsyncSession = Depends(get_async_session),
 ) -> SAuthorRead:
-    return await update_author_with_books(
-        session=session, author_id=author_id, author_data=payload, redis=redis
+    return await AuthorService(session, redis).update_author_with_books(
+        author_id=author_id, author_data=payload,
     )
 
 
@@ -71,5 +67,6 @@ async def delete(
     redis: RedisDep,
     session: AsyncSession = Depends(get_async_session),
 ):
-    await delete_author(session=session, author_id=author_id, redis=redis)
+    await AuthorService(session, redis).delete_author(author_id=author_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+

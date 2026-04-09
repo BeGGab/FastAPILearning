@@ -9805,3 +9805,178 @@ Exception: Ошибка при создании биографии для автора: 404 {"message":"Страница \/
 2026-04-05 23:43:23,564 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/biographies/15d8b934-7698-4e8b-9287-a527d2d9f7e4 "HTTP/1.1 206 Partial Content"
 2026-04-05 23:43:23,567 - src.client.bio_author_client - ERROR - bio_author_client:91 - Ошибка при получении биографии для автора 15d8b934-7698-4e8b-9287-a527d2d9f7e4: 206 {"id":"7cef2ce1-7d49-4e2b-aeb6-0ab852c34ec7","author_id":"15d8b934-7698-4e8b-9287-a527d2d9f7e4","text":"Абра-Кадабра","year_of_birth":1996,"year_of_death":0}
 2026-04-05 23:43:23,568 - src.service.author - WARNING - author:101 - Не удалось дообогатить автора 15d8b934-7698-4e8b-9287-a527d2d9f7e4 из сервиса биографий: Ошибка при получении биографии для автора 15d8b934-7698-4e8b-9287-a527d2d9f7e4: 206 {"id":"7cef2ce1-7d49-4e2b-aeb6-0ab852c34ec7","author_id":"15d8b934-7698-4e8b-9287-a527d2d9f7e4","text":"Абра-Кадабра","year_of_birth":1996,"year_of_death":0}
+2026-04-10 01:31:38,223 - src.application - INFO - application:43 - Запуск приложения
+2026-04-10 01:32:33,060 - src.exception.exception_handlers - ERROR - exception_handlers:81 - Необработанная ошибка: Multiple exceptions: [Errno 10061] Connect call failed ('::1', 5432, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 5432)
+Traceback (most recent call last):
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\Projects\Project\.venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 308, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\fastapi\routing.py", line 219, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\routers\v1\author.py", line 36, in find_all
+    return await AuthorService(session, redis).find_all_authors()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\service\author.py", line 124, in find_all_authors
+    authors = await rep_author(self.session).get_all(skip, limit, **filter_by)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\src\repositories\author.py", line 35, in get_all
+    result = await self.session.execute(query)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 449, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2351, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2239, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2108, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1187, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3293, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3317, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    with util.safe_reraise():
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\pool\impl.py", line 175, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 674, in __init__
+    self.__connect()
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\engine\create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 955, in connect
+    await_only(creator_fn(*arg, **kw)),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\asyncpg\connection.py", line 2421, in connect
+    return await connect_utils._connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\asyncpg\connect_utils.py", line 1075, in _connect
+    raise last_error or exceptions.TargetServerAttributeNotMatched(
+  File "D:\Projects\Project\.venv\Lib\site-packages\asyncpg\connect_utils.py", line 1049, in _connect
+    conn = await _connect_addr(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\asyncpg\connect_utils.py", line 886, in _connect_addr
+    return await __connect_addr(params, True, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\asyncpg\connect_utils.py", line 931, in __connect_addr
+    tr, pr = await connector
+             ^^^^^^^^^^^^^^^
+  File "D:\Projects\Project\.venv\Lib\site-packages\asyncpg\connect_utils.py", line 802, in _create_ssl_connection
+    tr, pr = await loop.create_connection(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\soons\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 1094, in create_connection
+    raise OSError('Multiple exceptions: {}'.format(
+OSError: Multiple exceptions: [Errno 10061] Connect call failed ('::1', 5432, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 5432)
+2026-04-10 01:34:06,890 - src.application - INFO - application:43 - Запуск приложения
+2026-04-10 01:36:24,716 - src.service.author - ERROR - author:91 - Ошибка при поиске записи в базе данных
+2026-04-10 01:36:24,719 - src.exception.exception_handlers - INFO - exception_handlers:65 - ошибка 404: /api/v1/authors_books/e8edeba8-e37e-4804-8880-8f4bde25eaa2
+2026-04-10 01:36:24,730 - httpx - INFO - _client:1740 - HTTP Request: POST http://localhost:8001/api/v1/biographies/ "HTTP/1.1 404 Not Found"
+2026-04-10 01:36:45,206 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/biographies/e8edeba8-e37e-4804-8880-8f4bde25eaa2 "HTTP/1.1 404 Not Found"
+2026-04-10 01:36:45,209 - src.client.bio_author_client - INFO - bio_author_client:86 - Биография для автора e8edeba8-e37e-4804-8880-8f4bde25eaa2 не найдена.
+2026-04-10 01:37:28,950 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/biographies/e8edeba8-e37e-4804-8880-8f4bde25eaa2 "HTTP/1.1 404 Not Found"
+2026-04-10 01:37:28,954 - src.client.bio_author_client - INFO - bio_author_client:86 - Биография для автора e8edeba8-e37e-4804-8880-8f4bde25eaa2 не найдена.
+2026-04-10 01:37:33,641 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/biographies/e8edeba8-e37e-4804-8880-8f4bde25eaa2 "HTTP/1.1 206 Partial Content"
+2026-04-10 01:37:37,298 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/biographies/e8edeba8-e37e-4804-8880-8f4bde25eaa2 "HTTP/1.1 206 Partial Content"
+2026-04-10 01:37:38,138 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/biographies/e8edeba8-e37e-4804-8880-8f4bde25eaa2 "HTTP/1.1 206 Partial Content"
+2026-04-10 01:40:44,625 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/biographies/e8edeba8-e37e-4804-8880-8f4bde25eaa2 "HTTP/1.1 206 Partial Content"
+2026-04-10 01:40:50,726 - src.application - INFO - application:43 - Запуск приложения
+2026-04-10 01:40:59,177 - src.application - INFO - application:43 - Запуск приложения
+2026-04-10 01:41:23,223 - src.application - INFO - application:43 - Запуск приложения
+2026-04-10 01:44:57,594 - src.application - INFO - application:43 - Запуск приложения
+2026-04-10 01:45:40,855 - src.application - INFO - application:43 - Запуск приложения
+2026-04-10 01:46:38,363 - src.application - INFO - application:43 - Запуск приложения
+2026-04-10 01:47:18,570 - src.service.author - ERROR - author:110 - Ошибка при поиске записи в базе данных
+2026-04-10 01:47:18,573 - src.exception.exception_handlers - INFO - exception_handlers:65 - ошибка 404: /api/v1/authors_books/157638ad-e0ab-4453-b5a4-86926619f9bb
+2026-04-10 01:47:18,580 - httpx - INFO - _client:1740 - HTTP Request: POST http://localhost:8001/api/v1/biographies/ "HTTP/1.1 404 Not Found"
+2026-04-10 01:47:18,584 - src.client.bio_author_client - ERROR - bio_author_client:84 - Создание биографии: неожиданный статус 404: {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+2026-04-10 01:47:18,585 - src.service.author - WARNING - author:59 - Биография для автора 157638ad-e0ab-4453-b5a4-86926619f9bb не создана (пустой ответ или ошибка микросервиса).
+2026-04-10 01:48:01,032 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/biographies/157638ad-e0ab-4453-b5a4-86926619f9bb "HTTP/1.1 404 Not Found"
+2026-04-10 01:48:01,036 - src.client.bio_author_client - INFO - bio_author_client:99 - Биография для автора 157638ad-e0ab-4453-b5a4-86926619f9bb не найдена.
+2026-04-10 01:48:14,112 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/biographies/157638ad-e0ab-4453-b5a4-86926619f9bb "HTTP/1.1 206 Partial Content"
+2026-04-10 01:53:18,655 - src.application - INFO - application:43 - Запуск приложения
+2026-04-10 01:54:00,324 - src.application - INFO - application:43 - Запуск приложения
+2026-04-10 01:54:41,422 - src.service.author - ERROR - author:111 - Ошибка при поиске записи в базе данных
+2026-04-10 01:54:41,425 - src.exception.exception_handlers - INFO - exception_handlers:65 - ошибка 404: /api/v1/authors_books/786192bd-22a2-41e9-a268-e89a22edefe7
+2026-04-10 01:54:41,432 - httpx - INFO - _client:1740 - HTTP Request: POST http://localhost:8001/api/v1/biographies/ "HTTP/1.1 404 Not Found"
+2026-04-10 01:54:41,434 - src.client.bio_author_client - ERROR - bio_author_client:84 - Создание биографии: неожиданный статус 404: {"message":"Страница \/api\/v1\/biographies\/ не найдена","error_code":"Router_not_found"}
+2026-04-10 01:54:41,435 - src.service.author - WARNING - author:60 - Биография для автора 786192bd-22a2-41e9-a268-e89a22edefe7 не создана (пустой ответ или ошибка микросервиса).
+2026-04-10 01:55:30,812 - src.application - INFO - application:43 - Запуск приложения
+2026-04-10 01:55:36,132 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/biographies/e802dedf-790b-4178-9ba7-fad5032cff77 "HTTP/1.1 404 Not Found"
+2026-04-10 01:55:36,135 - src.client.bio_author_client - INFO - bio_author_client:99 - Биография для автора e802dedf-790b-4178-9ba7-fad5032cff77 не найдена.
+2026-04-10 01:55:36,164 - httpx - INFO - _client:1740 - HTTP Request: POST http://localhost:8001/api/v1/biographies/ "HTTP/1.1 201 Created"
+2026-04-10 01:56:02,935 - httpx - INFO - _client:1740 - HTTP Request: GET http://localhost:8001/api/v1/biographies/e802dedf-790b-4178-9ba7-fad5032cff77 "HTTP/1.1 206 Partial Content"
