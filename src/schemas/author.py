@@ -21,8 +21,27 @@ class SAuthorCreate(BaseModel):
     books: List[SBookCreate] = Field(
         default_factory=list, description="Список книг автора"
     )
+    biography_text: Optional[str] = Field(
+        None, description="Текст биографии (сервис биографий)"
+    )
+    year_of_birth: Optional[int] = Field(
+        None, description="Год рождения (сервис биографий)"
+    )
+    year_of_death: Optional[int] = Field(
+        None, description="Год смерти (сервис биографий)"
+    )
 
     model_config = ConfigDict(from_attributes=True)
+
+    @model_validator(mode="after")
+    def biography_all_or_nothing(self) -> "SAuthorCreate":
+        bio = (self.biography_text, self.year_of_birth, self.year_of_death)
+        if any(x is not None for x in bio) and not all(x is not None for x in bio):
+            raise ValidationError(
+                detail="Укажите все поля биографии (biography_text, year_of_birth, year_of_death) "
+                "или не передавайте их"
+            )
+        return self
 
     @field_validator("name", mode="before")
     @classmethod
@@ -63,7 +82,9 @@ class SAuthorCreate(BaseModel):
         raise ValidationError(detail="Поле books должно быть списком")
 
     def to_orm_models(self) -> tuple[Author, List[Book]]:
-        author_data = self.model_dump(exclude={"books"})
+        author_data = self.model_dump(
+            exclude={"books", "biography_text", "year_of_birth", "year_of_death"}
+        )
         author = Author(**author_data)
 
         books: List[Book] = [book_schema.to_orm_model() for book_schema in self.books]
@@ -111,5 +132,8 @@ class SAuthorRead(BaseModel):
     id: uuid.UUID = Field(..., description="ID автора")
     name: str
     books: List[SBookRead]
+    biography_text: Optional[str] = Field(None, description="Биография автора")
+    year_of_birth: Optional[int] = Field(None, description="Год рождения автора")
+    year_of_death: Optional[int] = Field(None, description="Год смерти автора")
 
     model_config = ConfigDict(from_attributes=True)

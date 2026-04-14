@@ -8,6 +8,7 @@ from pydantic import (
     model_validator,
 )
 from typing import Optional, List
+from datetime import date
 
 from src.models.student import Student
 from src.schemas.courses import SCourseCreate, SCourseRead
@@ -84,5 +85,12 @@ class SStudentRead(BaseModel):
     id: uuid.UUID = Field(..., description="ID студента")
     name: str
     courses: List[SCourseRead]
+    email: Optional[str] = Field(None, description="Email студента")
+    phone_number: Optional[str] = Field(None, description="Номер телефона студента")
+    bio_text: Optional[str] = Field(None, description="Биография студента")
+    year_of_enrollment: Optional[date] = Field(
+        None, description="Год поступления студента"
+    )
+    year_of_graduation: Optional[date] = Field(None, description="Год выпуска студента")
 
     model_config = ConfigDict(from_attributes=True)

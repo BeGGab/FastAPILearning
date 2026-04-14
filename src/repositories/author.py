@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models.author import Author
 
-from src.schemas.author import SAuthorCreate, SAuthorUpdate
+from src.schemas.author import SAuthorCreate, SAuthorUpdate, SAuthorRead
 
 
 class AuthorRepository:
@@ -39,3 +39,16 @@ class AuthorRepository:
         author = await self.get_id(id=author_id)
         author_data.apply_updates(author)
         return author
+
+    def apply_biography_to_author_data(
+        self, author_data: SAuthorRead, bio_data: Optional[dict]
+    ) -> SAuthorRead:
+        if not bio_data:
+            return author_data
+        return author_data.model_copy(
+            update={
+                "biography_text": bio_data.get("text"),
+                "year_of_birth": bio_data.get("year_of_birth"),
+                "year_of_death": bio_data.get("year_of_death"),
+            }
+        )

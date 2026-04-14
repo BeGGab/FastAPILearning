@@ -9,6 +9,7 @@ from pydantic import (
     model_validator,
 )
 from typing import Optional
+from datetime import date
 
 from src.models.user import User
 from src.models.profile import Profile
@@ -96,5 +97,9 @@ class SUserRead(BaseModel):
     username: str
     email: EmailStr
     profile: SProfileRead
+    bio_text: Optional[str] = Field(None, description="Биография пользователя")
+    year_of_birth: Optional[date] = Field(
+        None, description="Дата рождения пользователя"
+    )
 
     model_config = ConfigDict(from_attributes=True)

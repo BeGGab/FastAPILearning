@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models.user import User
 
-from src.schemas.user import SUserCreate, SUserUpdate
+from src.schemas.user import SUserCreate, SUserUpdate, SUserRead
 
 
 class UserRepository:
@@ -36,3 +36,15 @@ class UserRepository:
         user = await self.get_id(id=user_id)
         user_data.apply_to_user(user)
         return user
+
+    def apply_bio_data_to_user(
+        self, user_data: SUserRead, bio_data: Optional[dict]
+    ) -> SUserRead:
+        if not bio_data:
+            return user_data
+        return user_data.model_copy(
+            update={
+                "bio_text": bio_data.get("text"),
+                "year_of_birth": bio_data.get("year_of_birth"),
+            }
+        )
