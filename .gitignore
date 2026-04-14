@@ -1,0 +1,70 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# --- Environment / secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Testing & coverage ---
+.pytest_cache/
+
+
+# --- Type checkers / linters ---
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+
+# --- Poetry ---
+# poetry.lock обычно коммитят — не игнорировать, если так принято в проекте
+
+# --- IDEs ---
+.idea/
+*.swp
+*.swo
+*~
+
+# VS Code: раскомментируй, если не храните настройки в репозитории
+.vscode/
+
+
+# --- Logs ---
+*.log
+logs/
+
+
+# --- Alembic (кэш Python внутри migration — не коммитить) ---
+**/alembic/versions/__pycache__/
+migration/versions/__pycache__/
+
