@@ -25,5 +25,6 @@ env/
 
 .coverage
 
-.gitignore
-.git/
+# Logs
+*.log
+app.log
