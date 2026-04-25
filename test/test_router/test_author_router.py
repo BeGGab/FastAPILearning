@@ -1,61 +1,130 @@
 import uuid
 
 import pytest
+import pytest_asyncio
+from unittest.mock import AsyncMock
+from httpx import AsyncClient, ASGITransport
 
-from src.routers.v1 import author as author_router
-from src.schemas.author import SAuthorCreate, SAuthorRead
-from src.schemas.book import SBookRead
+from src.core.dependencies import get_author_service
+from src.exception.client_exception import NotFoundError
+from src.schemas.author import SAuthorRead
 
 
-@pytest.mark.asyncio
-async def test_create_author_router_calls_service(monkeypatch) -> None:
-    expected = SAuthorRead(
-        id=uuid.uuid4(),
-        name="Author",
-        books=[SBookRead(id=uuid.uuid4(), title="Book")],
+def _author_read(author_id: uuid.UUID | None = None) -> SAuthorRead:
+    author_id = author_id or uuid.uuid4()
+    return SAuthorRead(
+        id=author_id,
+        name="Router Author",
+        books=[{"id": uuid.uuid4(), "title": "Book 1"}],
         biography_text=None,
         year_of_birth=None,
         year_of_death=None,
     )
 
-    async def _fake_create(*_args, **_kwargs):
-        return expected
 
-    monkeypatch.setattr(author_router, "create_author_with_books", _fake_create)
+@pytest.fixture
+def mock_author_service():
+    service = AsyncMock()
+    service.create_author_with_books = AsyncMock()
+    service.find_all_authors = AsyncMock()
+    service.find_one_or_none_by_id = AsyncMock()
+    service.update_author_with_books = AsyncMock()
+    service.delete_author = AsyncMock()
+    return service
 
-    payload = SAuthorCreate(name="Author", books=[{"title": "Book"}])
-    result = await author_router.create_author(
-        payload=payload,
-        redis=object(),
-        session=object(),
-        author_client=object(),
-    )
 
-    assert result.id == expected.id
+@pytest.fixture
+def app_with_mocked_author_service(app, mock_author_service):
+    app.dependency_overrides[get_author_service] = lambda: mock_author_service
+    yield app
+    app.dependency_overrides.clear()
+
+
+@pytest_asyncio.fixture
+async def client(app_with_mocked_author_service):
+    transport = ASGITransport(app=app_with_mocked_author_service)
+    async with AsyncClient(transport=transport, base_url="http://test") as async_client:
+        yield async_client
 
 
 @pytest.mark.asyncio
-async def test_find_author_by_id_router_calls_service(monkeypatch) -> None:
+async def test_create_author_returns_201_and_payload(client, mock_author_service):
+    author = _author_read()
+    mock_author_service.create_author_with_books.return_value = author
+
+    response = await client.post(
+        "/api/v1/authors_books/",
+        json={
+            "name": "New Author",
+            "books": [{"title": "Book 1"}],
+            "biography_text": "Bio",
+            "year_of_birth": 1900,
+            "year_of_death": 1950,
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.json()["id"] == str(author.id)
+    mock_author_service.create_author_with_books.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_find_all_returns_200_and_list(client, mock_author_service):
+    authors = [_author_read(), _author_read()]
+    mock_author_service.find_all_authors.return_value = authors
+
+    response = await client.get("/api/v1/authors_books/")
+
+    assert response.status_code == 200
+    assert len(response.json()) == 2
+    mock_author_service.find_all_authors.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_find_by_id_returns_206(client, mock_author_service):
+    author = _author_read()
+    mock_author_service.find_one_or_none_by_id.return_value = author
+
+    response = await client.get(f"/api/v1/authors_books/{author.id}")
+
+    assert response.status_code == 206
+    assert response.json()["id"] == str(author.id)
+    mock_author_service.find_one_or_none_by_id.assert_awaited_once_with(author_id=author.id)
+
+
+@pytest.mark.asyncio
+async def test_update_returns_201(client, mock_author_service):
+    author = _author_read()
+    mock_author_service.update_author_with_books.return_value = author
+
+    response = await client.put(
+        f"/api/v1/authors_books/{author.id}",
+        json={"name": "Updated Author", "books": [{"title": "Book 2"}]},
+    )
+
+    assert response.status_code == 201
+    assert response.json()["name"] == "Router Author"
+    mock_author_service.update_author_with_books.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_delete_returns_204(client, mock_author_service):
     author_id = uuid.uuid4()
-    expected = SAuthorRead(
-        id=author_id,
-        name="Author",
-        books=[SBookRead(id=uuid.uuid4(), title="Book")],
-        biography_text="Bio",
-        year_of_birth=1980,
-        year_of_death=None,
-    )
+    mock_author_service.delete_author.return_value = None
 
-    async def _fake_find(*_args, **_kwargs):
-        return expected
+    response = await client.delete(f"/api/v1/authors_books/{author_id}")
 
-    monkeypatch.setattr(author_router, "find_one_or_none_by_id", _fake_find)
+    assert response.status_code == 204
+    assert response.text == ""
+    mock_author_service.delete_author.assert_awaited_once_with(author_id=author_id)
 
-    result = await author_router.find_author_is_id(
-        author_id=author_id,
-        redis=object(),
-        session=object(),
-        author_client=object(),
-    )
 
-    assert result.biography_text == "Bio"
+@pytest.mark.asyncio
+async def test_find_by_id_not_found_maps_to_404(client, mock_author_service):
+    author_id = uuid.uuid4()
+    mock_author_service.find_one_or_none_by_id.side_effect = NotFoundError(detail="Author not found")
+
+    response = await client.get(f"/api/v1/authors_books/{author_id}")
+
+    assert response.status_code == 404
+    assert response.json()["error_code"] == "Router_not_found"

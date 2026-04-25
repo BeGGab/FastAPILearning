@@ -3,10 +3,9 @@ import httpx
 import logging
 import ujson
 
-from typing import Any, Dict, Optional
-from typing import Annotated, AsyncGenerator
+from typing import Any, AsyncIterator, Dict, Optional
 
-from fastapi import Depends, Request
+from fastapi import Depends
 
 from redress import (
     CircuitBreaker,
@@ -19,6 +18,9 @@ from redress.strategies import decorrelated_jitter
 
 from src.exception.client_exception import BadRequestError, NotFoundError, ConflictError, ValidationError
 from src.schemas.author import SAuthorCreate
+from src.core.config import Settings
+
+settings = Settings()
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +61,12 @@ policy = AsyncPolicy(
         },
     ),
 )
+
+
+async def get_author_bio_http_client() -> AsyncIterator[httpx.AsyncClient]:
+    async with httpx.AsyncClient(base_url=settings.biography_service_url, timeout=30.0) as client:
+        yield client
+
 
 class AuthorServiceClient:
     """Клиент для взаимодействия с внешним сервисом авторов."""
@@ -108,9 +116,7 @@ class AuthorServiceClient:
         return None
 
 
-
-async def get_author_service_client(request: Request) -> AsyncGenerator[AuthorServiceClient, None]:
-    yield request.app.state.author_service_client
-    
-
-AuthorClientDep = Annotated[AuthorServiceClient, Depends(get_author_service_client)]
+async def get_author_service_client(
+    client: httpx.AsyncClient = Depends(get_author_bio_http_client),
+) -> AuthorServiceClient:
+    return AuthorServiceClient(client)

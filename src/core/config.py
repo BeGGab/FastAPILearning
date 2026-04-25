@@ -1,4 +1,4 @@
-import os
+import pathlib
 
 from pydantic import PostgresDsn, Field
 from pydantic_settings import BaseSettings
@@ -15,6 +15,4 @@ class Settings(BaseSettings):
     )
 
     class Config:
-        env_file = os.path.join(
-            os.path.dirname(os.path.dirname(os.path.dirname(__file__))), ".env"
-        )
+        env_file = pathlib.Path(__file__).parent.parent.parent / ".env"

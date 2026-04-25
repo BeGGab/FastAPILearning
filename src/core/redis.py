@@ -1,37 +1,43 @@
-import contextlib
-from typing import Annotated, AsyncGenerator
+import ujson
+import redress
 
-import httpx
+from typing import Optional, Any
+
+
 import redis.asyncio as redis
-from fastapi import FastAPI, Depends, Request
 
-from src.client.bio_author_client import AuthorServiceClient
 from src.core.config import Settings
 
 settings = Settings()
 
-
-@contextlib.asynccontextmanager
-async def lifespan(app: FastAPI):
-    pool = redis.ConnectionPool.from_url(settings.redis_url, decode_responses=True)
-    app.state.redis_client = redis.Redis(connection_pool=pool)
-
-    biography_http = httpx.AsyncClient(
-        base_url=str(settings.biography_service_url),
-        timeout=5.0,
-        follow_redirects=True,
-    )
-    app.state.author_service_client = AuthorServiceClient(biography_http)
-
-    yield
-
-    await biography_http.aclose()
-    await app.state.redis_client.aclose()
+redis_client = redis.Redis.from_url(settings.redis_url)
 
 
-async def get_redis_client(request: Request) -> AsyncGenerator[redis.Redis, None]:
-    redis_client = request.app.state.redis_client
-    yield redis_client
+class RedisClient:
+    def __init__(self, redis: redis_client, default_ttl: int = settings.ttl):
+        self.redis = redis
+        self.default_ttl = default_ttl
 
 
-RedisDep = Annotated[redis.Redis, Depends(get_redis_client)]
+    async def get(self, key: str) -> Optional[Any]:
+        cached = await self.redis.get(key)
+        if cached is None:
+            return None
+        return ujson.loads(cached)
+
+    @redress.retry(max_attempts=3, deadline_s=10, strategy=redress.strategies.decorrelated_jitter(max_s=5.0))
+    async def set(self, key: str, value: Any, ttl: int = None) -> None:
+        ttl = ttl if ttl is not None else self.default_ttl
+        await self.redis.setex(key, ttl, ujson.dumps(value))
+
+    @redress.retry(max_attempts=3, deadline_s=10, strategy=redress.strategies.decorrelated_jitter(max_s=5.0))
+    async def update(self, key: Any, value: Any, ttl: int = None) -> None:
+        await self.set(key, value, ttl)
+
+    @redress.retry(max_attempts=3, deadline_s=10, strategy=redress.strategies.decorrelated_jitter(max_s=5.0))
+    async def delete(self, key: str) -> None:
+        await self.redis.delete(key)
+
+
+async def get_cache() -> RedisClient:
+    return RedisClient(redis_client)
