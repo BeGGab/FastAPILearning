@@ -17,6 +17,7 @@ from redress import (
 from redress.strategies import decorrelated_jitter
 
 from src.exception.client_exception import BadRequestError, NotFoundError, ConflictError, ValidationError
+from src.exception.server_exception import ServiceUnavailableError, InternalServerError
 from src.schemas.author import SAuthorCreate
 from src.core.config import Settings
 
@@ -37,11 +38,43 @@ def skip_log_errors(exc: BaseException) -> ErrorClass | Classification | None:
         return ErrorClass.PERMANENT
     if isinstance(exc, (ValidationError, BadRequestError, NotFoundError, ConflictError)):
         return ErrorClass.PERMANENT
+    if isinstance(exc, (ServiceUnavailableError, InternalServerError)):
+        return ErrorClass.TRANSIENT
 
-    if isinstance(exc, (httpx.HTTPStatusError, httpx.TimeoutException)):
+    if isinstance(exc, httpx.HTTPStatusError):
+        status_code = exc.response.status_code if exc.response is not None else None
+        if status_code is not None and 400 <= status_code < 500 and status_code not in (408, 429):
+            return ErrorClass.PERMANENT
+        return ErrorClass.TRANSIENT
+
+    if isinstance(exc, (httpx.TimeoutException, httpx.NetworkError, httpx.RequestError)):
         return ErrorClass.TRANSIENT
 
     return ErrorClass.UNKNOWN
+
+
+def _raise_logical_error(response: httpx.Response, operation: str) -> None:
+    status_code = response.status_code
+    response_preview = response.text[:500]
+
+    if status_code == 400:
+        raise BadRequestError(detail=f"{operation}: неверный запрос: {response_preview}")
+    if status_code == 404:
+        raise NotFoundError(detail=f"{operation}: ресурс не найден")
+    if status_code == 409:
+        raise ConflictError(detail=f"{operation}: конфликт данных")
+    if status_code == 422:
+        raise ValidationError(detail=f"{operation}: ошибка валидации: {response_preview}")
+    if status_code in (408, 429, 503):
+        raise ServiceUnavailableError(
+            detail=f"{operation}: сервис временно недоступен ({status_code}): {response_preview}"
+        )
+    if 500 <= status_code < 600:
+        raise InternalServerError(
+            detail=f"{operation}: ошибка внешнего сервиса ({status_code}): {response_preview}"
+        )
+    if 400 <= status_code < 500:
+        raise BadRequestError(detail=f"{operation}: клиентская ошибка ({status_code}): {response_preview}")
 
 policy = AsyncPolicy(
     retry=AsyncRetry(  
@@ -84,9 +117,13 @@ class AuthorServiceClient:
             "year_of_death": author_data.year_of_death,
         }
 
-        response = await policy.call(
-            lambda: self.client.post("/api/v1/biographies/", json=payload)
-        )
+        async def _send_create_request() -> httpx.Response:
+            response = await self.client.post("/api/v1/biographies/", json=payload)
+            if response.status_code >= 400:
+                _raise_logical_error(response, "Создание биографии")
+            return response
+
+        response = await policy.call(_send_create_request)
         if response.status_code == 201:
             return _response_ujson(response)
         logger.error(
@@ -97,14 +134,22 @@ class AuthorServiceClient:
         return None
 
     async def get_author(self, author_id: uuid.UUID) -> Optional[Dict[str, Any]]:
-        response = await policy.call(
-            lambda: self.client.get(f"/api/v1/biographies/{author_id}")
-        )
+        async def _send_get_request() -> httpx.Response:
+            response = await self.client.get(f"/api/v1/biographies/{author_id}")
+            if response.status_code == 404:
+                return response
+            if response.status_code >= 400:
+                _raise_logical_error(response, "Получение биографии")
+            return response
+
+        response = await policy.call(_send_get_request)
         if response.status_code in (200, 206):
             return _response_ujson(response)
-
         if response.status_code == 404:
-            logger.info(f"Биография для автора {author_id} не найдена.")
+            logger.info(
+                "Получение биографии: биография автора %s отсутствует",
+                author_id,
+            )
             return None
 
         logger.warning(

@@ -26,6 +26,7 @@ def _author_read(author_id: uuid.UUID | None = None) -> SAuthorRead:
 def mock_author_service():
     service = AsyncMock()
     service.create_author_with_books = AsyncMock()
+    service.create_author_with_books_via_saga = AsyncMock()
     service.find_all_authors = AsyncMock()
     service.find_one_or_none_by_id = AsyncMock()
     service.update_author_with_books = AsyncMock()
@@ -50,7 +51,7 @@ async def client(app_with_mocked_author_service):
 @pytest.mark.asyncio
 async def test_create_author_returns_201_and_payload(client, mock_author_service):
     author = _author_read()
-    mock_author_service.create_author_with_books.return_value = author
+    mock_author_service.create_author_with_books_via_saga.return_value = author
 
     response = await client.post(
         "/api/v1/authors_books/",
@@ -65,7 +66,7 @@ async def test_create_author_returns_201_and_payload(client, mock_author_service
 
     assert response.status_code == 201
     assert response.json()["id"] == str(author.id)
-    mock_author_service.create_author_with_books.assert_awaited_once()
+    mock_author_service.create_author_with_books_via_saga.assert_awaited_once()
 
 
 @pytest.mark.asyncio

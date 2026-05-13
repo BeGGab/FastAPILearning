@@ -2,7 +2,7 @@ import uuid
 
 import pytest
 import ujson
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import AsyncMock, Mock, patch
 
 from src.models.author import Author
 from src.models.books import Book
@@ -10,6 +10,7 @@ from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate
 from src.service.author import AuthorService
 from src.exception.client_exception import NotFoundError
 from src.exception.server_exception import InternalServerError
+from src.temporal.models import CompensationResult, CreateAuthorSagaResult
 
 
 def _make_author(name: str = "Test Author") -> Author:
@@ -83,6 +84,43 @@ async def test_create_author_with_books_success(service_deps):
     session.refresh.assert_awaited_once_with(author, ["books"])
     cache.set.assert_awaited_once()
     author_client.create_to_author.assert_awaited_once_with(author_id=author.id, author_data=payload)
+
+
+@pytest.mark.asyncio
+async def test_create_author_with_books_via_saga_success(service_deps):
+    service, _session, repository, cache, author_client = service_deps
+    author = _make_author()
+    payload = SAuthorCreate(
+        name="New Author",
+        books=[{"title": "Book 1"}],
+        biography_text="Bio",
+        year_of_birth=1900,
+        year_of_death=1950,
+    )
+    enriched = SAuthorRead.model_validate(author, from_attributes=True).model_copy(
+        update={"biography_text": "Bio", "year_of_birth": 1900, "year_of_death": 1950}
+    )
+    saga_result = CreateAuthorSagaResult(
+        author_id=str(author.id),
+        biography_created=True,
+        compensated_author=CompensationResult(False, False),
+        compensated_biography=CompensationResult(False, False),
+    )
+    repository.get_id.return_value = author
+    author_client.get_author.return_value = {
+        "text": "Bio",
+        "year_of_birth": 1900,
+        "year_of_death": 1950,
+    }
+    repository.apply_biography_to_author_data.return_value = enriched
+
+    with patch("src.temporal.client.run_create_author_saga", new_callable=AsyncMock) as mock_saga:
+        mock_saga.return_value = saga_result
+        result = await service.create_author_with_books_via_saga(payload, request_id="req-1")
+
+    assert result == enriched
+    mock_saga.assert_awaited_once()
+    repository.get_id.assert_awaited()
 
 
 @pytest.mark.asyncio

@@ -3,7 +3,7 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.db import get_async_session
-from src.core.redis import get_cache, RedisClient
+from src.core.redis import redis_client, RedisClient
 
 from src.client.bio_author_client import AuthorServiceClient, get_author_service_client
 
@@ -17,6 +17,9 @@ from src.service.student import StudentService
 from src.service.author import AuthorService
 from src.service.user import UserService
 
+
+async def get_cache() -> RedisClient:
+    return RedisClient(redis_client)
 
 async def get_author_repository(session: AsyncSession = Depends(get_async_session)) -> AuthorRepository:
     return AuthorRepository(session)

@@ -14,5 +14,9 @@ class Settings(BaseSettings):
         description="Базовый URL микросервиса биографий (src_external), например http://localhost:8001",
     )
 
+    temporal_host: str = Field(default="localhost:7233", env="temporal_host", description="URL Temporal сервера")
+    temporal_namespace: str = Field(default="default", env="temporal_namespace")
+    temporal_task_queue: str = Field(default="authors", env="temporal_task_queue", description="Имя очереди задач для workflow")
+
     class Config:
         env_file = pathlib.Path(__file__).parent.parent.parent / ".env"

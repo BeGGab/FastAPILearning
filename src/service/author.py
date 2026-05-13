@@ -13,7 +13,9 @@ from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate
 
 from src.repositories.author import AuthorRepository
 
-from src.exception.client_exception import ValidationError, NotFoundError
+from src.temporal.models import BookInput, CreateAuthorSagaInput
+
+from src.exception.client_exception import NotFoundError
 from src.exception.server_exception import InternalServerError
 
 
@@ -37,11 +39,16 @@ class AuthorService:
     async def create_author_with_books(
         self, author_data: SAuthorCreate) -> SAuthorRead:
         
-        author, _books = await self.repository.created(author_data=author_data)
-        if not author:
-            logger.error(f"Ошибка при создании автора")
-            raise InternalServerError(detail="Ошибка при создании автора")
+        try:
+            author, _books = await self.repository.created(author_data=author_data)
+        except Exception as e:
+            logger.error(f"Ошибка при создании автора: {e}")
+            raise InternalServerError(detail="Ошибка при создании автора", context=e)
 
+        if author is None:
+            logger.error("Репозиторий вернул пустого автора при создании")
+            raise InternalServerError(detail="Ошибка при создании автора")
+        
         self.session.add(author)
         await self.session.flush()
         await self.session.refresh(author, ["books"])
@@ -62,6 +69,37 @@ class AuthorService:
         
         return author_read_data
 
+    async def create_author_with_books_via_saga(
+        self,
+        author_data: SAuthorCreate,
+        *,
+        request_id: str | None = None,
+    ) -> SAuthorRead:
+        from src.temporal.client import run_create_author_saga
+
+        rid = request_id or str(uuid.uuid4())
+        saga_input = CreateAuthorSagaInput(
+            request_id=rid,
+            name=author_data.name,
+            books=[BookInput(title=b.title) for b in author_data.books],
+            biography_text=author_data.biography_text,
+            year_of_birth=author_data.year_of_birth,
+            year_of_death=author_data.year_of_death,
+        )
+        try:
+            result = await run_create_author_saga(saga_input)
+        except Exception as e:
+            logger.error("Ошибка саги создания автора: %s", e)
+            raise InternalServerError(
+                detail="Не удалось создать автора через сагу",
+                context=e,
+            ) from e
+
+        if not result.author_id:
+            raise InternalServerError(detail="Сага завершилась без author_id")
+
+        return await self.find_one_or_none_by_id(uuid.UUID(result.author_id))
+
 
     async def find_one_or_none_by_id(
         self,
@@ -69,12 +107,24 @@ class AuthorService:
         cache_key = f"author:{author_id}"
         cached = await self.cache.get(cache_key)
         if cached:
-            author_data = SAuthorRead.model_validate_json(cached)
-            bio_data = await self.author_client.get_author(author_id=author_id)
-            enriched_author = self.repository.apply_biography_to_author_data(author_data, bio_data)
-            if enriched_author.model_dump() != author_data.model_dump():
-                await self.cache.set(cache_key, enriched_author.model_dump_json())
-            return enriched_author
+            try:
+                if isinstance(cached, (str, bytes, bytearray)):
+                    author_data = SAuthorRead.model_validate_json(cached)
+                else:
+                    author_data = SAuthorRead.model_validate(cached)
+            except Exception as exc:
+                logger.warning(
+                    "Некорректные данные в кеше для автора %s: %s",
+                    author_id,
+                    exc,
+                )
+                await self.cache.delete(cache_key)
+            else:
+                bio_data = await self.author_client.get_author(author_id=author_id)
+                enriched_author = self.repository.apply_biography_to_author_data(author_data, bio_data)
+                if enriched_author.model_dump() != author_data.model_dump():
+                    await self.cache.set(cache_key, enriched_author.model_dump_json())
+                return enriched_author
 
         author = await self.repository.get_id(id=author_id)
         if not author:

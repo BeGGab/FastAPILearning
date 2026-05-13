@@ -1,5 +1,5 @@
 import uuid
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Header, status
 from fastapi.responses import Response
 from typing import List
 
@@ -15,9 +15,11 @@ router = APIRouter(prefix="/api/v1/authors_books", tags=["author"])
 async def create_author(
     payload: SAuthorCreate,
     author_service: AuthorService = Depends(get_author_service),
+    idempotency_key: str | None = Header(None, alias="Idempotency-Key"),
 ) -> SAuthorRead:
-    return await author_service.create_author_with_books(
+    return await author_service.create_author_with_books_via_saga(
         author_data=payload,
+        request_id=idempotency_key,
     )
 
 

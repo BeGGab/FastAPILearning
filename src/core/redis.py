@@ -38,6 +38,3 @@ class RedisClient:
     async def delete(self, key: str) -> None:
         await self.redis.delete(key)
 
-
-async def get_cache() -> RedisClient:
-    return RedisClient(redis_client)
