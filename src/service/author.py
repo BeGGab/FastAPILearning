@@ -10,11 +10,10 @@ from src.core.redis import RedisClient
 
 from src.client.bio_author_client import AuthorServiceClient
 from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate
+from src.schemas.saga import CreateAuthorSagaInput, SagaBookInput
 
 from src.repositories.author import AuthorRepository
-
-from src.temporal.models import BookInput, CreateAuthorSagaInput
-
+from src.temporal.client.client import run_create_author_saga
 from src.exception.client_exception import NotFoundError
 from src.exception.server_exception import InternalServerError
 
@@ -75,13 +74,13 @@ class AuthorService:
         *,
         request_id: str | None = None,
     ) -> SAuthorRead:
-        from src.temporal.client import run_create_author_saga
+        
 
         rid = request_id or str(uuid.uuid4())
         saga_input = CreateAuthorSagaInput(
             request_id=rid,
             name=author_data.name,
-            books=[BookInput(title=b.title) for b in author_data.books],
+            books=[SagaBookInput(title=b.title) for b in author_data.books],
             biography_text=author_data.biography_text,
             year_of_birth=author_data.year_of_birth,
             year_of_death=author_data.year_of_death,

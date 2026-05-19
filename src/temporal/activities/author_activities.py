@@ -6,14 +6,9 @@ from src.core.db import async_session_maker
 from src.repositories.author import AuthorRepository
 from src.schemas.author import SAuthorCreate
 from src.schemas.book import SBookCreate
-from src.temporal.models import CreateAuthorSagaInput, DeleteAuthorInput
-from src.temporal.saga_redis import (
-    default_saga_ttl_s,
-    saga_get_json,
-    saga_mark_done,
-    saga_release,
-    saga_try_lock,
-)
+from src.schemas.saga import CreateAuthorSagaInput, DeleteAuthorInput
+from src.core.redis import SagaRedis, redis_client
+from src.core.config import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -22,10 +17,12 @@ _SAGA_KIND_AUTHOR = "author"
 
 @activity.defn(name="create_author_activity")
 async def create_author_activity(payload: CreateAuthorSagaInput) -> str:
-    ttl_s = default_saga_ttl_s()
+    settings = Settings()
+    ttl_s = settings.ttl
+    redis = SagaRedis(redis_client, settings, ttl_s)
     rid = payload.request_id
 
-    state = await saga_get_json(_SAGA_KIND_AUTHOR, rid)
+    state = await redis.saga_get_json(_SAGA_KIND_AUTHOR, rid)
     if state and state.get("status") == "done":
         aid = state.get("author_id")
         if aid:
@@ -36,9 +33,9 @@ async def create_author_activity(payload: CreateAuthorSagaInput) -> str:
             )
             return aid
 
-    acquired = await saga_try_lock(_SAGA_KIND_AUTHOR, rid, ttl_s)
+    acquired = await redis.saga_try_lock(_SAGA_KIND_AUTHOR, rid, ttl_s)
     if not acquired:
-        state = await saga_get_json(_SAGA_KIND_AUTHOR, rid)
+        state = await redis.saga_get_json(_SAGA_KIND_AUTHOR, rid)
         if state and state.get("status") == "done" and state.get("author_id"):
             return state["author_id"]
         raise RuntimeError(
@@ -65,16 +62,19 @@ async def create_author_activity(payload: CreateAuthorSagaInput) -> str:
             author_id = str(author.id)
             await session.commit()
     except Exception:
-        await saga_release(_SAGA_KIND_AUTHOR, rid)
+        await redis.saga_release(_SAGA_KIND_AUTHOR, rid)
         raise
 
-    await saga_mark_done(_SAGA_KIND_AUTHOR, rid, author_id, ttl_s)
+    await redis.saga_mark_done(_SAGA_KIND_AUTHOR, rid, author_id, ttl_s)
     return author_id
 
 
 @activity.defn(name="delete_author_activity")
 async def delete_author_activity(inp: DeleteAuthorInput) -> None:
-    await saga_release(_SAGA_KIND_AUTHOR, inp.request_id)
+    settings = Settings()
+    redis = SagaRedis(redis_client, settings)
+
+    await redis.saga_release(_SAGA_KIND_AUTHOR, inp.request_id)
 
     async with async_session_maker() as session:
         repository = AuthorRepository(session)

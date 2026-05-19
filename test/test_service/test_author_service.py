@@ -10,7 +10,7 @@ from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate
 from src.service.author import AuthorService
 from src.exception.client_exception import NotFoundError
 from src.exception.server_exception import InternalServerError
-from src.temporal.models import CompensationResult, CreateAuthorSagaResult
+from src.schemas.saga import CompensationResult, CreateAuthorSagaResult
 
 
 def _make_author(name: str = "Test Author") -> Author:
@@ -103,8 +103,8 @@ async def test_create_author_with_books_via_saga_success(service_deps):
     saga_result = CreateAuthorSagaResult(
         author_id=str(author.id),
         biography_created=True,
-        compensated_author=CompensationResult(False, False),
-        compensated_biography=CompensationResult(False, False),
+        compensated_author=CompensationResult(attempted=False, success=False),
+        compensated_biography=CompensationResult(attempted=False, success=False),
     )
     repository.get_id.return_value = author
     author_client.get_author.return_value = {

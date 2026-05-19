@@ -6,14 +6,10 @@ from temporalio import activity
 
 from src.client.bio_author_client import AuthorServiceClient
 from src.core.config import Settings
+from src.core.redis import SagaRedis, redis_client
+from src.exception.client_exception import NotFoundError
 from src.schemas.author import SAuthorCreate
-from src.temporal.models import CreateBiographyInput, DeleteBiographyInput
-from src.temporal.saga_redis import (
-    saga_get_json,
-    saga_mark_done,
-    saga_release,
-    saga_try_lock,
-)
+from src.schemas.saga import CreateBiographyInput, DeleteBiographyInput
 
 logger = logging.getLogger(__name__)
 
@@ -24,8 +20,9 @@ _SAGA_KIND_BIO = "bio"
 async def create_biography_activity(inp: CreateBiographyInput) -> None:
     settings = Settings()
     ttl_s = settings.ttl
+    redis = SagaRedis(redis_client, settings, ttl_s)
 
-    state = await saga_get_json(_SAGA_KIND_BIO, inp.request_id)
+    state = await redis.saga_get_json(_SAGA_KIND_BIO, inp.request_id)
     if state and state.get("status") == "done":
         logger.info(
             "create_biography_activity: идемпотентный кэш hit request_id=%s",
@@ -33,58 +30,60 @@ async def create_biography_activity(inp: CreateBiographyInput) -> None:
         )
         return
 
-    acquired = await saga_try_lock(_SAGA_KIND_BIO, inp.request_id, ttl_s)
-    if not acquired:
-        state = await saga_get_json(_SAGA_KIND_BIO, inp.request_id)
+    lock_acquired = await redis.saga_try_lock(_SAGA_KIND_BIO, inp.request_id, ttl_s)
+    if not lock_acquired:
+        state = await redis.saga_get_json(_SAGA_KIND_BIO, inp.request_id)
         if state and state.get("status") == "done":
             return
         raise RuntimeError(
-            f"Сага биографии {inp.request_id} не может быть взята"
+            f"Сага биографии {inp.request_id} занята; повторите activity"
         )
 
-    async with httpx.AsyncClient(
-        base_url=settings.biography_service_url, timeout=30.0
-    ) as http:
-        client = AuthorServiceClient(http)
-        aid = uuid.UUID(inp.author_id)
+    try:
+        async with httpx.AsyncClient(
+            base_url=settings.biography_service_url, timeout=30.0
+        ) as http:
+            client = AuthorServiceClient(http)
+            aid = uuid.UUID(inp.author_id)
 
-        existing = await client.get_author(author_id=aid)
-        if existing is not None:
-            await saga_mark_done(_SAGA_KIND_BIO, inp.request_id, inp.author_id, ttl_s)
-            logger.info(
-                "create_biography_activity: биография уже существует author_id=%s",
-                inp.author_id,
-            )
-            return
+            try:
+                existing = await client.get_author(author_id=aid)
+            except NotFoundError:
+                existing = None
 
-        author_create = SAuthorCreate(
-            name=inp.author_name,
-            books=[],
-            biography_text=inp.biography_text,
-            year_of_birth=inp.year_of_birth,
-            year_of_death=inp.year_of_death,
-        )
+            if existing is not None:
+                logger.info(
+                    "create_biography_activity: биография уже существует author_id=%s",
+                    inp.author_id,
+                )
+            else:
+                author_create = SAuthorCreate(
+                    name=inp.author_name,
+                    books=[],
+                    biography_text=inp.biography_text,
+                    year_of_birth=inp.year_of_birth,
+                    year_of_death=inp.year_of_death,
+                )
 
-        try:
-            result = await client.create_to_author(
-                author_id=aid,
-                author_data=author_create,
-            )
-        except Exception:
-            await saga_release(_SAGA_KIND_BIO, inp.request_id)
-            raise
+                result = await client.create_to_author(
+                    author_id=aid,
+                    author_data=author_create,
+                )
+                if result is None:
+                    raise RuntimeError("Сервис биографий вернул no данных после POST")
+    except Exception:
+        await redis.saga_release(_SAGA_KIND_BIO, inp.request_id)
+        raise
 
-        if result is None:
-            await saga_release(_SAGA_KIND_BIO, inp.request_id)
-            raise RuntimeError("Сервис биографий вернул no данных после POST")
-
-    await saga_mark_done(_SAGA_KIND_BIO, inp.request_id, inp.author_id, ttl_s)
+    await redis.saga_mark_done(_SAGA_KIND_BIO, inp.request_id, inp.author_id, ttl_s)
 
 
 @activity.defn(name="delete_biography_activity")
 async def delete_biography_activity(inp: DeleteBiographyInput) -> None:
     settings = Settings()
-    await saga_release(_SAGA_KIND_BIO, inp.request_id)
+    ttl_s = settings.ttl
+    redis = SagaRedis(redis_client, settings, ttl_s)
+    await redis.saga_release(_SAGA_KIND_BIO, inp.request_id)
 
     url = f"/api/v1/biographies/{inp.author_id}"
     async with httpx.AsyncClient(

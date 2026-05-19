@@ -1,13 +1,13 @@
 from datetime import timedelta
 from temporalio import workflow
 
-from src.temporal.models import (
+from src.schemas.saga import (
+    CompensationResult,
     CreateAuthorSagaInput,
     CreateAuthorSagaResult,
-    CompensationResult,
     CreateBiographyInput,
-    DeleteBiographyInput,
     DeleteAuthorInput,
+    DeleteBiographyInput,
 )
 
 

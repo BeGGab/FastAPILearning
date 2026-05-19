@@ -38,3 +38,45 @@ class RedisClient:
     async def delete(self, key: str) -> None:
         await self.redis.delete(key)
 
+
+class SagaRedis:
+    def __init__(self, redis: redis_client, settings: Settings, default_ttl: int = settings.ttl):
+        self.redis = redis
+        self.settings = settings
+        self.default_ttl = default_ttl
+
+    def saga_key(self, kind: str, request_id: str) -> str:
+        return f"saga:{kind}:{request_id}"
+        
+    async def _decode_redis_value(self, raw: Any) -> Optional[dict]:
+        if raw is None:
+            return None
+        if isinstance(raw, bytes):
+            return ujson.loads(raw)
+        return ujson.loads(raw)
+
+    async def saga_mark_done(self,
+        kind: str, request_id: str, author_id: str, ttl_s: int
+    ) -> None:
+        await self.redis.set(self.saga_key(kind, request_id), ujson.dumps({"status": "done", "author_id": author_id}), ex=ttl_s)
+
+
+    async def saga_get_json(self, kind: str, request_id: str) -> Optional[dict]:
+        raw = await self.redis.get(self.saga_key(kind, request_id))
+        if not raw:
+            return None
+        try:
+            return await self._decode_redis_value(raw)
+        except (ujson.JSONDecodeError, TypeError, ValueError):
+            return None
+
+    async def saga_try_lock(self, kind: str, request_id: str, ttl_s: int) -> bool:
+        key = self.saga_key(kind, request_id)
+        payload = ujson.dumps({"status": "pending"})
+        return bool(await self.redis.set(key, payload, nx=True, ex=ttl_s))
+
+    
+
+    async def saga_release(self, kind: str, request_id: str) -> None:
+        await self.redis.delete(self.saga_key(kind, request_id))
+

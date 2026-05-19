@@ -4,7 +4,7 @@ import pytest
 from temporalio.exceptions import WorkflowAlreadyStartedError
 
 from src.temporal.client import run_create_author_saga
-from src.temporal.models import (
+from src.schemas.saga import (
     CompensationResult,
     CreateAuthorSagaInput,
     CreateAuthorSagaResult,
@@ -49,8 +49,8 @@ async def test_run_create_author_saga_starts_new_workflow() -> None:
         temporal_task_queue="authors",
     )
 
-    with patch("src.temporal.client.Settings", return_value=settings), patch(
-        "src.temporal.client.Client.connect",
+    with patch("src.temporal.client.client.Settings", return_value=settings), patch(
+        "src.temporal.client.client.Client.connect",
         new=AsyncMock(return_value=temporal_client),
     ):
         result = await run_create_author_saga(payload)
@@ -87,8 +87,8 @@ async def test_run_create_author_saga_uses_existing_workflow_on_duplicate_id() -
         temporal_task_queue="authors",
     )
 
-    with patch("src.temporal.client.Settings", return_value=settings), patch(
-        "src.temporal.client.Client.connect",
+    with patch("src.temporal.client.client.Settings", return_value=settings), patch(
+        "src.temporal.client.client.Client.connect",
         new=AsyncMock(return_value=temporal_client),
     ):
         result = await run_create_author_saga(payload)

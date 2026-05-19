@@ -57,21 +57,13 @@ def _raise_logical_error(response: httpx.Response, operation: str) -> None:
     status_code = response.status_code
     response_preview = response.text[:500]
 
-    if status_code == 400:
-        raise BadRequestError(detail=f"{operation}: неверный запрос: {response_preview}")
     if status_code == 404:
         raise NotFoundError(detail=f"{operation}: ресурс не найден")
     if status_code == 409:
         raise ConflictError(detail=f"{operation}: конфликт данных")
-    if status_code == 422:
-        raise ValidationError(detail=f"{operation}: ошибка валидации: {response_preview}")
     if status_code in (408, 429, 503):
         raise ServiceUnavailableError(
             detail=f"{operation}: сервис временно недоступен ({status_code}): {response_preview}"
-        )
-    if 500 <= status_code < 600:
-        raise InternalServerError(
-            detail=f"{operation}: ошибка внешнего сервиса ({status_code}): {response_preview}"
         )
     if 400 <= status_code < 500:
         raise BadRequestError(detail=f"{operation}: клиентская ошибка ({status_code}): {response_preview}")
@@ -131,7 +123,7 @@ class AuthorServiceClient:
             response.status_code,
             response.text[:500],
         )
-        return None
+        return response.status_code
 
     async def get_author(self, author_id: uuid.UUID) -> Optional[Dict[str, Any]]:
         async def _send_get_request() -> httpx.Response:
@@ -150,7 +142,7 @@ class AuthorServiceClient:
                 "Получение биографии: биография автора %s отсутствует",
                 author_id,
             )
-            return None
+            raise NotFoundError(detail=f"Биография автора {author_id} не найдена")
 
         logger.warning(
             "Получение биографии: статус %s для автора %s: %s",
@@ -158,7 +150,7 @@ class AuthorServiceClient:
             author_id,
             response.text[:500],
         )
-        return None
+        return response.status_code
 
 
 async def get_author_service_client(
