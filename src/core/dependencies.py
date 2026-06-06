@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.core.db import get_async_session
 from src.core.redis import redis_client, RedisClient
 
-from src.client.bio_author_client import AuthorServiceClient, get_author_service_client
+from src.client.bio_author_client import BiographyServiceClient, get_biography_service_client
 
 from src.repositories.course import CourseRepository
 from src.repositories.students import StudentRepository
@@ -38,7 +38,7 @@ async def get_user_repository(session: AsyncSession = Depends(get_async_session)
 async def get_author_service(
     session: AsyncSession = Depends(get_async_session),
     repository: AuthorRepository = Depends(get_author_repository),
-    author_client: AuthorServiceClient = Depends(get_author_service_client),
+    author_client: BiographyServiceClient = Depends(get_biography_service_client),
     cache: RedisClient = Depends(get_cache)
 ) -> AuthorService:
     return AuthorService(session, repository, cache, author_client) 

@@ -8,12 +8,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.redis import RedisClient
 
-from src.client.bio_author_client import AuthorServiceClient
+from src.client.bio_author_client import BiographyServiceClient
 from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate
 from src.schemas.saga import CreateAuthorSagaInput, SagaBookInput
 
 from src.repositories.author import AuthorRepository
-from src.temporal.client.client import run_create_author_saga
+from src.client.client_author_saga import run_create_author_saga
 from src.exception.client_exception import NotFoundError
 from src.exception.server_exception import InternalServerError
 
@@ -28,7 +28,7 @@ class AuthorService:
     session: AsyncSession, 
     repository: AuthorRepository, 
     cache: RedisClient,
-    author_client: AuthorServiceClient):
+    author_client: BiographyServiceClient):
         self.session = session
         self.cache = cache
         self.repository = repository
@@ -91,7 +91,7 @@ class AuthorService:
             logger.error("Ошибка саги создания автора: %s", e)
             raise InternalServerError(
                 detail="Не удалось создать автора через сагу",
-                context=e,
+                context={"error": str(e)},
             ) from e
 
         if not result.author_id:
@@ -119,7 +119,7 @@ class AuthorService:
                 )
                 await self.cache.delete(cache_key)
             else:
-                bio_data = await self.author_client.get_author(author_id=author_id)
+                bio_data = await self.author_client.get_biography(author_id=author_id)
                 enriched_author = self.repository.apply_biography_to_author_data(author_data, bio_data)
                 if enriched_author.model_dump() != author_data.model_dump():
                     await self.cache.set(cache_key, enriched_author.model_dump_json())
@@ -132,7 +132,7 @@ class AuthorService:
 
         author_data = SAuthorRead.model_validate(author, from_attributes=True)
 
-        bio_data = await self.author_client.get_author(author_id=author_id)
+        bio_data = await self.author_client.get_biography(author_id=author_id)
         author_data = self.repository.apply_biography_to_author_data(author_data, bio_data)
         await self.cache.set(cache_key, author_data.model_dump_json())
 

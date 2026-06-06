@@ -15,8 +15,8 @@ logger = logging.getLogger(__name__)
 _SAGA_KIND_AUTHOR = "author"
 
 
-@activity.defn(name="create_author_activity")
-async def create_author_activity(payload: CreateAuthorSagaInput) -> str:
+@activity.defn(name="create_author")
+async def create_author(payload: CreateAuthorSagaInput) -> str:
     settings = Settings()
     ttl_s = settings.ttl
     redis = SagaRedis(redis_client, settings, ttl_s)
@@ -27,7 +27,7 @@ async def create_author_activity(payload: CreateAuthorSagaInput) -> str:
         aid = state.get("author_id")
         if aid:
             logger.info(
-                "create_author_activity: идемпотентный кэш hit request_id=%s author_id=%s",
+                "create_author: идемпотентный кэш hit request_id=%s author_id=%s",
                 rid,
                 aid,
             )
@@ -69,8 +69,8 @@ async def create_author_activity(payload: CreateAuthorSagaInput) -> str:
     return author_id
 
 
-@activity.defn(name="delete_author_activity")
-async def delete_author_activity(inp: DeleteAuthorInput) -> None:
+@activity.defn(name="delete_author")
+async def delete_author(inp: DeleteAuthorInput) -> None:
     settings = Settings()
     redis = SagaRedis(redis_client, settings)
 
