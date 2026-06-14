@@ -15,6 +15,9 @@ class AuthorRepository:
 
     async def created(self, author_data: SAuthorCreate) -> Author:
         author, books = author_data.to_orm_models()
+        self.session.add(author)
+        await self.session.flush()
+        await self.session.refresh(author, ["books"])
         return author, books
 
     async def get_id(self, **filter_by) -> Optional[Author]:

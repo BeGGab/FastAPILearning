@@ -101,7 +101,7 @@ def mock_author_client():
             "year_of_death": 1950,
         }
     )
-    client.get_author = AsyncMock(return_value=None)
+    client.get_biography = AsyncMock(return_value=None)
     return client
 
 

@@ -33,7 +33,6 @@ def service_deps():
     repository.get_id = AsyncMock()
     repository.get_all = AsyncMock()
     repository.update = AsyncMock()
-    repository.apply_biography_to_author_data = Mock()
 
     cache = AsyncMock()
     cache.get = AsyncMock()
@@ -41,8 +40,7 @@ def service_deps():
     cache.delete = AsyncMock()
 
     author_client = AsyncMock()
-    author_client.create_to_author = AsyncMock()
-    author_client.get_author = AsyncMock()
+    author_client.get_biography = AsyncMock()
 
     service = AuthorService(
         session=session,
@@ -55,39 +53,6 @@ def service_deps():
 
 @pytest.mark.asyncio
 async def test_create_author_with_books_success(service_deps):
-    service, session, repository, cache, author_client = service_deps
-    author = _make_author()
-    payload = SAuthorCreate(
-        name="New Author",
-        books=[{"title": "Book 1"}],
-        biography_text="Bio",
-        year_of_birth=1900,
-        year_of_death=1950,
-    )
-    enriched = SAuthorRead.model_validate(author, from_attributes=True).model_copy(
-        update={"biography_text": "Bio", "year_of_birth": 1900, "year_of_death": 1950}
-    )
-
-    repository.created.return_value = (author, author.books)
-    author_client.create_to_author.return_value = {
-        "text": "Bio",
-        "year_of_birth": 1900,
-        "year_of_death": 1950,
-    }
-    repository.apply_biography_to_author_data.return_value = enriched
-
-    result = await service.create_author_with_books(payload)
-
-    assert result == enriched
-    session.add.assert_called_once_with(author)
-    session.flush.assert_awaited_once()
-    session.refresh.assert_awaited_once_with(author, ["books"])
-    cache.set.assert_awaited_once()
-    author_client.create_to_author.assert_awaited_once_with(author_id=author.id, author_data=payload)
-
-
-@pytest.mark.asyncio
-async def test_create_author_with_books_via_saga_success(service_deps):
     service, _session, repository, cache, author_client = service_deps
     author = _make_author()
     payload = SAuthorCreate(
@@ -107,25 +72,28 @@ async def test_create_author_with_books_via_saga_success(service_deps):
         compensated_biography=CompensationResult(attempted=False, success=False),
     )
     repository.get_id.return_value = author
-    author_client.get_author.return_value = {
+    author_client.get_biography.return_value = {
         "text": "Bio",
         "year_of_birth": 1900,
         "year_of_death": 1950,
     }
-    repository.apply_biography_to_author_data.return_value = enriched
 
-    with patch("src.temporal.client.run_create_author_saga", new_callable=AsyncMock) as mock_saga:
+    with patch(
+        "src.service.author.run_create_author_saga",
+        new_callable=AsyncMock,
+    ) as mock_saga:
         mock_saga.return_value = saga_result
-        result = await service.create_author_with_books_via_saga(payload, request_id="req-1")
+        result = await service.create_author_with_books(payload, request_id="req-1")
 
     assert result == enriched
     mock_saga.assert_awaited_once()
     repository.get_id.assert_awaited()
+    cache.set.assert_awaited_once()
 
 
 @pytest.mark.asyncio
-async def test_create_author_with_books_raises_when_repo_returns_none(service_deps):
-    service, _session, repository, _cache, _author_client = service_deps
+async def test_create_author_with_books_raises_when_saga_fails(service_deps):
+    service, _session, _repository, _cache, _author_client = service_deps
     payload = SAuthorCreate(
         name="Broken Author",
         books=[{"title": "Book 1"}],
@@ -133,14 +101,20 @@ async def test_create_author_with_books_raises_when_repo_returns_none(service_de
         year_of_birth=1900,
         year_of_death=1950,
     )
-    repository.created.return_value = (None, [])
 
-    with pytest.raises(InternalServerError):
-        await service.create_author_with_books(payload)
+    with patch(
+        "src.service.author.run_create_author_saga",
+        new_callable=AsyncMock,
+        side_effect=RuntimeError("saga failed"),
+    ):
+        with pytest.raises(InternalServerError):
+            await service.create_author_with_books(payload)
 
 
 @pytest.mark.asyncio
-async def test_find_one_or_none_by_id_returns_cached_and_refreshes_cache_when_changed(service_deps):
+async def test_find_one_or_none_by_id_returns_cached_and_refreshes_cache_when_changed(
+    service_deps,
+):
     service, _session, repository, cache, author_client = service_deps
     author_id = uuid.uuid4()
     cached = SAuthorRead(
@@ -151,11 +125,16 @@ async def test_find_one_or_none_by_id_returns_cached_and_refreshes_cache_when_ch
         year_of_birth=None,
         year_of_death=None,
     )
-    enriched = cached.model_copy(update={"biography_text": "Updated bio", "year_of_birth": 1901})
+    enriched = cached.model_copy(
+        update={"biography_text": "Updated bio", "year_of_birth": 1901}
+    )
 
     cache.get.return_value = cached.model_dump_json()
-    author_client.get_author.return_value = {"text": "Updated bio", "year_of_birth": 1901, "year_of_death": None}
-    repository.apply_biography_to_author_data.return_value = enriched
+    author_client.get_biography.return_value = {
+        "text": "Updated bio",
+        "year_of_birth": 1901,
+        "year_of_death": None,
+    }
 
     result = await service.find_one_or_none_by_id(author_id)
 
@@ -170,8 +149,6 @@ async def test_find_one_or_none_by_id_raises_not_found_when_missing_in_db(servic
     author_id = uuid.uuid4()
     cache.get.return_value = None
     repository.get_id.return_value = None
-    author_client.get_author.return_value = None
-    repository.apply_biography_to_author_data.return_value = None
 
     with pytest.raises(NotFoundError):
         await service.find_one_or_none_by_id(author_id)

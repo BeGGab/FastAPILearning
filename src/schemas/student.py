@@ -2,6 +2,7 @@ import re
 import uuid
 from pydantic import (
     BaseModel,
+    EmailStr,
     Field,
     ConfigDict,
     field_validator,
@@ -94,3 +95,29 @@ class SStudentRead(BaseModel):
     year_of_graduation: Optional[date] = Field(None, description="Год выпуска студента")
 
     model_config = ConfigDict(from_attributes=True)
+
+    def to_bio_response(self, bio_data: Optional["SStudentBioResponse"]) -> "SStudentBioResponse":
+        if not bio_data:
+            return self
+        return SStudentBioResponse(
+            email=bio_data.get("email"),
+            phone_number=bio_data.get("phone_number"),
+            bio_text=bio_data.get("text"),
+            year_of_enrollment=bio_data.get("year_of_enrollment"),
+            year_of_graduation=bio_data.get("year_of_graduation"),
+        ).model_dump(exclude_none=True)
+
+
+
+class SStudentBioResponse(BaseModel):
+    email: Optional[EmailStr] = Field(None, description="Email студента")
+    phone_number: Optional[str] = Field(None, description="Номер телефона студента")
+    bio_text: Optional[str] = Field(None, description="Биография студента")
+    year_of_enrollment: Optional[date] = Field(
+        None, description="Год поступления студента"
+    )
+    year_of_graduation: Optional[date] = Field(None, description="Год выпуска студента")
+
+    model_config = ConfigDict(from_attributes=True)
+
+

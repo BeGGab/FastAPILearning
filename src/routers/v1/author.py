@@ -17,7 +17,7 @@ async def create_author(
     author_service: AuthorService = Depends(get_author_service),
     idempotency_key: str | None = Header(None, alias="Idempotency-Key"),
 ) -> SAuthorRead:
-    return await author_service.create_author_with_books_via_saga(
+    return await author_service.create_author_with_books(
         author_data=payload,
         request_id=idempotency_key,
     )

@@ -48,17 +48,3 @@ class StudentRepository:
 
         return student
 
-    def apply_bio_data_to_student(
-        self, student_data: SStudentRead, bio_data: Optional[dict]
-    ) -> SStudentRead:
-        if not bio_data:
-            return student_data
-        return student_data.model_copy(
-            update={
-                "email": bio_data.get("email"),
-                "phone_number": bio_data.get("phone_number"),
-                "bio_text": bio_data.get("text"),
-                "year_of_enrollment": bio_data.get("year_of_enrollment"),
-                "year_of_graduation": bio_data.get("year_of_graduation"),
-            }
-        )

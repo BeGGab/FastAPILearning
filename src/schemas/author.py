@@ -137,3 +137,25 @@ class SAuthorRead(BaseModel):
     year_of_death: Optional[int] = Field(None, description="Год смерти автора")
 
     model_config = ConfigDict(from_attributes=True)
+
+
+    def to_bio_response(self, bio_data: Optional["SAuthorBioResponse"]) -> "SAuthorRead":
+        if not bio_data:
+            return self
+        return self.model_copy(
+            update={
+                "biography_text": bio_data.biography_text,
+                "year_of_birth": bio_data.year_of_birth,
+                "year_of_death": bio_data.year_of_death,
+            }
+        )
+
+
+class SAuthorBioResponse(BaseModel):
+    biography_text: Optional[str] = Field(
+        None, alias="text", description="Биография автора"
+    )
+    year_of_birth: Optional[int] = Field(None, description="Год рождения автора")
+    year_of_death: Optional[int] = Field(None, description="Год смерти автора")
+
+    model_config = ConfigDict(populate_by_name=True)

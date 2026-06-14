@@ -9,11 +9,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.core.redis import RedisClient
 
 from src.client.bio_author_client import BiographyServiceClient
-from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate
-from src.schemas.saga import CreateAuthorSagaInput, SagaBookInput
+from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate, SAuthorBioResponse
+from src.schemas.saga import CreateAuthorSagaInput
 
 from src.repositories.author import AuthorRepository
-from src.client.client_author_saga import run_create_author_saga
+from src.worker.saga_starter import run_create_author_saga
+from src.schemas.saga import SagaBookInput
 from src.exception.client_exception import NotFoundError
 from src.exception.server_exception import InternalServerError
 
@@ -36,46 +37,12 @@ class AuthorService:
 
 
     async def create_author_with_books(
-        self, author_data: SAuthorCreate) -> SAuthorRead:
-        
-        try:
-            author, _books = await self.repository.created(author_data=author_data)
-        except Exception as e:
-            logger.error(f"Ошибка при создании автора: {e}")
-            raise InternalServerError(detail="Ошибка при создании автора", context=e)
-
-        if author is None:
-            logger.error("Репозиторий вернул пустого автора при создании")
-            raise InternalServerError(detail="Ошибка при создании автора")
-        
-        self.session.add(author)
-        await self.session.flush()
-        await self.session.refresh(author, ["books"])
-
-        author_read_data = SAuthorRead.model_validate(author, from_attributes=True)
-       
-            
-        bio_data = await self.author_client.create_to_author(author_id=author.id, author_data=author_data)
-        if bio_data is None:
-            logger.warning(f"Биография для автора {author.id} не создана (пустой ответ или ошибка микросервиса).")
-            raise InternalServerError(detail=f"Биография для автора {author.id} не создана")
-        author_read_data = self.repository.apply_biography_to_author_data(
-            author_read_data, bio_data
-        )
-        
-        cache_key = f"author:{author.id}"
-        await self.cache.set(cache_key, author_read_data.model_dump_json())
-        
-        return author_read_data
-
-    async def create_author_with_books_via_saga(
         self,
         author_data: SAuthorCreate,
         *,
         request_id: str | None = None,
     ) -> SAuthorRead:
-        
-
+       
         rid = request_id or str(uuid.uuid4())
         saga_input = CreateAuthorSagaInput(
             request_id=rid,
@@ -120,10 +87,10 @@ class AuthorService:
                 await self.cache.delete(cache_key)
             else:
                 bio_data = await self.author_client.get_biography(author_id=author_id)
-                enriched_author = self.repository.apply_biography_to_author_data(author_data, bio_data)
-                if enriched_author.model_dump() != author_data.model_dump():
-                    await self.cache.set(cache_key, enriched_author.model_dump_json())
-                return enriched_author
+                bio = SAuthorBioResponse.model_validate(bio_data) if bio_data else None
+                author_data = author_data.to_bio_response(bio)
+                await self.cache.set(cache_key, author_data.model_dump_json())
+                return author_data
 
         author = await self.repository.get_id(id=author_id)
         if not author:
@@ -133,7 +100,8 @@ class AuthorService:
         author_data = SAuthorRead.model_validate(author, from_attributes=True)
 
         bio_data = await self.author_client.get_biography(author_id=author_id)
-        author_data = self.repository.apply_biography_to_author_data(author_data, bio_data)
+        bio = SAuthorBioResponse.model_validate(bio_data) if bio_data else None
+        author_data = author_data.to_bio_response(bio)
         await self.cache.set(cache_key, author_data.model_dump_json())
 
         return author_data

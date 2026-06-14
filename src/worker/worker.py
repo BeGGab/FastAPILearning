@@ -6,7 +6,9 @@ from temporalio.contrib.pydantic import pydantic_data_converter
 from temporalio.worker import Worker
 
 from src.core.config import Settings
-from src.activities.saga_activities import create_author_saga_activity
+from src.worker.author_activities import create_author, delete_author
+from src.worker.author_saga import create_author_saga_activity
+from src.worker.biography_activities import create_biography, delete_biography
 
 settings = Settings()
 
@@ -28,7 +30,11 @@ class AuthorWorker:
             client=client,
             task_queue=settings.temporal_task_queue,
             activities=[
-                create_author_saga_activity
+                create_author_saga_activity,
+                create_author,
+                create_biography,
+                delete_author,
+                delete_biography,
             ],
         )
         await worker.run()

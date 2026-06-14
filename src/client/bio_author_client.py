@@ -9,8 +9,8 @@ from fastapi import Depends
 from src.exception.client_exception import NotFoundError
 from src.schemas.author import SAuthorCreate
 from src.core.config import Settings
-from src.client.resilience import _response_json, _raise_logical_error
-from src.client.resilience import policy
+from src.utils.resilience import _response_json, _raise_logical_error
+from src.utils.resilience import policy
 
 settings = Settings()
 
