@@ -5,20 +5,17 @@ import httpx
 from temporalio import activity
 
 from src.client.bio_author_client import BiographyServiceClient
-from src.core.config import Settings
+from src.core.config import settings
 from src.core.redis import SagaRedis, redis_client
 from src.exception.client_exception import NotFoundError
-from src.schemas.author import SAuthorCreate
-from src.schemas.saga import CreateBiographyInput, DeleteBiographyInput
+from src.schemas.biography import CreateBiographyInput, DeleteBiographyInput, SbiographyCreate
 
 logger = logging.getLogger(__name__)
 
 _SAGA_KIND_BIO = "bio"
 
 
-@activity.defn(name="create_biography")
 async def create_biography(inp: CreateBiographyInput) -> None:
-    settings = Settings()
     ttl_s = settings.ttl
     redis = SagaRedis(redis_client, settings, ttl_s)
 
@@ -57,19 +54,15 @@ async def create_biography(inp: CreateBiographyInput) -> None:
                     inp.author_id,
                 )
             else:
-                author_create = SAuthorCreate(
-                    name=inp.author_name,
-                    books=[],
-                    biography_text=inp.biography_text,
-                    year_of_birth=inp.year_of_birth,
-                    year_of_death=inp.year_of_death,
-                )
-
                 result = await client.create_to_author(
-                    author_id=aid,
-                    author_data=author_create,
+                    bio_data=SbiographyCreate(
+                        author_id=str(aid),
+                        bio_text=inp.biography_text,
+                        year_of_birth=inp.year_of_birth,
+                        year_of_death=inp.year_of_death,
+                    ),
                 )
-                if result is None:
+                if not isinstance(result, dict):
                     raise RuntimeError("Сервис биографий вернул None после POST")
     except Exception:
         await redis.saga_release(_SAGA_KIND_BIO, inp.request_id)
@@ -78,9 +71,7 @@ async def create_biography(inp: CreateBiographyInput) -> None:
     await redis.saga_mark_done(_SAGA_KIND_BIO, inp.request_id, inp.author_id, ttl_s)
 
 
-@activity.defn(name="delete_biography")
 async def delete_biography(inp: DeleteBiographyInput) -> None:
-    settings = Settings()
     ttl_s = settings.ttl
     redis = SagaRedis(redis_client, settings, ttl_s)
     await redis.saga_release(_SAGA_KIND_BIO, inp.request_id)

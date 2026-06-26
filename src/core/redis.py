@@ -28,7 +28,7 @@ class RedisClient:
     @redress.retry(max_attempts=3, deadline_s=10, strategy=redress.strategies.decorrelated_jitter(max_s=5.0))
     async def set(self, key: str, value: Any, ttl: int = None) -> None:
         ttl = ttl if ttl is not None else self.default_ttl
-        await self.redis.setex(key, ttl, ujson.dumps(value))
+        await self.redis.setex(key, ttl, ujson.dumps(value, default=str))
 
     @redress.retry(max_attempts=3, deadline_s=10, strategy=redress.strategies.decorrelated_jitter(max_s=5.0))
     async def update(self, key: Any, value: Any, ttl: int = None) -> None:
@@ -58,7 +58,7 @@ class SagaRedis:
     async def saga_mark_done(self,
         kind: str, request_id: str, author_id: str, ttl_s: int
     ) -> None:
-        await self.redis.set(self.saga_key(kind, request_id), ujson.dumps({"status": "done", "author_id": author_id}), ex=ttl_s)
+        await self.redis.set(self.saga_key(kind, request_id), ujson.dumps({"status": "done", "author_id": author_id}, default=str), ex=ttl_s)
 
 
     async def saga_get_json(self, kind: str, request_id: str) -> Optional[dict]:
@@ -72,7 +72,7 @@ class SagaRedis:
 
     async def saga_try_lock(self, kind: str, request_id: str, ttl_s: int) -> bool:
         key = self.saga_key(kind, request_id)
-        payload = ujson.dumps({"status": "pending"})
+        payload = ujson.dumps({"status": "pending"}, default=str)
         return bool(await self.redis.set(key, payload, nx=True, ex=ttl_s))
 
     

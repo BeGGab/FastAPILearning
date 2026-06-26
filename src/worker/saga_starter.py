@@ -6,7 +6,7 @@ from temporalio.contrib.pydantic import pydantic_data_converter
 from temporalio.exceptions import ActivityAlreadyStartedError
 
 from src.core.config import Settings
-from src.schemas.saga import CreateAuthorSagaInput, CreateAuthorSagaResult
+from src.schemas.author import CreateAuthorSagaInput, CreateAuthorSagaResult
 
 settings = Settings()
 

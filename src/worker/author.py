@@ -1,24 +1,20 @@
 import logging
 import uuid
 
-from temporalio import activity
-
-from src.core.config import Settings
+from src.core.config import settings
 from src.core.db import async_session_maker
 from src.core.redis import SagaRedis, redis_client
 from src.repositories.author import AuthorRepository
 from src.schemas.author import SAuthorCreate
 from src.schemas.book import SBookCreate
-from src.schemas.saga import CreateAuthorSagaInput, DeleteAuthorInput
+from src.schemas.author import CreateAuthorSagaInput, DeleteAuthorInput
 
 logger = logging.getLogger(__name__)
 
 _SAGA_KIND_AUTHOR = "author"
 
 
-@activity.defn(name="create_author")
 async def create_author(payload: CreateAuthorSagaInput) -> str:
-    settings = Settings()
     ttl_s = settings.ttl
     redis = SagaRedis(redis_client, settings, ttl_s)
     rid = payload.request_id
@@ -66,9 +62,7 @@ async def create_author(payload: CreateAuthorSagaInput) -> str:
     return author_id
 
 
-@activity.defn(name="delete_author")
 async def delete_author(inp: DeleteAuthorInput) -> None:
-    settings = Settings()
     redis = SagaRedis(redis_client, settings)
 
     await redis.saga_release(_SAGA_KIND_AUTHOR, inp.request_id)

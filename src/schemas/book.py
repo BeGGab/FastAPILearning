@@ -20,3 +20,7 @@ class SBookRead(BaseModel):
     title: str
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class SagaBookInput(BaseModel):
+    title: str = Field(..., min_length=3, max_length=100, description="Название книги")

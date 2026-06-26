@@ -1,8 +1,12 @@
+import asyncio
+import os
+from pathlib import Path
+
 import pytest
 import pytest_asyncio
 import redis.asyncio as redis
-import os
-
+from alembic import command
+from alembic.config import Config
 from httpx import AsyncClient, ASGITransport
 from testcontainers.postgres import PostgresContainer
 from testcontainers.redis import RedisContainer
@@ -10,13 +14,14 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 from unittest.mock import AsyncMock
 
 from src.application import get_app
-from src.core.db import Base
 from src.core.redis import RedisClient
 from src.repositories.author import AuthorRepository
 from src.core.dependencies import get_author_service
 from src.service.author import AuthorService
 
 os.environ.setdefault("TESTCONTAINERS_RYUK_DISABLED", "true")
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -70,11 +75,10 @@ async def async_session_factory(async_engine):
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
 async def setup_database(async_engine):
-    async with async_engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    alembic_cfg = Config(str(ROOT_DIR / "alembic.ini"))
+    alembic_cfg.set_main_option("sqlalchemy.url", async_engine.url.render_as_string(hide_password=False))
+    await asyncio.to_thread(command.upgrade, alembic_cfg, "head")
     yield
-    async with async_engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
 
 
 @pytest_asyncio.fixture

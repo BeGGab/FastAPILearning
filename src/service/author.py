@@ -10,11 +10,11 @@ from src.core.redis import RedisClient
 
 from src.client.bio_author_client import BiographyServiceClient
 from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate, SAuthorBioResponse
-from src.schemas.saga import CreateAuthorSagaInput
+from src.schemas.author import CreateAuthorSagaInput
 
 from src.repositories.author import AuthorRepository
 from src.worker.saga_starter import run_create_author_saga
-from src.schemas.saga import SagaBookInput
+from src.schemas.book import SagaBookInput
 from src.exception.client_exception import NotFoundError
 from src.exception.server_exception import InternalServerError
 
@@ -72,39 +72,19 @@ class AuthorService:
         author_id: uuid.UUID) -> SAuthorRead:
         cache_key = f"author:{author_id}"
         cached = await self.cache.get(cache_key)
-        if cached:
-            try:
-                if isinstance(cached, (str, bytes, bytearray)):
-                    author_data = SAuthorRead.model_validate_json(cached)
-                else:
-                    author_data = SAuthorRead.model_validate(cached)
-            except Exception as exc:
-                logger.warning(
-                    "Некорректные данные в кеше для автора %s: %s",
-                    author_id,
-                    exc,
-                )
-                await self.cache.delete(cache_key)
-            else:
-                bio_data = await self.author_client.get_biography(author_id=author_id)
-                bio = SAuthorBioResponse.model_validate(bio_data) if bio_data else None
-                author_data = author_data.to_bio_response(bio)
-                await self.cache.set(cache_key, author_data.model_dump_json())
-                return author_data
+        if not cached:
+            author = await self.repository.get_id(id=author_id)
+            if not author:
+                logger.error(f"Ошибка при поиске записи в базе данных")
+                raise NotFoundError(detail=f"Автор с id {author_id} не найден")
+            author_data = SAuthorRead.model_validate(author, from_attributes=True)
+            bio_data = await self.author_client.get_biography(author_id=author_id)
+            bio = SAuthorBioResponse.model_validate(bio_data) if bio_data else None
+            author_data = author_data.to_bio_response(bio)
+            await self.cache.set(cache_key, author_data.model_dump())
+            return SAuthorRead.model_validate(author_data)
 
-        author = await self.repository.get_id(id=author_id)
-        if not author:
-            logger.error(f"Ошибка при поиске записи в базе данных")
-            raise NotFoundError(detail=f"Автор с id {author_id} не найден")
-
-        author_data = SAuthorRead.model_validate(author, from_attributes=True)
-
-        bio_data = await self.author_client.get_biography(author_id=author_id)
-        bio = SAuthorBioResponse.model_validate(bio_data) if bio_data else None
-        author_data = author_data.to_bio_response(bio)
-        await self.cache.set(cache_key, author_data.model_dump_json())
-
-        return author_data
+        return SAuthorRead.model_validate(cached)
 
 
     async def find_all_authors(
@@ -113,19 +93,15 @@ class AuthorService:
         cache_key = f"authors:{filter_by, skip, limit}"
         cached_authors = await self.cache.get(cache_key)
         if cached_authors:
-            return [
-                SAuthorRead.model_validate_json(author_json)
-                for author_json in ujson.loads(cached_authors)
-            ]
-
+            return SAuthorRead.from_cache_many(cached_authors)
+            
         authors = await self.repository.get_all(skip, limit, **filter_by)
         if not authors:
             logger.warning(f"Авторы с параметрами {filter_by} не найдены, возвращен пустой список.")
             raise NotFoundError(detail=f"Авторы с параметрами {filter_by} не найдены")
-
-        authors_json = ujson.dumps([SAuthorRead.model_validate(rec, from_attributes=True).model_dump_json() for rec in authors])
-        await self.cache.set(cache_key, authors_json)
-        return [SAuthorRead.model_validate(rec, from_attributes=True) for rec in authors]
+        authors_read = SAuthorRead.from_orm_many(authors)
+        await self.cache.set(cache_key, SAuthorRead.to_cache_many(authors_read))
+        return authors_read
 
 
     async def update_author_with_books(
@@ -142,7 +118,7 @@ class AuthorService:
         await self.session.refresh(author, ["books"])
 
         cache_key = f"author:{author_id}"
-        await self.cache.set(cache_key, SAuthorRead.model_validate(author, from_attributes=True).model_dump_json())
+        await self.cache.set(cache_key, SAuthorRead.model_validate(author, from_attributes=True).model_dump())
 
         return SAuthorRead.model_validate(author, from_attributes=True)
 

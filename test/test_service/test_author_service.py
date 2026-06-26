@@ -1,60 +1,32 @@
 import uuid
+from unittest.mock import AsyncMock, patch
 
 import pytest
-import ujson
-from unittest.mock import AsyncMock, Mock, patch
 
-from src.models.author import Author
-from src.models.books import Book
-from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate
-from src.service.author import AuthorService
+from src.schemas.author import (
+    CompensationResult,
+    CreateAuthorSagaResult,
+    SAuthorCreate,
+    SAuthorRead,
+    SAuthorUpdate,
+)
 from src.exception.client_exception import NotFoundError
 from src.exception.server_exception import InternalServerError
-from src.schemas.saga import CompensationResult, CreateAuthorSagaResult
 
 
-def _make_author(name: str = "Test Author") -> Author:
-    author = Author(id=uuid.uuid4(), name=name)
-    book = Book(id=uuid.uuid4(), title="Test Book", author_id=author.id)
-    author.books = [book]
+async def _seed_author(author_repository, db_session, name: str = "Test Author"):
+    author, _ = await author_repository.created(
+        author_data=SAuthorCreate(name=name, books=[{"title": "Test Book"}]),
+    )
+    await db_session.flush()
     return author
 
 
-@pytest.fixture
-def service_deps():
-    session = Mock()
-    session.add = Mock()
-    session.flush = AsyncMock()
-    session.refresh = AsyncMock()
-    session.delete = AsyncMock()
-
-    repository = Mock()
-    repository.created = AsyncMock()
-    repository.get_id = AsyncMock()
-    repository.get_all = AsyncMock()
-    repository.update = AsyncMock()
-
-    cache = AsyncMock()
-    cache.get = AsyncMock()
-    cache.set = AsyncMock()
-    cache.delete = AsyncMock()
-
-    author_client = AsyncMock()
-    author_client.get_biography = AsyncMock()
-
-    service = AuthorService(
-        session=session,
-        repository=repository,
-        cache=cache,
-        author_client=author_client,
-    )
-    return service, session, repository, cache, author_client
-
-
 @pytest.mark.asyncio
-async def test_create_author_with_books_success(service_deps):
-    service, _session, repository, cache, author_client = service_deps
-    author = _make_author()
+async def test_create_author_with_books_success(
+    author_service, author_repository, db_session, mock_author_client
+):
+    author = await _seed_author(author_repository, db_session, name="New Author")
     payload = SAuthorCreate(
         name="New Author",
         books=[{"title": "Book 1"}],
@@ -62,38 +34,32 @@ async def test_create_author_with_books_success(service_deps):
         year_of_birth=1900,
         year_of_death=1950,
     )
-    enriched = SAuthorRead.model_validate(author, from_attributes=True).model_copy(
-        update={"biography_text": "Bio", "year_of_birth": 1900, "year_of_death": 1950}
-    )
+    mock_author_client.get_biography.return_value = {
+        "text": "Bio",
+        "year_of_birth": 1900,
+        "year_of_death": 1950,
+    }
     saga_result = CreateAuthorSagaResult(
         author_id=str(author.id),
         biography_created=True,
         compensated_author=CompensationResult(attempted=False, success=False),
         compensated_biography=CompensationResult(attempted=False, success=False),
     )
-    repository.get_id.return_value = author
-    author_client.get_biography.return_value = {
-        "text": "Bio",
-        "year_of_birth": 1900,
-        "year_of_death": 1950,
-    }
 
     with patch(
         "src.service.author.run_create_author_saga",
         new_callable=AsyncMock,
     ) as mock_saga:
         mock_saga.return_value = saga_result
-        result = await service.create_author_with_books(payload, request_id="req-1")
+        result = await author_service.create_author_with_books(payload, request_id="req-1")
 
-    assert result == enriched
+    assert result.id == author.id
+    assert result.biography_text == "Bio"
     mock_saga.assert_awaited_once()
-    repository.get_id.assert_awaited()
-    cache.set.assert_awaited_once()
 
 
 @pytest.mark.asyncio
-async def test_create_author_with_books_raises_when_saga_fails(service_deps):
-    service, _session, _repository, _cache, _author_client = service_deps
+async def test_create_author_with_books_raises_when_saga_fails(author_service):
     payload = SAuthorCreate(
         name="Broken Author",
         books=[{"title": "Book 1"}],
@@ -108,104 +74,106 @@ async def test_create_author_with_books_raises_when_saga_fails(service_deps):
         side_effect=RuntimeError("saga failed"),
     ):
         with pytest.raises(InternalServerError):
-            await service.create_author_with_books(payload)
+            await author_service.create_author_with_books(payload)
 
 
 @pytest.mark.asyncio
-async def test_find_one_or_none_by_id_returns_cached_and_refreshes_cache_when_changed(
-    service_deps,
+async def test_find_one_or_none_by_id_returns_from_cache(
+    author_service, author_repository, db_session, cache_service, mock_author_client
 ):
-    service, _session, repository, cache, author_client = service_deps
-    author_id = uuid.uuid4()
-    cached = SAuthorRead(
-        id=author_id,
-        name="Cached Author",
-        books=[{"id": uuid.uuid4(), "title": "Book 1"}],
-        biography_text=None,
-        year_of_birth=None,
-        year_of_death=None,
-    )
-    enriched = cached.model_copy(
-        update={"biography_text": "Updated bio", "year_of_birth": 1901}
-    )
+    author = await _seed_author(author_repository, db_session, name="Cached Author")
+    cached = SAuthorRead.from_orm(author)
+    await cache_service.set(f"author:{author.id}", cached.to_cache())
 
-    cache.get.return_value = cached.model_dump_json()
-    author_client.get_biography.return_value = {
+    result = await author_service.find_one_or_none_by_id(author.id)
+
+    assert result.id == author.id
+    assert result.name == "Cached Author"
+    mock_author_client.get_biography.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_find_one_or_none_by_id_loads_from_db_and_enriches_bio(
+    author_service, author_repository, db_session, mock_author_client
+):
+    author = await _seed_author(author_repository, db_session)
+    mock_author_client.get_biography.return_value = {
         "text": "Updated bio",
         "year_of_birth": 1901,
-        "year_of_death": None,
+        "year_of_death": 1955,
     }
 
-    result = await service.find_one_or_none_by_id(author_id)
+    result = await author_service.find_one_or_none_by_id(author.id)
 
-    assert result == enriched
-    repository.get_id.assert_not_called()
-    cache.set.assert_awaited_once()
+    assert result.biography_text == "Updated bio"
+    assert result.year_of_birth == 1901
+    mock_author_client.get_biography.assert_awaited_once()
 
 
 @pytest.mark.asyncio
-async def test_find_one_or_none_by_id_raises_not_found_when_missing_in_db(service_deps):
-    service, _session, repository, cache, author_client = service_deps
-    author_id = uuid.uuid4()
-    cache.get.return_value = None
-    repository.get_id.return_value = None
-
+async def test_find_one_or_none_by_id_raises_not_found_when_missing_in_db(
+    author_service,
+):
     with pytest.raises(NotFoundError):
-        await service.find_one_or_none_by_id(author_id)
+        await author_service.find_one_or_none_by_id(uuid.uuid4())
 
 
 @pytest.mark.asyncio
-async def test_find_all_authors_returns_from_cache(service_deps):
-    service, _session, repository, cache, _author_client = service_deps
-    author = SAuthorRead(
-        id=uuid.uuid4(),
-        name="Cached List Author",
-        books=[{"id": uuid.uuid4(), "title": "Book 1"}],
-        biography_text=None,
-        year_of_birth=None,
-        year_of_death=None,
-    )
-    cache.get.return_value = ujson.dumps([author.model_dump_json()])
+async def test_find_all_authors_returns_from_cache(
+    author_service, author_repository, db_session, cache_service
+):
+    author = await _seed_author(author_repository, db_session, name="Cached List Author")
+    cached = SAuthorRead.from_orm(author)
+    await cache_service.set("authors:({}, 0, 100)", [cached.to_cache()])
 
-    result = await service.find_all_authors()
+    result = await author_service.find_all_authors()
 
     assert len(result) == 1
     assert result[0].id == author.id
-    repository.get_all.assert_not_called()
 
 
 @pytest.mark.asyncio
-async def test_find_all_authors_raises_not_found_when_repo_empty(service_deps):
-    service, _session, repository, cache, _author_client = service_deps
-    cache.get.return_value = None
-    repository.get_all.return_value = []
-
+async def test_find_all_authors_raises_not_found_when_repo_empty(author_service):
     with pytest.raises(NotFoundError):
-        await service.find_all_authors()
+        await author_service.find_all_authors()
 
 
 @pytest.mark.asyncio
-async def test_update_author_with_books_success_updates_cache(service_deps):
-    service, session, repository, cache, _author_client = service_deps
-    author = _make_author("Updated")
+async def test_find_all_authors_loads_from_db(
+    author_service, author_repository, db_session
+):
+    author = await _seed_author(author_repository, db_session, name="Db Author")
+
+    result = await author_service.find_all_authors()
+
+    assert len(result) == 1
+    assert result[0].id == author.id
+
+
+@pytest.mark.asyncio
+async def test_update_author_with_books_success_updates_cache(
+    author_service, author_repository, db_session, cache_service
+):
+    author = await _seed_author(author_repository, db_session, name="Original")
     payload = SAuthorUpdate(name="Updated Author")
-    repository.update.return_value = author
 
-    result = await service.update_author_with_books(author.id, payload)
+    result = await author_service.update_author_with_books(author.id, payload)
 
-    assert result.id == author.id
-    session.flush.assert_awaited_once()
-    session.refresh.assert_awaited_once_with(author, ["books"])
-    cache.set.assert_awaited_once()
+    assert result.name == "Updated Author"
+    cached = await cache_service.get(f"author:{author.id}")
+    assert cached is not None
+    assert cached["name"] == "Updated Author"
 
 
 @pytest.mark.asyncio
-async def test_delete_author_success_removes_cache_and_entity(service_deps):
-    service, session, repository, cache, _author_client = service_deps
-    author = _make_author()
-    repository.get_id.return_value = author
+async def test_delete_author_success_removes_cache_and_entity(
+    author_service, author_repository, db_session, cache_service
+):
+    author = await _seed_author(author_repository, db_session)
+    await cache_service.set(f"author:{author.id}", SAuthorRead.from_orm(author).to_cache())
 
-    await service.delete_author(author.id)
+    await author_service.delete_author(author.id)
+    await db_session.flush()
 
-    cache.delete.assert_awaited_once_with(f"author:{author.id}")
-    session.delete.assert_awaited_once_with(author)
+    assert await cache_service.get(f"author:{author.id}") is None
+    assert await author_repository.get_id(id=author.id) is None

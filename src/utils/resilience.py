@@ -13,6 +13,7 @@ from redress.strategies import decorrelated_jitter
 
 from src.exception.client_exception import BadRequestError, NotFoundError, ConflictError, ValidationError
 from src.exception.server_exception import ServiceUnavailableError, InternalServerError
+from src.core.config import settings
 
 
 
@@ -45,27 +46,27 @@ def skip_log_errors(exc: BaseException) -> ErrorClass | Classification | None:
 def _raise_logical_error(response: httpx.Response, operation: str) -> None:
     status_code = response.status_code
     response_preview = response.text[:500]
-    
-    if status_code == 409:
-        raise ConflictError(detail=f"{operation}: конфликт данных")
+   
     if status_code in (408, 429, 503):
         raise ServiceUnavailableError(
             detail=f"{operation}: сервис временно недоступен ({status_code}): {response_preview}"
         )
     if 400 <= status_code < 500:
         raise BadRequestError(detail=f"{operation}: клиентская ошибка ({status_code}): {response_preview}")
-
+    if status_code >= 500:
+        raise InternalServerError(detail=f"{operation}: серверная ошибка ({status_code}): {response_preview}")
+        
 policy = AsyncPolicy(
     retry=AsyncRetry(  
         classifier=skip_log_errors,
         strategy=decorrelated_jitter(max_s=5.0),
-        max_attempts=5,
-        deadline_s=30,
+        max_attempts=settings.max_attempts,
+        deadline_s=settings.deadline_s, 
     ),
     circuit_breaker=CircuitBreaker(
-        failure_threshold=5,  
-        window_s=60.0,      
-        recovery_timeout_s=30.0,  
+        failure_threshold=settings.failure_threshold,  
+        window_s=settings.window_s,      
+        recovery_timeout_s=settings.recovery_timeout_s,  
         trip_on={  # какие ошибки учитываються при размыкании
             ErrorClass.SERVER_ERROR,
             ErrorClass.CONCURRENCY,

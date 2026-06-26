@@ -8,12 +8,13 @@ from pydantic import (
     field_validator,
     model_validator,
 )
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Any
 
 from src.models.author import Author
 from src.models.books import Book
 from src.exception.client_exception import NotFoundError, ValidationError
-from src.schemas.book import SBookCreate, SBookRead
+from src.schemas.book import SBookCreate, SBookRead, SagaBookInput
+from src.schemas.biography import SAuthorBioResponse
 
 
 class SAuthorCreate(BaseModel):
@@ -137,6 +138,29 @@ class SAuthorRead(BaseModel):
     year_of_death: Optional[int] = Field(None, description="Год смерти автора")
 
     model_config = ConfigDict(from_attributes=True)
+    
+    @classmethod
+    def from_orm(cls, author: Author) -> "SAuthorRead":
+        return cls.model_validate(author, from_attributes=True)
+
+    @classmethod
+    def from_orm_many(cls, authors: List[Author]) -> List["SAuthorRead"]:
+        return [cls.from_orm(author) for author in authors]
+
+    @classmethod
+    def from_cache(cls, data: Dict[str, Any]) -> "SAuthorRead":
+        return cls.model_validate(data)
+
+    @classmethod
+    def from_cache_many(cls, data: List[Dict[str, Any]]) -> List["SAuthorRead"]:
+        return [cls.from_cache(item) for item in data]
+
+    def to_cache(self) -> Dict[str, Any]:
+        return self.model_dump()
+
+    @classmethod
+    def to_cache_many(cls, authors: List["SAuthorRead"]) -> List[Dict[str, Any]]:
+        return [author.to_cache() for author in authors]
 
 
     def to_bio_response(self, bio_data: Optional["SAuthorBioResponse"]) -> "SAuthorRead":
@@ -151,11 +175,43 @@ class SAuthorRead(BaseModel):
         )
 
 
-class SAuthorBioResponse(BaseModel):
-    biography_text: Optional[str] = Field(
-        None, alias="text", description="Биография автора"
-    )
-    year_of_birth: Optional[int] = Field(None, description="Год рождения автора")
-    year_of_death: Optional[int] = Field(None, description="Год смерти автора")
+    
 
-    model_config = ConfigDict(populate_by_name=True)
+
+class CreateAuthorSagaInput(BaseModel):
+    request_id: str = Field(..., description="ID запроса")
+    name: str = Field(..., min_length=3, max_length=50, description="Имя автора")
+    books: List[SagaBookInput] = Field(
+        default_factory=list, description="Список книг автора"
+    )
+    biography_text: Optional[str] = Field(
+        None, description="Текст биографии (сервис биографий)"
+    )
+    year_of_birth: Optional[int] = Field(
+        None, description="Год рождения (сервис биографий)"
+    )
+    year_of_death: Optional[int] = Field(
+        None, description="Год смерти (сервис биографий)"
+    )
+
+
+
+class DeleteAuthorInput(BaseModel):
+    author_id: str = Field(..., description="ID автора")
+    request_id: str = Field(..., description="ID запроса")
+
+
+class CompensationResult(BaseModel):
+    attempted: bool = Field(..., description="Была ли попытка компенсации")
+    success: bool = Field(..., description="Успешно ли компенсировано")
+    details: Optional[str] = Field(None, description="Описание ошибки")
+
+
+class CreateAuthorSagaResult(BaseModel):
+    author_id: Optional[str] = Field(None, description="ID автора")
+    biography_created: bool = Field(..., description="Была ли создана биография")
+    compensated_author: CompensationResult = Field(
+        ..., description="Результат компенсации автора"
+    )
+    compensated_biography: CompensationResult = Field(
+        ..., description="Результат компенсации биографии")
