@@ -1,10 +1,8 @@
-import re
 import uuid
 from pydantic import (
     BaseModel,
     Field,
     ConfigDict,
-    EmailStr,
     field_validator,
     model_validator,
 )
@@ -48,7 +46,7 @@ class SAuthorCreate(BaseModel):
     @classmethod
     def name_not_empty(cls, v: str) -> str:
         if v is None or v == "string":
-            raise ValidationError(detail=f"Имя не должно быть пустым")
+            raise ValidationError(detail="Имя не должно быть пустым")
         return v
 
     @field_validator("name", mode="after")
@@ -113,7 +111,7 @@ class SAuthorUpdate(BaseModel):
     def validate_update_data(self) -> "SAuthorUpdate":
         update_fields = self.model_dump(exclude_unset=True, exclude_none=True)
         if not update_fields:
-            raise NotFoundError(detail=f"Нет данных для обновления")
+            raise NotFoundError(detail="Нет данных для обновления")
         return self
 
     def apply_updates(self, author: Author) -> None:
@@ -194,6 +192,19 @@ class CreateAuthorSagaInput(BaseModel):
         None, description="Год смерти (сервис биографий)"
     )
 
+    @property
+    def has_biography(self) -> bool:
+        return None not in (self.biography_text, self.year_of_birth, self.year_of_death)
+
+    def to_author_create(self) -> SAuthorCreate:
+        return SAuthorCreate(
+            name=self.name,
+            books=[SBookCreate(title=b.title) for b in self.books],
+            biography_text=self.biography_text,
+            year_of_birth=self.year_of_birth,
+            year_of_death=self.year_of_death,
+        )
+
 
 
 class DeleteAuthorInput(BaseModel):
@@ -207,11 +218,14 @@ class CompensationResult(BaseModel):
     details: Optional[str] = Field(None, description="Описание ошибки")
 
 
+class CompensationSummary(BaseModel):
+    author: CompensationResult
+    biography: CompensationResult
+
+    @property
+    def all_success(self) -> bool:
+        return self.author.success and self.biography.success
+
 class CreateAuthorSagaResult(BaseModel):
-    author_id: Optional[str] = Field(None, description="ID автора")
+    author_id: str 
     biography_created: bool = Field(..., description="Была ли создана биография")
-    compensated_author: CompensationResult = Field(
-        ..., description="Результат компенсации автора"
-    )
-    compensated_biography: CompensationResult = Field(
-        ..., description="Результат компенсации биографии")

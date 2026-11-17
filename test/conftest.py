@@ -18,6 +18,7 @@ from src.core.redis import RedisClient
 from src.repositories.author import AuthorRepository
 from src.core.dependencies import get_author_service
 from src.service.author import AuthorService
+from src.exception.biography_exception import BiographyNotFoundError
 
 os.environ.setdefault("TESTCONTAINERS_RYUK_DISABLED", "true")
 
@@ -98,24 +99,23 @@ async def author_repository(db_session):
 @pytest.fixture
 def mock_author_client():
     client = AsyncMock()
-    client.create_to_author = AsyncMock(
-        return_value={
-            "text": "Test biography",
-            "year_of_birth": 1900,
-            "year_of_death": 1950,
-        }
-    )
-    client.get_biography = AsyncMock(return_value=None)
+    client.get_biography = AsyncMock(side_effect=BiographyNotFoundError("test"))
     return client
 
 
+@pytest.fixture
+def mock_saga_starter():
+    return AsyncMock()
+
+
 @pytest_asyncio.fixture
-async def author_service(db_session, author_repository, cache_service, mock_author_client):
+async def author_service(db_session, author_repository, cache_service, mock_author_client, mock_saga_starter):
     return AuthorService(
         session=db_session,
         repository=author_repository,
         cache=cache_service,
         author_client=mock_author_client,
+        saga_starter=mock_saga_starter,
     )
 
 

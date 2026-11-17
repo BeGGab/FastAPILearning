@@ -5,7 +5,7 @@ description = ""
 authors = [
     {name = "Alex Grinch",email = "magw710i@mail.ru"}
 ]
-requires-python = "3.11.9"
+requires-python = ">=3.11.9,<3.12"
 dependencies = [
     "fastapi>=0.117.1,<0.118.0",
     "uvicorn>=0.36.0,<0.37.0",

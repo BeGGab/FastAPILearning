@@ -1,6 +1,5 @@
 from src.exception.base import BaseHTTPException
 from fastapi import status
-from typing import List, Dict, Any
 
 
 class BadRequestError(BaseHTTPException):
@@ -55,13 +54,13 @@ class ValidationError(BadRequestError):
     # 422 Validation Error (для Pydantic)
     def __init__(
         self,
-        detail: str = "Ошибка валидации",
+        detail: str = "Ошибка валидации данных",
         error_code: str = "validation_error",
-        **context,
+        **context
     ):
         super().__init__(
             status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
-            tail=detail,
+            detail=detail,
             error_code=error_code,
             context=context,
         )

@@ -1,5 +1,4 @@
 import sqlalchemy as sa
-from typing import List
 import uuid
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from datetime import datetime

@@ -11,7 +11,6 @@ from src.service.courses import (
     create_new_courses,
     find_all_courses,
     find_existing_courses,
-    update_courses,
     delete_courses,
 )
 

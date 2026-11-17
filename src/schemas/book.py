@@ -1,7 +1,5 @@
-import re
 import uuid
-from pydantic import BaseModel, Field, ConfigDict, EmailStr, field_validator
-from typing import Optional, List, Dict
+from pydantic import BaseModel, Field, ConfigDict
 
 from src.models.books import Book
 

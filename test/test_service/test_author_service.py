@@ -1,15 +1,16 @@
 import uuid
-from unittest.mock import AsyncMock, patch
+from temporalio.client import WorkflowFailureError
 
 import pytest
 
 from src.schemas.author import (
-    CompensationResult,
     CreateAuthorSagaResult,
     SAuthorCreate,
     SAuthorRead,
     SAuthorUpdate,
 )
+from src.schemas.biography import SAuthorBioResponse
+
 from src.exception.client_exception import NotFoundError
 from src.exception.server_exception import InternalServerError
 
@@ -24,7 +25,7 @@ async def _seed_author(author_repository, db_session, name: str = "Test Author")
 
 @pytest.mark.asyncio
 async def test_create_author_with_books_success(
-    author_service, author_repository, db_session, mock_author_client
+    author_service, author_repository, db_session, mock_author_client, mock_saga_starter
 ):
     author = await _seed_author(author_repository, db_session, name="New Author")
     payload = SAuthorCreate(
@@ -34,47 +35,32 @@ async def test_create_author_with_books_success(
         year_of_birth=1900,
         year_of_death=1950,
     )
-    mock_author_client.get_biography.return_value = {
-        "text": "Bio",
-        "year_of_birth": 1900,
-        "year_of_death": 1950,
-    }
-    saga_result = CreateAuthorSagaResult(
-        author_id=str(author.id),
-        biography_created=True,
-        compensated_author=CompensationResult(attempted=False, success=False),
-        compensated_biography=CompensationResult(attempted=False, success=False),
+    # side_effect сильнее return_value — сначала снимаем его
+    mock_author_client.get_biography.side_effect = None
+    mock_author_client.get_biography.return_value = SAuthorBioResponse(
+        text="Bio", year_of_birth=1900, year_of_death=1950
+    )
+    mock_saga_starter.create_author.return_value = CreateAuthorSagaResult(
+        author_id=str(author.id), biography_created=True
     )
 
-    with patch(
-        "src.service.author.run_create_author_saga",
-        new_callable=AsyncMock,
-    ) as mock_saga:
-        mock_saga.return_value = saga_result
-        result = await author_service.create_author_with_books(payload, request_id="req-1")
+    result = await author_service.create_author_with_books(payload, request_id="req-1")
 
     assert result.id == author.id
     assert result.biography_text == "Bio"
-    mock_saga.assert_awaited_once()
-
+    mock_saga_starter.create_author.assert_awaited_once()
 
 @pytest.mark.asyncio
-async def test_create_author_with_books_raises_when_saga_fails(author_service):
-    payload = SAuthorCreate(
-        name="Broken Author",
-        books=[{"title": "Book 1"}],
-        biography_text="Bio",
-        year_of_birth=1900,
-        year_of_death=1950,
+async def test_create_author_with_books_raises_when_saga_fails(
+    author_service, mock_saga_starter
+):
+    payload = SAuthorCreate(name="Broken Author", books=[{"title": "Book 1"}])
+    mock_saga_starter.create_author.side_effect = WorkflowFailureError(
+        cause=RuntimeError("saga failed")
     )
 
-    with patch(
-        "src.service.author.run_create_author_saga",
-        new_callable=AsyncMock,
-        side_effect=RuntimeError("saga failed"),
-    ):
-        with pytest.raises(InternalServerError):
-            await author_service.create_author_with_books(payload)
+    with pytest.raises(InternalServerError):
+        await author_service.create_author_with_books(payload)
 
 
 @pytest.mark.asyncio
@@ -82,7 +68,7 @@ async def test_find_one_or_none_by_id_returns_from_cache(
     author_service, author_repository, db_session, cache_service, mock_author_client
 ):
     author = await _seed_author(author_repository, db_session, name="Cached Author")
-    cached = SAuthorRead.from_orm(author)
+    cached = SAuthorRead.model_validate(author, from_attributes=True)
     await cache_service.set(f"author:{author.id}", cached.to_cache())
 
     result = await author_service.find_one_or_none_by_id(author.id)
@@ -123,7 +109,7 @@ async def test_find_all_authors_returns_from_cache(
     author_service, author_repository, db_session, cache_service
 ):
     author = await _seed_author(author_repository, db_session, name="Cached List Author")
-    cached = SAuthorRead.from_orm(author)
+    cached = SAuthorRead.model_validate(author, from_attributes=True)
     await cache_service.set("authors:({}, 0, 100)", [cached.to_cache()])
 
     result = await author_service.find_all_authors()
@@ -170,7 +156,7 @@ async def test_delete_author_success_removes_cache_and_entity(
     author_service, author_repository, db_session, cache_service
 ):
     author = await _seed_author(author_repository, db_session)
-    await cache_service.set(f"author:{author.id}", SAuthorRead.from_orm(author).to_cache())
+    await cache_service.set(f"author:{author.id}", SAuthorRead.model_validate(author, from_attributes=True).to_cache())
 
     await author_service.delete_author(author.id)
     await db_session.flush()

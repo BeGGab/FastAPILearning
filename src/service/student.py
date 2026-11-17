@@ -31,7 +31,7 @@ class StudentService:
     ) -> SStudentRead:
         student, courses = await self.repository.created(student_data)
         if not student:
-            logger.error(f"Ошибка при создании студента")
+            logger.error("Ошибка при создании студента")
             raise InternalServerError(detail="Ошибка при создании студента")
 
         courses_data = await self.course_repository.update(courses)
@@ -62,7 +62,7 @@ class StudentService:
 
         student_orm = await self.repository.get_all(skip, limit, **filter_by)
         if not student_orm:
-            logger.error(f"Не нашло ни одного студента")
+            logger.error("Не нашло ни одного студента")
             raise NotFoundError(detail="Студенты не найдены")
 
         students_json = ujson.dumps(
@@ -104,7 +104,7 @@ class StudentService:
     ) -> SStudentRead:
         student = await self.repository.update(student_id, student_data)
         if not student:
-            logger.error(f"Ошибка при обновлении студента")
+            logger.error("Ошибка при обновлении студента")
             raise InternalServerError(detail="Ошибка при обновлении студента")
 
         await self.course_repository.update(student_data.courses)
@@ -122,7 +122,7 @@ class StudentService:
     async def delete_student(self, **filter_by):
         student = await self.repository.get_id(**filter_by)
         if not student:
-            logger.error(f"Ошибка при удалении записи из базы данных")
+            logger.error("Ошибка при удалении записи из базы данных")
             raise NotFoundError(student_id=filter_by)
 
         await self.session.delete(student)

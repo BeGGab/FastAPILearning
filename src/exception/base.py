@@ -1,6 +1,6 @@
 from fastapi import HTTPException
-from typing import List, Dict, Any, Optional, Union
-from src.schemas.exception import ErrorDetail, ErrorResponse
+from typing import Dict, Any, Optional, Union
+from src.schemas.exception import ErrorResponse
 
 
 class BaseHTTPException(HTTPException):

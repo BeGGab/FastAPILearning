@@ -6,3 +6,12 @@ class Status(Enum):
     INACTIVE = "inactive"
     PENDING = "pending"
     DELETED = "deleted"
+
+
+
+class SagaStatus(str, Enum):
+    PENDING = "pending"
+    PROCESSING = "processing"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    COMPENSATED = "compensated"

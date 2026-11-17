@@ -1,6 +1,5 @@
 from src.exception.base import BaseHTTPException
 from fastapi import status
-from typing import List, Dict, Any
 
 
 class InternalServerError(BaseHTTPException):

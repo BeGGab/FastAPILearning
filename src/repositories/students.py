@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models.student import Student
 
-from src.schemas.student import SStudentCreate, SStudentUpdate, SStudentRead
+from src.schemas.student import SStudentCreate, SStudentUpdate
 
 
 class StudentRepository:

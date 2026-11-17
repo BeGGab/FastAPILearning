@@ -1,4 +1,3 @@
-import re
 import uuid
 from pydantic import (
     BaseModel,
@@ -28,7 +27,7 @@ class SStudentCreate(BaseModel):
     @classmethod
     def name_not_empty(cls, v: str) -> str:
         if v is None or v == "string":
-            raise ValidationError(detail=f"Имя не должно быть пустым")
+            raise ValidationError(detail="Имя не должно быть пустым")
         return v
 
     @field_validator("courses", mode="after")
@@ -72,7 +71,7 @@ class SStudentUpdate(BaseModel):
     def validate_update_data(self) -> "SStudentUpdate":
         update_fields = self.model_dump(exclude_unset=True, exclude_none=True)
         if not update_fields:
-            raise NotFoundError(detail=f"Нет данных для обновления")
+            raise NotFoundError(detail="Нет данных для обновления")
         return self
 
     def apply_updates(self, student: Student):

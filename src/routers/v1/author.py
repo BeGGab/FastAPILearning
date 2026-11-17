@@ -30,7 +30,7 @@ async def find_all(
     return await author_service.find_all_authors()
 
 
-@router.get("/{author_id}", status_code=status.HTTP_206_PARTIAL_CONTENT)
+@router.get("/{author_id}", status_code=status.HTTP_200_OK)
 async def find_author_is_id(
     author_id: uuid.UUID,
     author_service: AuthorService = Depends(get_author_service),
@@ -40,7 +40,7 @@ async def find_author_is_id(
     )
 
 
-@router.put("/{author_id}", status_code=status.HTTP_201_CREATED)
+@router.put("/{author_id}", status_code=status.HTTP_200_OK)
 async def update(
     author_id: uuid.UUID,
     payload: SAuthorUpdate,

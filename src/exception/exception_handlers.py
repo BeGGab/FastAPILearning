@@ -1,11 +1,11 @@
 import logging
-from typing import Union
 from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import UJSONResponse
 
 from src.exception.base import BaseHTTPException
+from src.exception.biography_exception import BiographyServiceError, BiographyServiceUnavailableError
 
 
 logger = logging.getLogger(__name__)
@@ -94,4 +94,20 @@ def setup_exception_handlers(app: FastAPI) -> None:
                 "error_code": "internal_server_error",
                 "detail": error_detail if not is_production else None,
             },
+        )
+    
+
+    @app.exception_handler(BiographyServiceError)
+    async def biography_service_error_handler(
+        request: Request, exc: BiographyServiceError
+    ) -> UJSONResponse:
+        status_code = (
+            status.HTTP_503_SERVICE_UNAVAILABLE
+            if isinstance(exc, BiographyServiceUnavailableError)
+            else status.HTTP_502_BAD_GATEWAY
+        )
+        logger.warning("Ошибка сервиса биографии: %s", exc, extra={"path": request.url.path})
+        return UJSONResponse(
+            status_code=status_code,
+            content={"message": str(exc), "error_code": "biography_service_error"},
         )

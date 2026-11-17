@@ -1,23 +1,23 @@
 import uuid
 import logging
-import ujson
 
 from typing import List
 
 from sqlalchemy.ext.asyncio import AsyncSession
+from temporalio.client import WorkflowFailureError
 
 from src.core.redis import RedisClient
 
 from src.client.bio_author_client import BiographyServiceClient
-from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate, SAuthorBioResponse
+from src.schemas.author import SAuthorCreate, SAuthorRead, SAuthorUpdate
 from src.schemas.author import CreateAuthorSagaInput
 
 from src.repositories.author import AuthorRepository
-from src.worker.saga_starter import run_create_author_saga
 from src.schemas.book import SagaBookInput
 from src.exception.client_exception import NotFoundError
 from src.exception.server_exception import InternalServerError
-
+from src.exception.biography_exception import BiographyNotFoundError
+from src.worker.saga_starter import AuthorSagaStarter
 
 logger = logging.getLogger(__name__)
 
@@ -29,11 +29,13 @@ class AuthorService:
     session: AsyncSession, 
     repository: AuthorRepository, 
     cache: RedisClient,
-    author_client: BiographyServiceClient):
+    author_client: BiographyServiceClient,
+    saga_starter: AuthorSagaStarter):
         self.session = session
         self.cache = cache
         self.repository = repository
         self.author_client = author_client
+        self.saga_starter = saga_starter
 
 
     async def create_author_with_books(
@@ -42,7 +44,7 @@ class AuthorService:
         *,
         request_id: str | None = None,
     ) -> SAuthorRead:
-       
+
         rid = request_id or str(uuid.uuid4())
         saga_input = CreateAuthorSagaInput(
             request_id=rid,
@@ -53,13 +55,13 @@ class AuthorService:
             year_of_death=author_data.year_of_death,
         )
         try:
-            result = await run_create_author_saga(saga_input)
-        except Exception as e:
-            logger.error("Ошибка саги создания автора: %s", e)
+            result = await self.saga_starter.create_author(saga_input)
+        except WorkflowFailureError as exc:
+            logger.error("Сага создания автора %s упала: %s", rid, exc.cause)
             raise InternalServerError(
                 detail="Не удалось создать автора через сагу",
-                context={"error": str(e)},
-            ) from e
+                request_id=rid,
+            ) from exc
 
         if not result.author_id:
             raise InternalServerError(detail="Сага завершилась без author_id")
@@ -75,11 +77,13 @@ class AuthorService:
         if not cached:
             author = await self.repository.get_id(id=author_id)
             if not author:
-                logger.error(f"Ошибка при поиске записи в базе данных")
+                logger.error("Ошибка при поиске записи в базе данных")
                 raise NotFoundError(detail=f"Автор с id {author_id} не найден")
             author_data = SAuthorRead.model_validate(author, from_attributes=True)
-            bio_data = await self.author_client.get_biography(author_id=author_id)
-            bio = SAuthorBioResponse.model_validate(bio_data) if bio_data else None
+            try:
+                bio = await self.author_client.get_biography(author_id)
+            except BiographyNotFoundError:
+                bio = None
             author_data = author_data.to_bio_response(bio)
             await self.cache.set(cache_key, author_data.model_dump())
             return SAuthorRead.model_validate(author_data)
@@ -111,7 +115,7 @@ class AuthorService:
     ) -> SAuthorRead:
         author = await self.repository.update(author_id, author_data)
         if not author:
-            logger.error(f"Ошибка при поиске автора")
+            logger.error("Ошибка при поиске автора")
             raise NotFoundError(detail=f"Автор с id {author_id} не найден")
 
         await self.session.flush()
@@ -126,7 +130,7 @@ class AuthorService:
     async def delete_author(self, author_id: uuid.UUID):
         author = await self.repository.get_id(id=author_id)
         if not author:
-            logger.error(f"Ошибка при удалении записи из базы данных")
+            logger.error("Ошибка при удалении записи из базы данных")
             raise NotFoundError(detail=f"Автор с id {author_id} не найден")
 
 

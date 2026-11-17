@@ -1,6 +1,10 @@
 
 from fastapi import Depends
+from fastapi import Request
+from temporalio.client import Client
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.worker.saga_starter import AuthorSagaStarter
 
 from src.core.db import get_async_session
 from src.core.redis import redis_client, RedisClient
@@ -33,15 +37,22 @@ async def get_student_repository(session: AsyncSession = Depends(get_async_sessi
 async def get_user_repository(session: AsyncSession = Depends(get_async_session)) -> UserRepository:
     return UserRepository(session)
 
+async def get_temporal_client(request: Request) -> Client:
+    return request.app.state.temporal_client
+
+async def get_author_saga_starter(client: Client = Depends(get_temporal_client)) -> AuthorSagaStarter:
+    return AuthorSagaStarter(client)
+
 
 
 async def get_author_service(
     session: AsyncSession = Depends(get_async_session),
     repository: AuthorRepository = Depends(get_author_repository),
     author_client: BiographyServiceClient = Depends(get_biography_service_client),
-    cache: RedisClient = Depends(get_cache)
+    cache: RedisClient = Depends(get_cache),
+    saga_starter: AuthorSagaStarter = Depends(get_author_saga_starter),
 ) -> AuthorService:
-    return AuthorService(session, repository, cache, author_client) 
+    return AuthorService(session, repository, cache, author_client, saga_starter) 
 
 async def get_student_service(
     session: AsyncSession = Depends(get_async_session),

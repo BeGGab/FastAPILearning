@@ -1,4 +1,3 @@
-import re
 import uuid
 from pydantic import (
     BaseModel,
@@ -30,14 +29,14 @@ class SUserCreate(BaseModel):
     @classmethod
     def validate_email(cls, v: str) -> str:
         if not v or v == "string":
-            raise ValidationError(detail=f"Электронная почта не должна быть пустой")
+            raise ValidationError(detail="Электронная почта не должна быть пустой")
         return v
 
     @field_validator("username", mode="before")
     @classmethod
     def validate_username(cls, v: str):
         if not v or v == "string":
-            raise ValidationError(detail=f"Username пользователя не должно быть пустым")
+            raise ValidationError(detail="Username пользователя не должно быть пустым")
         return v
 
     def to_orm_models(self) -> tuple[User, Optional[Profile]]:

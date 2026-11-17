@@ -1,76 +1,33 @@
-import logging
 import uuid
 
-from src.core.config import settings
-from src.core.db import async_session_maker
-from src.core.redis import SagaRedis, redis_client
+from sqlalchemy.ext.asyncio import async_sessionmaker
+
 from src.repositories.author import AuthorRepository
-from src.schemas.author import SAuthorCreate
-from src.schemas.book import SBookCreate
-from src.schemas.author import CreateAuthorSagaInput, DeleteAuthorInput
+from src.repositories.saga_request import SagaRequestRepository
+from src.schemas.author import CreateAuthorSagaInput
 
-logger = logging.getLogger(__name__)
+SAGA_KIND ="create_author"
 
-_SAGA_KIND_AUTHOR = "author"
-
-
-async def create_author(payload: CreateAuthorSagaInput) -> str:
-    ttl_s = settings.ttl
-    redis = SagaRedis(redis_client, settings, ttl_s)
-    rid = payload.request_id
-
-    state = await redis.saga_get_json(_SAGA_KIND_AUTHOR, rid)
-    if state and state.get("status") == "done":
-        aid = state.get("author_id")
-        if aid:
-            logger.info(
-                "create_author: идемпотентный кэш hit request_id=%s author_id=%s",
-                rid,
-                aid,
-            )
-            return aid
-
-    acquired = await redis.saga_try_lock(_SAGA_KIND_AUTHOR, rid, ttl_s)
-    if not acquired:
-        state = await redis.saga_get_json(_SAGA_KIND_AUTHOR, rid)
-        if state and state.get("status") == "done" and state.get("author_id"):
-            return state["author_id"]
-        raise RuntimeError(
-            f"saga author lock busy для request_id={rid}; повторить activity"
-        )
-
-    books = [SBookCreate(title=b.title) for b in payload.books]
-    author_data = SAuthorCreate(
-        name=payload.name,
-        books=books,
-        biography_text=payload.biography_text,
-        year_of_birth=payload.year_of_birth,
-        year_of_death=payload.year_of_death,
-    )
-
-    try:
-        async with async_session_maker() as session:
-            repository = AuthorRepository(session)
-            author, _books = await repository.created(author_data=author_data)
-            author_id = str(author.id)
-            await session.commit()
-    except Exception:
-        await redis.saga_release(_SAGA_KIND_AUTHOR, rid)
-        raise
-
-    await redis.saga_mark_done(_SAGA_KIND_AUTHOR, rid, author_id, ttl_s)
-    return author_id
+async def create_author_step(session_factory: async_sessionmaker, inp: CreateAuthorSagaInput) -> str:
+    async with session_factory() as session:
+        saga = await SagaRequestRepository(session).get(SAGA_KIND, inp.request_id, for_update=True)
+        if saga is None:
+            raise RuntimeError(f"Сага {inp.request_id} не стартовала")
+        if saga.result_id is not None:
+            return str(saga.result_id)
+        
+        author, _ = await AuthorRepository(session).created(author_data=inp.to_author_create())
+        saga.result_id = author.id
+        await session.commit()
+        return str(author.id)
 
 
-async def delete_author(inp: DeleteAuthorInput) -> None:
-    redis = SagaRedis(redis_client, settings)
-
-    await redis.saga_release(_SAGA_KIND_AUTHOR, inp.request_id)
-
-    async with async_session_maker() as session:
+async def delete_author_step(session_factory: async_sessionmaker, author_id: str) -> None:
+    async with session_factory() as session:
         repository = AuthorRepository(session)
-        author = await repository.get_id(id=uuid.UUID(inp.author_id))
-        if not author:
+        author = await repository.get_id(id=uuid.UUID(author_id))
+        if author is None:
             return
         await session.delete(author)
         await session.commit()
+        

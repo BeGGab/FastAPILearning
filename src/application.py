@@ -2,6 +2,10 @@ import logging
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi import FastAPI
+from contextlib import asynccontextmanager
+
+from temporalio.client import Client
+from temporalio.contrib.pydantic import pydantic_data_converter
 
 from src.core.config_logging import setup_logging
 from src.exception.exception_handlers import setup_exception_handlers
@@ -9,11 +13,22 @@ from src.routers.v1.user import router as user_router
 from src.routers.v1.author import router as author_router
 from src.routers.v1.student import router as student_router
 from src.routers.v1.courses import router as courses_router
+from src.core.config import settings
 
 
 setup_logging()
 
 logger = logging.getLogger(__name__)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.temporal_client = await Client.connect(
+        settings.temporal_host,
+        namespace=settings.temporal_namespace,
+        data_converter=pydantic_data_converter
+    )
+    yield
 
 
 def get_app() -> FastAPI:
@@ -25,6 +40,7 @@ def get_app() -> FastAPI:
     :return: application.
     """
     app = FastAPI(
+        lifespan=lifespan,
         docs_url="/docs",
         openapi_url="/openapi.json",
         default_response_class=JSONResponse,

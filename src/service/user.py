@@ -29,7 +29,7 @@ class UserService:
     ) -> SUserRead:
         user, profile = await self.repository.created(user_data)
         if not user:
-            logger.error(f"Ошибка при создании пользователя")
+            logger.error("Ошибка при создании пользователя")
             raise InternalServerError(detail="Ошибка при создании пользователя")
 
         self.session.add(user)
@@ -53,7 +53,7 @@ class UserService:
 
         user = await self.repository.get_id(**filter_by)
         if not user:
-            logger.error(f"Ошибка при поиске записи в базе данных")
+            logger.error("Ошибка при поиске записи в базе данных")
             raise NotFoundError(detail=f"Пользователь с id {filter_by} не найден")
 
         user_data = SUserRead.model_validate(user, from_attributes=True)
@@ -92,7 +92,7 @@ class UserService:
     ) -> SUserRead:
         user = await self.repository.update(user_id, data)
         if not user:
-            logger.error(f"Ошибка при поиске записи в базе данных")
+            logger.error("Ошибка при поиске записи в базе данных")
             raise NotFoundError(detail=f"Пользователь с id {user_id} не найден")
 
         await self.session.flush()
@@ -107,7 +107,7 @@ class UserService:
     async def delete_user(self, user_id: uuid.UUID):
         user = await self.repository.get_id(id=user_id)
         if not user:
-            logger.error(f"Ошибка при удалении записи из базы данных")
+            logger.error("Ошибка при удалении записи из базы данных")
             raise NotFoundError(detail=f"Пользователь с id {user_id} не найден")
         await self.session.delete(user)
 

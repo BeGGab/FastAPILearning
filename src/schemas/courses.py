@@ -1,7 +1,5 @@
-import re
 import uuid
-from pydantic import BaseModel, Field, ConfigDict, EmailStr, field_validator
-from typing import Optional, List, Dict, Any
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 
 
 from src.exception.client_exception import ValidationError
@@ -19,7 +17,7 @@ class SCourseCreate(BaseModel):
     @classmethod
     def title_not_empty(cls, value: str) -> str:
         if not value.strip():
-            raise ValidationError(detail=f"Название курса не может быть пустым")
+            raise ValidationError(detail="Название курса не может быть пустым")
         return value
 
     def to_orm_model(self) -> Course:

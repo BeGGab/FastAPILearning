@@ -1,8 +1,7 @@
 import uuid
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import Response
-from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, List
+from typing import List
 
 from src.schemas.student import SStudentCreate, SStudentRead, SStudentUpdate
 
